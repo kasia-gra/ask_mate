@@ -37,7 +37,7 @@ def edit_question(question_id):
         question_message = request.form["description"]
         image_path = request.form["image"]
         # save modified elements into CSV file and redirect
-        return redirect("/")
+        return redirect("/question/<question_id>")
     return render_template("question.html", question_details=question_details)
 
 
