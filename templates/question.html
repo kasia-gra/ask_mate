@@ -2,9 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>New Question Form</title>
 </head>
 <body>
-
+    <header>
+        <h1>Please input new question</h1>
+    </header>
+    <form id=question_form action="/question" method="POST">
+        <label for="title">Question title:</label><br/>
+        <input id="title" name="title" type="text" value=""><br/>
+        <label for="description">Question message:</label><br/>
+        <textarea id="description" name="description" rows="4" cols="50"></textarea><br/>
+        <label for="image">Select image:</label><br/>
+        <input id="image" name="image" type="text" value=""><br/>
+        <button type="submit">Add new question</button>
+    </form>
 </body>
 </html>
