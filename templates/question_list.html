@@ -1,10 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends "layout.html" %}
+{% block title %}Home{% endblock %}
+{% block body %}
+    <table>
+        <thead>
+        <tr>{% for table_header in all_questions[0].keys()  %}
+            <th>{{ table_header.capitalize().replace("_", " ") }}</th>
+            {% endfor %}
+        </tr>
+        </thead>
+        <tbody>
+            {% for question in all_questions %}
+                <tr>{% for data_header, question_detail in question.items() %}
+                    <td>{{ question_detail }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <form action="{{ url_for('questions_list', sort_by=sort_by) }}", method="post">
+    <select name="sort_by" id="sort_by">
+        {% for sort_by_option in all_questions[0].keys() %}
+        <option value="{{ sort_by_option }}">sort by: {{ sort_by_option }}</option>
+        {% endfor %}
+    </select>
+        <button type="submit">Sort</button>
+    </form>
+{% endblock %}

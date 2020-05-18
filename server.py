@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect
-import data_manager
+import connection
+
 
 app = Flask(__name__)
 
@@ -7,6 +8,15 @@ app = Flask(__name__)
 @app.route("/")
 def hello():
     return "Hello World!"
+
+@app.route("/list", methods=['GET', 'POST'])
+def questions_list():
+    all_questions = connection.format_dictionary_data()
+    if request.method == 'POST':
+        sort_by = request.form.get("sort_by")
+    else: sort_by = "submission_time"
+    all_questions = connection.sort_dictionary(sort_by, all_questions)
+    return render_template("question_list.html", all_questions=all_questions, sort_by=sort_by)
 
 
 @app.route("/question", methods=["POST", "GET"])
