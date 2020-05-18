@@ -17,19 +17,24 @@ def add_question():
         image_path = request.form["image"]
         # save new element into CSV file and redirect
         return redirect("/")
-    return render_template("question.html")
+    return render_template("question_form.html")
+
+
+@app.route("/question/<question_id>")
+def show_question(question_id):
+    return render_template("question_details.html")
 
 
 @app.route("/question/<question_id>/edit", methods=["POST", "GET"])
 def edit_question(question_id):
     # seek CSV file for entry with this ID and show this results in question_details
     question_details = {
-        id: 1,
-        "Submission Time": 0,
+        "Id": 1,
+        "Submission time": 0,
         "View number": 0,
         "Vote number": 0,
-        "Question title": "Question title",
-        "Question message": "Question Message",
+        "Title": "Question title",
+        "Message": "Question Message",
         "Image Path": "Image Path"
     }
     if request.method == "POST":
@@ -38,7 +43,7 @@ def edit_question(question_id):
         image_path = request.form["image"]
         # save modified elements into CSV file and redirect
         return redirect("/question/<question_id>")
-    return render_template("question.html", question_details=question_details)
+    return render_template("question_form.html", question_details=question_details)
 
 
 if __name__ == "__main__":
