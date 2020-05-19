@@ -23,6 +23,3 @@ def sort_dictionary(dicts_list, sort_by):
     order_sort = {"desc": 1, "asc": 0}
     dicts_list.sort(key=lambda dictionary: dictionary[criteria], reverse=order_sort[order])
     return dicts_list
-
-
-
