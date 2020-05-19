@@ -5,9 +5,10 @@ ANSWER_FILE_PATH = os.path.join(dirpath, ".sample_data/answer.csv")
 QUESTION_FILE_PATH = os.path.join(dirpath, "sample_data/question.csv")
 
 
-def get_dict_list_from_csv_file():
+def get_dict_list_from_csv_file(option="question"):
     dicts_list = []
-    with open(QUESTION_FILE_PATH, "r") as csvfile:
+    filepath = get_file_path(option)
+    with open(filepath, "r") as csvfile:
         reader = csv.DictReader(csvfile)
         for dictionary in reader:
             dicts_list.append(dictionary)
