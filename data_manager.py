@@ -103,3 +103,13 @@ def get_file_path(option="answers"):
     if option == "answers":
         return ANSWER_FILE_PATH
     return QUESTION_FILE_PATH
+
+
+def update_vote_number(option, id, vote_direction):
+    vote_dic = {"up":1, "down": -1}
+    all_records = get_dict_list_from_csv_file(option)
+    for record in all_records:
+        if record["id"] == id:
+            record["vote_number"] = int(record["vote_number"]) + vote_dic[vote_direction]
+            break
+    save_to_file(all_records, option)

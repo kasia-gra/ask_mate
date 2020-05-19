@@ -19,7 +19,14 @@
                         {% endif %}
                     </td>
                 {% endfor %}
-                <td><a href="{{ url_for("edit_question", question_id=question['id']) }}">Edit</a></td>
+                    <td><a href="{{ url_for("edit_question", question_id=question['id']) }}">Edit</a></td>
+                    <td><a href="{{ url_for("edit_question", question_id=question['id']) }}">Edit</a></td>
+                    <td><form action="{{ url_for("question_vote_up", question_id=question['id']) }}">
+                    <button>vote_up</button>
+                    </form></td>
+                    <td><form action="{{ url_for("question_vote_down", question_id=question['id']) }}">
+                    <button>vote_down</button>
+                    </form></td>
                 </tr>
             {% endfor %}
         </tbody>

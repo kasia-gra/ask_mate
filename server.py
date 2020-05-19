@@ -74,6 +74,18 @@ def add_answer(question_id):
     return render_template("answer_form.html", old_record=new_record)
 
 
+@app.route("/question/<question_id>/vote_up")
+def question_vote_up(question_id):
+    data_manager.update_vote_number("questions", question_id, "up")
+    return redirect("/")
+
+
+@app.route("/question/<question_id>/vote_down")
+def question_vote_down(question_id):
+    data_manager.update_vote_number("questions", question_id, "down")
+    return redirect("/")
+
+
 if __name__ == "__main__":
     app.run(
         host='127.0.0.1',
