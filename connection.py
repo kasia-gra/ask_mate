@@ -4,8 +4,9 @@ from datetime import datetime
 NUMERICAL_VALUE_HEADERS = ["id", "view_number", "vote_number", "question_id"]
 DATE_HEADERS = ["submission_time"]
 
+
 def format_dictionary_data():
-    dicts_list = data_manager.get_dict_list_from_csv_file("questions")
+    dicts_list = data_manager.get_dict_list_from_csv_file("questions")[1::]
     for dictionary in dicts_list:
         for key, value in dictionary.items():
             if key in NUMERICAL_VALUE_HEADERS:
