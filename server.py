@@ -50,7 +50,7 @@ def edit_question(question_id):
         old_record["message"] = request.form["description"]
         old_record["image"] = request.form["image"]
         data_manager.edit_record_in_file(old_record, "questions")
-        return redirect("/question/<question_id>")
+        return redirect("/question/" + question_id)
     return render_template("question_form.html", old_record=old_record, is_new=False)
 
 
@@ -64,14 +64,13 @@ def delete_answer(answer_id):
 @app.route("/question/<question_id>/new-answer", methods=["POST", "GET"])
 def add_answer(question_id):
     new_record = {}
+    new_record["question_id"] = str(question_id)
     if request.method == "POST":
-        new_record["question_id"] = int(question_id)
-        new_record["title"] = request.form["title"]
         new_record["message"] = request.form["description"]
         new_record["image"] = request.form["image"]
         data_manager.add_record_to_file(new_record, "answers")
-        return redirect("/question/<question_id>")
-    return render_template("answer_form.html", old_record=new_record, is_new=True)
+        return redirect("/question/" + question_id)
+    return render_template("answer_form.html", old_record=new_record)
 
 
 if __name__ == "__main__":
