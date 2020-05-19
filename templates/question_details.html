@@ -3,4 +3,5 @@
 {% block body %}
     <h1>{{ record.get("title") }}</h1>
     <p>{{ record.get("message") }}</p>
+    <button><a href="{{ url_for("questions_list") }}">HOMEPAGE</a></button>
 {%  endblock %}
