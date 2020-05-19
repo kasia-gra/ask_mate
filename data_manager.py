@@ -28,21 +28,21 @@ def save_to_file(all_records, option):
 def add_record_to_file(new_record, option):
     all_records = read_all_items_from_file_by_option(option)
     if option == "questions":
-        add_question(new_record, all_records)
+        add_question(new_record)
     else:
-        add_answer(new_record, all_records)
+        add_answer(new_record)
     all_records.append(new_record)
     save_to_file(all_records, option)
 
 
-def add_question(new_record, all_records):
+def add_question(new_record):
     new_record["id"] = util.get_latest_id("questions")
     new_record["submission_time"] = util.get_new_timestamp()
     new_record["view_number"] = 0
     new_record["vote_number"] = 0
 
 
-def add_answer(new_record, all_records):
+def add_answer(new_record):
     new_record["id"] = util.get_latest_id("answers")
     new_record["submission_time"] = util.get_new_timestamp()
     new_record["vote_number"] = 0
