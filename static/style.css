@@ -1,31 +1,47 @@
-h1 {
-    text-align:center;
-    margin-left:auto;
-    margin-right:auto;
+body {
+    background-color: white;
+    color: black;
+    font-style: normal;
+}
+
+a {
+    color: black;
+    font-style: normal;
+    text-decoration-line: none;
     font-weight: bold;
+}
+
+h1 {
     color: navy;
-    margin-left: 20px;
+    font-style: normal;
+    font-weight: bold;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 p {
-    text-align:center;
-    margin-left:auto;
-    margin-right:auto;
+    color: indigo;
     font-style: italic;
-    color: red;
-    margin-left: 20px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 form {
-    text-align:center;
-    margin-left:auto;
-    margin-right:auto;
+    color: navy;
+    font-style: normal;
+    font-weight: bold;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 table, th, td {
-    border: 1px solid black;
-    border-collapse: collapse;
     text-align:center;
     margin-left:auto;
     margin-right:auto;
+    border-collapse: collapse;
+    border-style: groove;
+    border-width: 1px;
 }

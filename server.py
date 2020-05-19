@@ -33,7 +33,6 @@ def add_question():
 @app.route("/question/<question_id>")
 def show_question(question_id):
     record = data_manager.get_old_record(question_id, "questions")
-
     return render_template("question_details.html", record=record)
 
 
@@ -64,8 +63,7 @@ def delete_answer(answer_id):
 
 @app.route("/question/<question_id>/new-answer", methods=["POST", "GET"])
 def add_answer(question_id):
-    new_record = {}
-    new_record["question_id"] = str(question_id)
+    new_record = {"question_id": str(question_id)}
     if request.method == "POST":
         new_record["message"] = request.form["description"]
         new_record["image"] = request.form["image"]

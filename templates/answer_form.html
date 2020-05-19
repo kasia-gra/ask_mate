@@ -1,9 +1,9 @@
 {% extends "layout.html" %}
 {% block title %}New Answer Form{% endblock %}
+{% block header %}
+    <h1>Add new answer</h1>
+{% endblock %}
 {% block body %}
-    <header>
-        <h1>{{ "Add new answer" }}</h1>
-    </header>
     <form id=answer_form action={{ "/question/" + old_record.question_id + "/new-answer" }} method="POST">
         <label for="description">Answer message:</label><br/>
         <textarea id="description" name="description" rows="10" cols="100">{{ old_record.message }}</textarea><br/>
