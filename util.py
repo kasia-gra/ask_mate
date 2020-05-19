@@ -12,3 +12,8 @@ def get_latest_id(option="questions"):
     index_of_last_record = len(all_records) - 1
     last_records_id = all_records[index_of_last_record]["id"]
     return str(int(last_records_id) + 1)
+
+
+def change_timestamp_to_date(timestamp):
+    date = datetime.utcfromtimestamp(int(timestamp)).strftime('%Y-%m-%d %H:%M:%S')
+    return str(date)
