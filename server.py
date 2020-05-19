@@ -54,6 +54,13 @@ def edit_question(question_id):
     return render_template("question_form.html", old_record=old_record, is_new=False)
 
 
+@app.route("/answer/<answer_id>/delete")
+def delete_answer(answer_id):
+    old_record = data_manager.get_old_record(answer_id, "answers")
+    data_manager.delete_record_from_file(answer_id, "answers")
+    return redirect("/question/" + old_record["question_id"])
+
+
 if __name__ == "__main__":
     app.run(
         host='127.0.0.1',
