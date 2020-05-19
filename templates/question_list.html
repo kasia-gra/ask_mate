@@ -20,7 +20,13 @@
         <tbody>
             {% for question in all_questions %}
                 <tr>{% for data_header, question_detail in question.items() %}
-                    <td>{{ question_detail }}</td>
+                    <td>
+                        {% if data_header == "title" %}
+                            <a href="{{ url_for("show_question", question_id=question.get("id")) }}">{{ question_detail }}</a>
+                        {% else %}
+                            {{ question_detail }}
+                        {% endif %}
+                    </td>
                 {% endfor %}
                 <td><a href="{{ url_for("edit_question", question_id=question['id']) }}">Edit</a></td>
                 </tr>
