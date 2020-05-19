@@ -110,6 +110,7 @@ def update_vote_number(option, id, vote_direction):
     all_records = get_dict_list_from_csv_file(option)
     for record in all_records:
         if record["id"] == id:
-            record["vote_number"] = int(record["vote_number"]) + vote_dic[vote_direction]
+            if int(record["vote_number"]) != 0:
+                record["vote_number"] = int(record["vote_number"]) + vote_dic[vote_direction]
             break
     save_to_file(all_records, option)
