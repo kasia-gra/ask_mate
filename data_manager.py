@@ -77,11 +77,6 @@ def edit_answer(record, all_records):
 def delete_record_from_file(record_id, option):
     all_records = read_all_items_from_file_by_option(option)
     all_records.pop(int(record_id))
-    refreshed_id = 1
-    for element in all_records:
-        if element["id"] != "id":
-            element["id"] = refreshed_id
-            refreshed_id += 1
     save_to_file(all_records, option)
 
 
