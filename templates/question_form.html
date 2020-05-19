@@ -10,7 +10,7 @@
         <label for="description">Question message:</label><br/>
         <textarea id="description" name="description" rows="10" cols="100">{{ old_record.message }}</textarea><br/>
         <label for="image">Select image:</label><br/>
-        <input id="image" name="image" type="text" value='{{ old_record.image }}'><br/>
+        <input id="image" name="image" type="text" value='{{ old_record.image }}'><br/><br/>
         <button type="submit">{{ "Add new question" if is_new else "Edit your question" }}</button>
     </form>
 {% endblock %}
