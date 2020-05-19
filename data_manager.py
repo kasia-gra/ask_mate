@@ -1,8 +1,8 @@
 import csv
-from datetime import datetime
-
-ANSWER_FILE_PATH = "sample_data/answer.csv"
-QUESTION_FILE_PATH = "sample_data/question.csv"
+import os
+dirpath = os.path.dirname(__file__)
+ANSWER_FILE_PATH = os.path.join(dirpath, ".sample_data/answer.csv")
+QUESTION_FILE_PATH = os.path.join(dirpath, "sample_data/question.csv")
 
 
 def get_dict_list_from_csv_file():
