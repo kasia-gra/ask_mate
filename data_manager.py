@@ -43,9 +43,9 @@ def add_record_to_file(new_record, option):
 def edit_record_in_file(record, option):
     all_records = read_all_items_from_file_by_option(option)
     for element in all_records:
-        if element["id"] == record["id"]:
+        if element["id"] == str(record["id"]):
             element["title"] = record["title"]
-            element["message"] = record["description"]
+            element["message"] = record["message"]
             element["image"] = record["image"]
             element["submission_time"] = 0
     save_to_file(all_records, option)
@@ -56,7 +56,7 @@ def delete_record_from_file(record_id, option):
     all_records.pop(int(record_id))
     refreshed_id = 1
     for element in all_records:
-        if element != "id":
+        if element["id"] != "id":
             element["id"] = refreshed_id
             refreshed_id += 1
     save_to_file(all_records, option)
