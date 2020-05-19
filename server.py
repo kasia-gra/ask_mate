@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect
 import connection
+import data_manager
 
 
 app = Flask(__name__)
@@ -21,11 +22,18 @@ def questions_list():
 
 @app.route("/question", methods=["POST", "GET"])
 def add_question():
+    all_questions = data_manager.get_dict_list_from_csv_file()
+    new_record = {}
     if request.method == "POST":
-        question_title = request.form["title"]
-        question_message = request.form["description"]
-        image_path = request.form["image"]
-        # save new element into CSV file and redirect
+        new_record["id"] = str(int(len(all_questions)) + 1)
+        new_record["submission_time"] = 0
+        new_record["view_number"] = 0
+        new_record["vote_number"] = 0
+        new_record["title"] = request.form["title"]
+        new_record["message"] = request.form["description"]
+        new_record["image"] = request.form["image"]
+        data_manager.add_record_to_data(new_record, all_questions)
+        data_manager.save_to_file(all_questions, "questions")
         return redirect("/")
     return render_template("question_form.html")
 

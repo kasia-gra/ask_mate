@@ -32,6 +32,11 @@ def get_headers_from_file(option="answers"):
             return next(data)
 
 
+def add_record_to_data(record, data):
+    data.append(record)
+    return data
+
+
 def get_file_path(option="answers"):
     if option == "answers":
         return ANSWER_FILE_PATH
