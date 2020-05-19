@@ -74,9 +74,9 @@ def add_answer(question_id):
 
 @app.route("/question/<question_id>/vote_up")
 def question_vote_up(question_id):
-    if request.cookies.get("q" + question_id) != "1":
+    if request.cookies.get("q" + question_id) != "voted":
         res = make_response(redirect("/"))
-        res.set_cookie("q" + question_id, "1")
+        res.set_cookie("q" + question_id, "voted")
         data_manager.update_vote_number("questions", question_id, "up")
         return res
     return redirect("/")
@@ -84,9 +84,9 @@ def question_vote_up(question_id):
 
 @app.route("/question/<question_id>/vote_down")
 def question_vote_down(question_id):
-    if request.cookies.get("q" + question_id) != "1":
+    if request.cookies.get("q" + question_id) != "voted":
         res = make_response(redirect("/"))
-        res.set_cookie("q" + question_id, "1")
+        res.set_cookie("q" + question_id, "voted")
         data_manager.update_vote_number("questions", question_id, "down")
         return res
     return redirect("/")
