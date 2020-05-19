@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, make_response
 import connection
 import data_manager
 
@@ -74,13 +74,21 @@ def add_answer(question_id):
 
 @app.route("/question/<question_id>/vote_up")
 def question_vote_up(question_id):
-    data_manager.update_vote_number("questions", question_id, "up")
+    if request.cookies.get("q" + question_id) != "1":
+        res = make_response(redirect("/"))
+        res.set_cookie("q" + question_id, "1")
+        data_manager.update_vote_number("questions", question_id, "up")
+        return res
     return redirect("/")
 
 
 @app.route("/question/<question_id>/vote_down")
 def question_vote_down(question_id):
-    data_manager.update_vote_number("questions", question_id, "down")
+    if request.cookies.get("q" + question_id) != "1":
+        res = make_response(redirect("/"))
+        res.set_cookie("q" + question_id, "1")
+        data_manager.update_vote_number("questions", question_id, "down")
+        return res
     return redirect("/")
 
 
