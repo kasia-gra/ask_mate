@@ -1,6 +1,6 @@
 from datetime import datetime
 import data_manager
-
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 def get_new_timestamp():
     now = datetime.now()
@@ -12,3 +12,8 @@ def get_latest_id(option="questions"):
     index_of_last_record = len(all_records) - 1
     last_records_id = all_records[index_of_last_record]["id"]
     return str(int(last_records_id) + 1)
+
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
