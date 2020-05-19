@@ -15,8 +15,8 @@ def questions_list():
     all_questions = connection.format_dictionary_data()
     if request.method == 'POST':
         sort_by = request.form.get("sort_by")
-    else: sort_by = "submission_time"
-    all_questions = connection.sort_dictionary(sort_by, all_questions)
+    else: sort_by = "submission_time-asc"
+    all_questions = connection.sort_dictionary(all_questions, sort_by)
     return render_template("question_list.html", all_questions=all_questions, sort_by=sort_by)
 
 

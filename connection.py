@@ -15,7 +15,13 @@ def format_dictionary_data():
     return dicts_list
 
 
-def sort_dictionary(sort_by, dicst_list):
-    dicst_list.sort(key=lambda dictionary: dictionary[sort_by], reverse=True)
-    return dicst_list
+def sort_dictionary(dicts_list, sort_by):
+    criteria_and_order_list = sort_by.split("-")
+    criteria = criteria_and_order_list[0]
+    order = criteria_and_order_list[1]
+    order_sort = {"desc": 1, "asc": 0}
+    dicts_list.sort(key=lambda dictionary: dictionary[criteria], reverse=order_sort[order])
+    return dicts_list
+
+
 

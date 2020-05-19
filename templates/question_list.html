@@ -5,7 +5,10 @@
     <form action="{{ url_for('questions_list', sort_by=sort_by) }}", method="post">
         <select name="sort_by" id="sort_by">
             {% for sort_by_option in all_questions[0].keys() %}
-            <option value="{{ sort_by_option }}">sort by: {{ sort_by_option }}</option>
+                {% set sort_order = ["asc", "desc"] %}
+                    {% for order in sort_order %}
+                        <option value="{{ sort_by_option }}-{{ order }}">sort by: {{ sort_by_option }}-{{ order }}</option>
+                    {% endfor %}
             {% endfor %}
         </select>
             <button type="submit">Sort</button>
