@@ -61,6 +61,19 @@ def delete_answer(answer_id):
     return redirect("/question/" + old_record["question_id"])
 
 
+@app.route("/question/<question_id>/new-answer", methods=["POST", "GET"])
+def add_answer(question_id):
+    new_record = {}
+    if request.method == "POST":
+        new_record["question_id"] = int(question_id)
+        new_record["title"] = request.form["title"]
+        new_record["message"] = request.form["description"]
+        new_record["image"] = request.form["image"]
+        data_manager.add_record_to_file(new_record, "answers")
+        return redirect("/question/<question_id>")
+    return render_template("answer_form.html", old_record=new_record, is_new=True)
+
+
 if __name__ == "__main__":
     app.run(
         host='127.0.0.1',
