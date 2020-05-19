@@ -1,9 +1,10 @@
 from flask import Flask, render_template, request, redirect, make_response
 import connection, data_manager, util
-
+from werkzeug.utils import secure_filename
+import os
 
 app = Flask(__name__)
-
+app.config["UPLOAD_FOLDER"] = data_manager.UPLOAD_FOLDER
 
 @app.route("/")
 @app.route("/list", methods=['GET', 'POST'])
@@ -123,6 +124,17 @@ def answer_vote_down(answer_id):
         data_manager.update_vote_number("answers", answer_id, "down")
         return res
     return redirect("/question/" + question_id)
+
+
+@app.route("/question/upload_image", methods=["POST", "GET"])
+def upload_image():
+    if request.method == 'POST':
+        file = request.files['file']
+        if file and util.allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            return redirect("/question/upload_image")
+    return render_template("upload_image.html")
 
 
 if __name__ == "__main__":

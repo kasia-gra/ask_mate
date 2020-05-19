@@ -1,3 +1,7 @@
 id,submission_time,vote_number,question_id,message,image
+1,1493398154,4,1,You need to use brackets: my_list = [],
 2,1493088154,35,1,Look it up in the Python docs,
-3,1589923437,-1,2,456464456456,
+3,1589892708,0,2,fsagasgas,abc
+4,1589892859,0,3,"My new answer, yay!",abc
+5,1589893650,0,4,asdadadasd,
+6,1589893656,0,4,asdasdadsds,
