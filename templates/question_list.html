@@ -7,7 +7,7 @@
             {% for sort_by_option in all_questions[0].keys() %}
                 {% set sort_order = ["asc", "desc"] %}
                     {% for order in sort_order %}
-                        <option value="{{ sort_by_option }}-{{ order }}">sort by: {{ sort_by_option }}-{{ order }}</option>
+                        <option value="{{ sort_by_option }}-{{ order }}">sort by: {{ sort_by_option }} {% if order=='asc'%} &#8595 {% else %} &#8593{% endif %}</option>
                     {% endfor %}
             {% endfor %}
         </select>
