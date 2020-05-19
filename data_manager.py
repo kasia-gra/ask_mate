@@ -1,5 +1,6 @@
 import csv
 import os
+import util
 dirpath = os.path.dirname(__file__)
 ANSWER_FILE_PATH = os.path.join(dirpath, ".sample_data/answer.csv")
 QUESTION_FILE_PATH = os.path.join(dirpath, "sample_data/question.csv")
@@ -33,7 +34,7 @@ def get_headers_by_option(option):
 def add_record_to_file(new_record, option):
     all_records = read_all_items_from_file_by_option(option)
     new_record["id"] = str(len(all_records))
-    new_record["submission_time"] = 0
+    new_record["submission_time"] = util.get_new_timestamp()
     new_record["view_number"] = 0
     new_record["vote_number"] = 0
     all_records.append(new_record)
@@ -47,7 +48,7 @@ def edit_record_in_file(record, option):
             element["title"] = record["title"]
             element["message"] = record["message"]
             element["image"] = record["image"]
-            element["submission_time"] = 0
+            element["submission_time"] = util.get_new_timestamp()
     save_to_file(all_records, option)
 
 
