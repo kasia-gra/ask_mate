@@ -25,31 +25,53 @@ def save_to_file(all_records, option):
             data.writerow(element)
 
 
-def get_headers_by_option(option):
-    if option == "questions":
-        return QUESTION_HEADERS
-    return ANSWER_HEADERS
-
-
 def add_record_to_file(new_record, option):
     all_records = read_all_items_from_file_by_option(option)
-    new_record["id"] = str(len(all_records))
-    new_record["submission_time"] = util.get_new_timestamp()
-    new_record["view_number"] = 0
-    new_record["vote_number"] = 0
+    if option == "questions":
+        add_question(new_record, all_records)
+    else:
+        add_answer(new_record, all_records)
     all_records.append(new_record)
     save_to_file(all_records, option)
 
 
+def add_question(new_record, all_records):
+    new_record["id"] = str(len(all_records))
+    new_record["submission_time"] = util.get_new_timestamp()
+    new_record["view_number"] = 0
+    new_record["vote_number"] = 0
+
+
+def add_answer(new_record, all_records):
+    new_record["id"] = str(len(all_records))
+    new_record["submission_time"] = util.get_new_timestamp()
+    new_record["vote_number"] = 0
+
+
 def edit_record_in_file(record, option):
     all_records = read_all_items_from_file_by_option(option)
+    if option == "questions":
+        edit_question(record, all_records)
+    else:
+        edit_answer(record, all_records)
+    save_to_file(all_records, option)
+
+
+def edit_question(record, all_records):
     for element in all_records:
         if element["id"] == str(record["id"]):
             element["title"] = record["title"]
             element["message"] = record["message"]
             element["image"] = record["image"]
             element["submission_time"] = util.get_new_timestamp()
-    save_to_file(all_records, option)
+
+
+def edit_answer(record, all_records):
+    for element in all_records:
+        if element["id"] == str(record["id"]):
+            element["message"] = record["message"]
+            element["image"] = record["image"]
+            element["submission_time"] = util.get_new_timestamp()
 
 
 def delete_record_from_file(record_id, option):
@@ -74,6 +96,12 @@ def get_old_record(record_id, option):
     for element in all_records:
         if record_id == element["id"]:
             return element
+
+
+def get_headers_by_option(option):
+    if option == "questions":
+        return QUESTION_HEADERS
+    return ANSWER_HEADERS
 
 
 def get_file_path(option="answers"):
