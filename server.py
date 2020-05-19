@@ -38,7 +38,7 @@ def show_question(question_id):
 
 @app.route("/question/<question_id>/delete")
 def delete_question(question_id):
-    data_manager.delete_record_from_file(question_id, "questions")
+    data_manager.delete_question_from_file(question_id)
     return redirect("/")
 
 
@@ -57,7 +57,7 @@ def edit_question(question_id):
 @app.route("/answer/<answer_id>/delete")
 def delete_answer(answer_id):
     old_record = data_manager.get_old_record(answer_id, "answers")
-    data_manager.delete_record_from_file(answer_id, "answers")
+    data_manager.delete_answer_from_file(answer_id)
     return redirect("/question/" + old_record["question_id"])
 
 

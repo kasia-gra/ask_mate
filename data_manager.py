@@ -74,10 +74,16 @@ def edit_answer(record, all_records):
             element["submission_time"] = util.get_new_timestamp()
 
 
-def delete_record_from_file(record_id, option):
-    all_records = read_all_items_from_file_by_option(option)
+def delete_question_from_file(record_id):
+    all_questions = read_all_items_from_file_by_option("questions")
+    all_questions.pop(int(record_id))
+    save_to_file(all_questions, "questions")
+
+
+def delete_answer_from_file(record_id):
+    all_records = read_all_items_from_file_by_option("answers")
     all_records.pop(int(record_id))
-    save_to_file(all_records, option)
+    save_to_file(all_records, "answers")
 
 
 def read_all_items_from_file_by_option(option="questions"):
