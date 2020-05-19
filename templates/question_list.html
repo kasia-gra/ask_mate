@@ -1,18 +1,6 @@
 {% extends "layout.html" %}
 {% block title %}Home{% endblock %}
 {% block body %}
-    <a href="{{ url_for("add_question") }}">Ask question</a><br><br>
-    <form action="{{ url_for('questions_list', sort_by=sort_by) }}", method="post">
-        <select name="sort_by" id="sort_by">
-            {% for sort_by_option in all_questions[0].keys() %}
-                {% set sort_order = ["asc", "desc"] %}
-                    {% for order in sort_order %}
-                        <option value="{{ sort_by_option }}-{{ order }}">sort by: {{ sort_by_option }} {% if order=='asc'%} &#8595 {% else %} &#8593{% endif %}</option>
-                    {% endfor %}
-            {% endfor %}
-        </select>
-            <button type="submit">Sort</button>
-    </form>
     <table>
         <thead>
         <tr>{% for table_header in all_questions[0].keys()  %}
@@ -36,4 +24,20 @@
             {% endfor %}
         </tbody>
     </table>
+    <br/>
+    <form action="{{ url_for('questions_list', sort_by=sort_by) }}", method="post">
+        <select name="sort_by" id="sort_by">
+            {% for sort_by_option in all_questions[0].keys() %}
+                {% set sort_order = ["asc", "desc"] %}
+                    {% for order in sort_order %}
+                        <option value="{{ sort_by_option }}-{{ order }}">sort by: {{ sort_by_option }} {% if order=='asc'%} &#8595 {% else %} &#8593{% endif %}</option>
+                    {% endfor %}
+            {% endfor %}
+        </select>
+            <button type="submit">Sort</button>
+    </form>
+    <br/>
+    <form action="{{ url_for("add_question") }}">
+        <button>Ask new question</button>
+    </form>
 {% endblock %}
