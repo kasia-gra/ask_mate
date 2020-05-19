@@ -1,12 +1,9 @@
 from flask import Flask, render_template, request, redirect, make_response
-import connection
-import data_manager
-import os
-from werkzeug.utils import secure_filename
-import util
+import connection, data_manager, util
+
 
 app = Flask(__name__)
-app.config["UPLOAD_FOLDER"] = data_manager.UPLOAD_FOLDER
+
 
 @app.route("/")
 @app.route("/list", methods=['GET', 'POST'])
@@ -35,11 +32,21 @@ def add_question():
 @app.route("/question/<question_id>")
 def show_question(question_id):
     record = data_manager.get_old_record(question_id, "questions")
-    return render_template("question_details.html", record=record)
+    all_answers = data_manager.read_all_items_from_file_by_option("answers")
+    answers_for_question_id = []
+    for answer in all_answers:
+        if answer.get("question_id") == question_id:
+            answer["submission_time"] = util.change_timestamp_to_date(answer.get("submission_time"))
+            answers_for_question_id.append(answer)
+    return render_template("question_details.html", record=record, answers=answers_for_question_id)
 
 
 @app.route("/question/<question_id>/delete")
 def delete_question(question_id):
+    all_answers = data_manager.read_all_items_from_file_by_option("answers")
+    for answer in all_answers:
+        if answer.get("question_id") == question_id:
+            data_manager.delete_answer_from_file(answer.get("id"))
     data_manager.delete_question_from_file(question_id)
     return redirect("/")
 
@@ -94,15 +101,29 @@ def question_vote_down(question_id):
     return redirect("/")
 
 
-@app.route("/question/upload_image", methods=["POST", "GET"])
-def upload_image():
-    if request.method == 'POST':
-        file = request.files['image']
-        if file and util.allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return redirect("/question/upload_image")
-    return render_template("upload_image.html")
+@app.route("/answer/<answer_id>/vote_up")
+def answer_vote_up(answer_id):
+    answer = data_manager.get_old_record(answer_id, "answers")
+    question_id = answer.get("question_id")
+    if request.cookies.get("q" + answer_id) != "voted":
+        res = make_response(redirect("/question/" + question_id))
+        res.set_cookie("q" + answer_id, "voted")
+        data_manager.update_vote_number("answers", answer_id, "up")
+        return res
+    return redirect("/question/" + question_id)
+
+
+@app.route("/answer/<answer_id>/vote_down")
+def answer_vote_down(answer_id):
+    answer = data_manager.get_old_record(answer_id, "answers")
+    question_id = answer.get("question_id")
+    if request.cookies.get("q" + answer_id) != "voted":
+        res = make_response(redirect("/question/" + question_id))
+        res.set_cookie("q" + answer_id, "voted")
+        data_manager.update_vote_number("answers", answer_id, "down")
+        return res
+    return redirect("/question/" + question_id)
+
 
 if __name__ == "__main__":
     app.run(

@@ -5,13 +5,46 @@
 {% endblock %}
 {% block body %}
     <p>{{ record.get("message") }}</p>
-    <form action="{{ url_for("questions_list") }}">
-        <button>HOMEPAGE</button>
+    {% if answers == [] %}
+        <p><h3>No answers yet</h3></p>
+    {% else %}
+        <p><h3>Answers:</h3></p>
+        <table>
+            <thead>
+                <tr>{% for table_header in answers[0].keys() %}
+                        {% if table_header != "id" and table_header != "question_id" %}
+                            <th>{{ table_header.capitalize().replace("_", " ") }}</th>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for answer in answers %}
+                    <tr>
+                        {% for table_header, answer_detail in answer.items() %}
+                            {% if table_header != "id" and table_header != "question_id" %}
+                                <td>{{ answer_detail }}</td>
+                            {% endif %}
+                        {% endfor %}
+                        <td><a href="{{ url_for("delete_answer", answer_id=answer.get("id")) }}">Delete</a></td>
+                        <td><form action="{{ url_for("answer_vote_up", answer_id=answer.get("id")) }}">
+                        <button>vote_up</button>
+                        </form></td>
+                        <td><form action="{{ url_for("answer_vote_down", answer_id=answer.get("id")) }}">
+                        <button>vote_down</button>
+                        </form></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+    <form action="{{ url_for("add_answer", question_id=record.get("id")) }}">
+        <button>ADD ANSWER</button>
     </form>
     <form action="{{ url_for("delete_question", question_id=record.get("id")) }}">
         <button>DELETE QUESTION</button>
     </form>
-    <form action="{{ url_for("add_answer", question_id=record.get("id")) }}">
-        <button>ADD ANSWER</button>
+    <form action="{{ url_for("questions_list") }}">
+        <button>HOMEPAGE</button>
     </form>
 {%  endblock %}
