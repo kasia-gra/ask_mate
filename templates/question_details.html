@@ -38,13 +38,13 @@
             </tbody>
         </table>
     {% endif %}
-    <form action="{{ url_for("questions_list") }}">
-        <button>HOMEPAGE</button>
+    <form action="{{ url_for("add_answer", question_id=record.get("id")) }}">
+        <button>ADD ANSWER</button>
     </form>
     <form action="{{ url_for("delete_question", question_id=record.get("id")) }}">
         <button>DELETE QUESTION</button>
     </form>
-    <form action="{{ url_for("add_answer", question_id=record.get("id")) }}">
-        <button>ADD ANSWER</button>
+    <form action="{{ url_for("questions_list") }}">
+        <button>HOMEPAGE</button>
     </form>
 {%  endblock %}
