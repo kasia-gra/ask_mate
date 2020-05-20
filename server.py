@@ -25,7 +25,7 @@ def add_question():
         new_record["title"] = request.form["title"]
         new_record["message"] = request.form["description"]
         new_record["image"] = request.form["image"]
-        data_manager.add_record_to_file(new_record)
+        data_manager.add_record_to_file(new_record, "questions")
         return redirect("/")
     return render_template("question_form.html", old_record=new_record, is_new=True)
 

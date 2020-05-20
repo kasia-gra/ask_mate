@@ -76,7 +76,10 @@ def edit_answer(record, all_records):
 
 def delete_question_from_file(record_id):
     all_questions = read_all_items_from_file_by_option("questions")
-    all_questions.pop(int(record_id))
+    for question in all_questions:
+        if question["id"] == record_id:
+            index_of_question = all_questions.index(question)
+    all_questions.pop(index_of_question)
     save_to_file(all_questions, "questions")
 
 
