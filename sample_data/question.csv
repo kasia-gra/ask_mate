@@ -1,6 +1,6 @@
 id,submission_time,view_number,vote_number,title,message,image
-1,1589974003,9,9,New Question number 42,qwert updated for testing update,image_test2.png
-2,1589976105,7,9,My new question,Simple message update IMG UPATE,image_test2.png
+1,1589974003,13,9,New Question number 42,qwert updated for testing update,image_test2.png
+2,1589976105,9,9,My new question,Simple message update IMG UPATE,image_test2.png
 5,1589908538,0,2,Task 3,Task 3,bba
 6,1589959719,0,0,fsaf,asfas,sfa
 7,1589959862,0,1,abc,abc,
@@ -12,6 +12,6 @@ asd
 11,1589976480,0,0,IMAGE TESTING,IMAGE TESTING,0
 12,1589976493,0,0,IMAGE WITH IMAGE,IIII,0
 13,1589976998,0,0,IMAGE TEST 2,TEST2,0
-14,1589977079,0,0,Tets 3,Image,0
+14,1589977079,1,0,Tets 3,Image,0
 15,1589977326,0,0,test4,test4,0
 16,1589977374,0,0,test5,test5,OK
