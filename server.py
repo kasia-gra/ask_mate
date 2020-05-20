@@ -56,18 +56,19 @@ def delete_question(question_id):
 @app.route("/question/<question_id>/edit", methods=["POST", "GET"])
 def edit_question(question_id):
     old_record = data_manager.get_old_record(question_id, "questions")
+    img_path = ""
     if request.method == "POST":
         old_record["title"] = request.form["title"]
         old_record["message"] = request.form["description"]
-        # old_record["image"] = request.form["image"]
         file = request.files['file']
         if file and util.allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             old_record["image"] = str(filename)
+            img_path = str(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         data_manager.edit_record_in_file(old_record, "questions")
         return redirect("/question/" + question_id)
-    return render_template("question_form.html", old_record=old_record, is_new=False)
+    return render_template("question_form.html", old_record=old_record, img_path=img_path, is_new=False)
 
 
 @app.route("/answer/<answer_id>/delete")

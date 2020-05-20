@@ -1,9 +1,9 @@
 id,submission_time,view_number,vote_number,title,message,image
-1,1589958724,1,8,New Question number 42,qwert updated for testing,fsafsa
-2,1589921176,0,9,My new question,Simple message update,a href
+1,1589973206,5,9,New Question number 42,qwert updated for testing,image_test2.png
+2,1589965633,2,9,My new question,Simple message update IMG,demo.png
 5,1589908538,0,2,Task 3,Task 3,bba
 6,1589959719,0,0,fsaf,asfas,sfa
-7,1589959862,0,0,abc,abc,
+7,1589959862,0,1,abc,abc,
 8,1589961374,0,0,asd,"asd
 asd
 ",
