@@ -5,8 +5,9 @@
 {% endblock %}
 {% block body %}
     <table>
+        {%  set headers = ["submission_time", "view_number", "vote_number", "title", "message", "edit", "vote_up", "vote_down"] %}
         <thead>
-        <tr>{% for table_header in all_questions[0].keys()  %}
+        <tr>{% for table_header in headers %}
             <th>{{ table_header.capitalize().replace("_", " ") }}</th>
             {% endfor %}
         </tr>
@@ -14,6 +15,7 @@
         <tbody>
             {% for question in all_questions %}
                 <tr>{% for data_header, question_detail in question.items() %}
+                    {% if data_header in headers %}
                     <td>
                         {% if data_header == "title" %}
                             <a href="{{ url_for("show_question", question_id=question.get("id")) }}">{{ question_detail }}</a>
@@ -21,6 +23,7 @@
                             {{ question_detail }}
                         {% endif %}
                     </td>
+                    {% endif %}
                 {% endfor %}
                     <td><form action="{{ url_for("question_vote_up", question_id=question['id']) }}">
                     <button>vote_up</button>
@@ -35,7 +38,8 @@
     <br/>
     <form action="{{ url_for('questions_list', sort_by=sort_by) }}", method="post">
         <select name="sort_by" id="sort_by">
-            {% for sort_by_option in all_questions[0].keys() %}
+            {%  set sort_criteria = ["submission_time", "view_number", "vote_number", "title", "message"] %}
+            {% for sort_by_option in sort_criteria %}
                 {% set sort_order = ["asc", "desc"] %}
                     {% for order in sort_order %}
                         <option value="{{ sort_by_option }}-{{ order }}">sort by: {{ sort_by_option }} {% if order=='asc'%} &#8595 {% else %} &#8593{% endif %}</option>

@@ -117,6 +117,14 @@ def get_file_path(option="answers"):
     return QUESTION_FILE_PATH
 
 
+def increase_view_number(question_id):
+    all_questions = read_all_items_from_file_by_option("questions")
+    for question in all_questions:
+        if question["id"] == question_id:
+            question["view_number"] = str(int(question["view_number"]) + 1)
+    save_to_file(all_questions, "questions")
+
+
 def update_vote_number(option, id, vote_direction):
     vote_dic = {"up":1, "down": -1}
     all_records = get_dict_list_from_csv_file(option)
