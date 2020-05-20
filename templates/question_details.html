@@ -38,6 +38,9 @@
             </tbody>
         </table>
     {% endif %}
+    {% if img_path %}
+        <img src="img_path" alt="Backup_Image" width="128" height="128">
+    {% endif %}
     <form action="{{ url_for("add_answer", question_id=record.get("id")) }}">
         <button>Add answer</button>
     </form>
