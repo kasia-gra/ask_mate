@@ -9,8 +9,6 @@
         <input id="title" name="title" type="text" value='{{ old_record.title }}'><br/>
         <label for="description">Question message:</label><br/>
         <textarea id="description" name="description" rows="10" cols="100">{{ old_record.message }}</textarea><br/>
-        <label for="image">Select image:</label><br/>
-        <input id="image" name="image" type="text" value='{{ old_record.image }}'><br/><br/>
         <label>Select image</label>
         <input type="file" name="file" id="file">
         <button type="submit">{{ "Add new question" if is_new else "Edit your question" }}</button>
