@@ -39,10 +39,10 @@
         </table>
     {% endif %}
     <form action="{{ url_for("add_answer", question_id=record.get("id")) }}">
-        <button>ADD ANSWER</button>
+        <button>Add answer</button>
     </form>
     <form action="{{ url_for("delete_question", question_id=record.get("id")) }}">
-        <button>DELETE QUESTION</button>
+        <button>Delete question</button>
     </form>
     <form action="{{ url_for("questions_list") }}">
         <button>HOMEPAGE</button>

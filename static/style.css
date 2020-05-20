@@ -45,3 +45,7 @@ table, th, td {
     border-style: groove;
     border-width: 1px;
 }
+
+h3 {
+    text-align: center;
+}
