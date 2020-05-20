@@ -40,7 +40,6 @@ def add_question(new_record):
     new_record["submission_time"] = util.get_new_timestamp()
     new_record["view_number"] = 0
     new_record["vote_number"] = 0
-    new_record["image"] = 0
 
 
 def add_answer(new_record):

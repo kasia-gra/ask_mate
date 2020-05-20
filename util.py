@@ -31,4 +31,6 @@ def save_image(file, upload_folder):
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
         file.save(os.path.join(upload_folder, filename))
-        return str(filename)
+        # return str(filename)
+        return "OK"
+    return "function is working"
