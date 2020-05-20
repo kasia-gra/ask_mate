@@ -6,7 +6,7 @@ ANSWER_FILE_PATH = os.path.join(dirpath, "sample_data/answer.csv")
 QUESTION_FILE_PATH = os.path.join(dirpath, "sample_data/question.csv")
 QUESTION_HEADERS = ["id", "submission_time", "view_number", "vote_number", "title", "message", "image"]
 ANSWER_HEADERS = ["id", "submission_time", "vote_number", "question_id", "message", "image"]
-UPLOAD_FOLDER = os.path.join(dirpath, "static/img")
+UPLOAD_FOLDER = os.path.join(dirpath, "static/img/")
 
 def get_dict_list_from_csv_file(option):
     dicts_list = []

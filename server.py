@@ -41,7 +41,8 @@ def show_question(question_id):
         if answer.get("question_id") == question_id:
             answer["submission_time"] = util.change_timestamp_to_date(answer.get("submission_time"))
             answers_for_question_id.append(answer)
-    return render_template("question_details.html", record=record, answers=answers_for_question_id, img_path=data_manager.UPLOAD_FOLDER)
+    # return render_template("question_details.html", record=record, answers=answers_for_question_id, img_path=data_manager.UPLOAD_FOLDER)
+    return render_template("question_details.html", record=record, answers=answers_for_question_id)
 
 
 @app.route("/question/<question_id>/delete")
