@@ -1,5 +1,8 @@
 from datetime import datetime
 import data_manager
+import os
+from werkzeug.utils import secure_filename
+
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 def get_new_timestamp():
@@ -22,3 +25,10 @@ def change_timestamp_to_date(timestamp):
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+def save_image(file, upload_folder):
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(upload_folder, filename))
+        return str(filename)

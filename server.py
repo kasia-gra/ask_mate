@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, make_response
 import connection, data_manager, util
-from werkzeug.utils import secure_filename
-import os
+
+
 
 app = Flask(__name__)
 app.config["UPLOAD_FOLDER"] = data_manager.UPLOAD_FOLDER
@@ -24,7 +24,8 @@ def add_question():
     if request.method == "POST":
         new_record["title"] = request.form["title"]
         new_record["message"] = request.form["description"]
-        new_record["image"] = request.form["image"]
+        file = request.files['file']
+        new_record["image"] = util.save_image(file, app.config['UPLOAD_FOLDER'])
         data_manager.add_record_to_file(new_record, "questions")
         return redirect("/")
     return render_template("question_form.html", old_record=new_record, is_new=True)
@@ -56,19 +57,14 @@ def delete_question(question_id):
 @app.route("/question/<question_id>/edit", methods=["POST", "GET"])
 def edit_question(question_id):
     old_record = data_manager.get_old_record(question_id, "questions")
-    img_path = ""
     if request.method == "POST":
         old_record["title"] = request.form["title"]
         old_record["message"] = request.form["description"]
         file = request.files['file']
-        if file and util.allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            old_record["image"] = str(filename)
-            img_path = str(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        old_record["image"] = util.save_image(file, app.config['UPLOAD_FOLDER'])
         data_manager.edit_record_in_file(old_record, "questions")
         return redirect("/question/" + question_id)
-    return render_template("question_form.html", old_record=old_record, img_path=img_path, is_new=False)
+    return render_template("question_form.html", old_record=old_record, is_new=False)
 
 
 @app.route("/answer/<answer_id>/delete")
