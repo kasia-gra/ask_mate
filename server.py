@@ -59,12 +59,13 @@ def edit_question(question_id):
     if request.method == "POST":
         old_record["title"] = request.form["title"]
         old_record["message"] = request.form["description"]
-        old_record["image"] = request.form["image"]
-        data_manager.edit_record_in_file(old_record, "questions")
+        # old_record["image"] = request.form["image"]
         file = request.files['file']
         if file and util.allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            old_record["image"] = str(filename)
+        data_manager.edit_record_in_file(old_record, "questions")
         return redirect("/question/" + question_id)
     return render_template("question_form.html", old_record=old_record, is_new=False)
 
@@ -138,7 +139,8 @@ def upload_image():
         if file and util.allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return redirect("/question/upload_image")
+            return str(filename)
+            # return redirect("/question/upload_image")
     return render_template("upload_image.html")
 
 
