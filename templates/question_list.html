@@ -5,7 +5,7 @@
 {% endblock %}
 {% block body %}
     <table>
-        {%  set headers = ["submission_time", "view_number", "vote_number", "title", "message", "edit", "vote_up", "vote_down"] %}
+        {%  set headers = ["submission_time", "view_number", "vote_number", "title", "message", "vote_up", "vote_down"] %}
         <thead>
         <tr>{% for table_header in headers %}
             <th>{{ table_header.capitalize().replace("_", " ") }}</th>
