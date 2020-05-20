@@ -35,6 +35,7 @@ def show_question(question_id):
     record = data_manager.get_old_record(question_id, "questions")
     all_answers = data_manager.read_all_items_from_file_by_option("answers")
     answers_for_question_id = []
+    data_manager.increase_view_number(question_id)
     for answer in all_answers:
         if answer.get("question_id") == question_id:
             answer["submission_time"] = util.change_timestamp_to_date(answer.get("submission_time"))
