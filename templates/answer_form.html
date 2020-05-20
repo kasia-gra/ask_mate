@@ -4,9 +4,11 @@
     <h1>Add new answer</h1>
 {% endblock %}
 {% block body %}
-    <form id=answer_form action={{ "/question/" + old_record.question_id + "/new-answer" }} method="POST">
+    <form id=answer_form action={{ "/question/" + old_record.question_id + "/new-answer" }} method="POST" enctype="multipart/form-data">
         <label for="description">Answer message:</label><br/>
         <textarea id="description" name="description" rows="10" cols="100">{{ old_record.message }}</textarea><br/>
-        <button type="submit">{{ "Add new answer" }}</button>
+        <label>Select image</label>
+        <input type="file" name="file" id="file">
+        <button type="submit">Add new answer</button>
     </form>
 {% endblock %}

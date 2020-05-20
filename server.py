@@ -33,10 +33,6 @@ def add_question():
 
 @app.route("/question/<question_id>")
 def show_question(question_id):
-    img_parameters = {
-        "img_width": "400px",
-        "img_height": "400px"
-    }
     record = data_manager.get_old_record(question_id, "questions")
     all_answers = data_manager.read_all_items_from_file_by_option("answers")
     answers_for_question_id = []
@@ -45,7 +41,7 @@ def show_question(question_id):
         if answer.get("question_id") == question_id:
             answer["submission_time"] = util.change_timestamp_to_date(answer.get("submission_time"))
             answers_for_question_id.append(answer)
-    return render_template("question_details.html", record=record, answers=answers_for_question_id, img_parameters=img_parameters)
+    return render_template("question_details.html", record=record, answers=answers_for_question_id)
 
 
 @app.route("/question/<question_id>/delete")
@@ -83,7 +79,8 @@ def add_answer(question_id):
     new_record = {"question_id": str(question_id)}
     if request.method == "POST":
         new_record["message"] = request.form["description"]
-        new_record["image"] = request.form["image"]
+        file = request.files['file']
+        new_record["image"] = util.save_image(file, app.config['UPLOAD_FOLDER'])
         data_manager.add_record_to_file(new_record, "answers")
         return redirect("/question/" + question_id)
     return render_template("answer_form.html", old_record=new_record)

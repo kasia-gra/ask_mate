@@ -5,6 +5,9 @@
 {% endblock %}
 {% block body %}
     <p>{{ record.get("message") }}</p>
+    <p>
+        <img src="{{ url_for('static', filename="img/" + record.get("image")) }}" width="400px" height="400px" alt="No available image!">
+    </p>
     {% if answers == [] %}
         <p><h3>No answers yet</h3></p>
     {% else %}
@@ -23,10 +26,17 @@
                     <tr>
                         {% for table_header, answer_detail in answer.items() %}
                             {% if table_header != "id" and table_header != "question_id" %}
-                                <td>{{ answer_detail }}</td>
+                                {% if table_header == "image" %}
+                                    <td>
+                                        <img src="{{ url_for('static', filename="img/" + answer_detail) }}" width="100px" height="100px" alt="No image!">
+                                    </td>
+                                {% else %}
+                                    <td>{{ answer_detail }}</td>
+                                {% endif %}
                             {% endif %}
                         {% endfor %}
-                        <td><a href="{{ url_for("delete_answer", answer_id=answer.get("id")) }}">Delete</a></td>
+                        <td>
+                            <a href="{{ url_for("delete_answer", answer_id=answer.get("id")) }}">Delete</a></td>
                         <td>
                             <a href="{{ url_for("answer_vote_up", answer_id=answer.get("id")) }}" methods="POST">
                                 <img src="{{ url_for('static', filename="icons/like_up.png") }}" width="100px" height="100px" alt="vote_up">
@@ -42,11 +52,6 @@
             </tbody>
         </table>
     {% endif %}
-    <p>
-        <a href="/change_size_of_image">
-            <img src="{{ url_for('static', filename="img/" + record.get("image")) }}" width="{{ img_parameters.img_width }}" height="{{ img_parameters.img_height }}" alt="No available image!">
-        </a>
-    </p>
     <form action="{{ url_for("add_answer", question_id=record.get("id")) }}">
         <button>Add answer</button>
     </form>

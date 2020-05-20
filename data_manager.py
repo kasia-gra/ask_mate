@@ -53,23 +53,13 @@ def edit_record_in_file(record, option):
     all_records = read_all_items_from_file_by_option(option)
     if option == "questions":
         edit_question(record, all_records)
-    else:
-        edit_answer(record, all_records)
-    save_to_file(all_records, option)
+        save_to_file(all_records, option)
 
 
 def edit_question(record, all_records):
     for element in all_records:
         if element["id"] == str(record["id"]):
             element["title"] = record["title"]
-            element["message"] = record["message"]
-            element["image"] = record["image"]
-            element["submission_time"] = util.get_new_timestamp()
-
-
-def edit_answer(record, all_records):
-    for element in all_records:
-        if element["id"] == str(record["id"]):
             element["message"] = record["message"]
             element["image"] = record["image"]
             element["submission_time"] = util.get_new_timestamp()
@@ -131,6 +121,6 @@ def update_vote_number(option, id, vote_direction):
     all_records = get_dict_list_from_csv_file(option)
     for record in all_records:
         if record["id"] == id:
-            record["vote_number"] = int(record["vote_number"]) + vote_dic[vote_direction]
+            record["vote_number"] = str(int(record["vote_number"]) + vote_dic[vote_direction])
             break
     save_to_file(all_records, option)
