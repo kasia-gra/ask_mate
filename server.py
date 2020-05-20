@@ -106,9 +106,9 @@ def question_vote_down(question_id):
 def answer_vote_up(answer_id):
     answer = data_manager.get_old_record(answer_id, "answers")
     question_id = answer.get("question_id")
-    if request.cookies.get("q" + answer_id) != "voted":
+    if request.cookies.get("a" + answer_id) != "voted":
         res = make_response(redirect("/question/" + question_id))
-        res.set_cookie("q" + answer_id, "voted")
+        res.set_cookie("a" + answer_id, "voted")
         data_manager.update_vote_number("answers", answer_id, "up")
         return res
     return redirect("/question/" + question_id)
@@ -118,9 +118,9 @@ def answer_vote_up(answer_id):
 def answer_vote_down(answer_id):
     answer = data_manager.get_old_record(answer_id, "answers")
     question_id = answer.get("question_id")
-    if request.cookies.get("q" + answer_id) != "voted":
+    if request.cookies.get("a" + answer_id) != "voted":
         res = make_response(redirect("/question/" + question_id))
-        res.set_cookie("q" + answer_id, "voted")
+        res.set_cookie("a" + answer_id, "voted")
         data_manager.update_vote_number("answers", answer_id, "down")
         return res
     return redirect("/question/" + question_id)
