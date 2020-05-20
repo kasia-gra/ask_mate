@@ -1,10 +1,3 @@
 id,submission_time,vote_number,question_id,message,image
-1,1493398154,6,1,You need to use brackets: my_list = [],
-2,1493088154,35,1,Look it up in the Python docs,
-3,1589892708,1,2,fsagasgas,abc
 5,1589893650,0,4,asdadadasd,
 6,1589893656,0,4,asdasdadsds,
-7,1589958620,-1,2,Simple message 2,abc
-8,1589958833,1,5,a,a
-9,1589961214,0,2,"asd
-asd",
