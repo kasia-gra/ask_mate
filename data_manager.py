@@ -84,9 +84,12 @@ def delete_question_from_file(record_id):
 
 
 def delete_answer_from_file(record_id):
-    all_records = read_all_items_from_file_by_option("answers")
-    all_records.pop(int(record_id))
-    save_to_file(all_records, "answers")
+    all_answers = read_all_items_from_file_by_option("answers")
+    for answer in all_answers:
+        if answer["id"] == record_id:
+            index_of_question = all_answers.index(answer)
+    all_answers.pop(index_of_question)
+    save_to_file(all_answers, "answers")
 
 
 def read_all_items_from_file_by_option(option="questions"):
