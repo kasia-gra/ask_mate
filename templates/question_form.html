@@ -4,13 +4,15 @@
     <h1>{{ "Add new question" if is_new else "Edit your question" }}</h1>
 {% endblock %}
 {% block body %}
-    <form id=question_form action={{ "/question" if is_new else "/question/" + old_record.id + "/edit" }} method="POST">
+    <form id=question_form action={{ "/question" if is_new else "/question/" + old_record.id + "/edit" }} method="POST" enctype="multipart/form-data">
         <label for="title">Question title:</label><br/>
         <input id="title" name="title" type="text" value='{{ old_record.title }}'><br/>
         <label for="description">Question message:</label><br/>
         <textarea id="description" name="description" rows="10" cols="100">{{ old_record.message }}</textarea><br/>
         <label for="image">Select image:</label><br/>
         <input id="image" name="image" type="text" value='{{ old_record.image }}'><br/><br/>
+        <label>Select image</label>
+        <input type="file" name="file" id="file">
         <button type="submit">{{ "Add new question" if is_new else "Edit your question" }}</button>
     </form>
 {% endblock %}
