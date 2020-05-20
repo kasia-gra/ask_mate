@@ -39,7 +39,8 @@
     <br/>
     <form action="{{ url_for('questions_list', sort_by=sort_by) }}", method="post">
         <select name="sort_by" id="sort_by">
-            {% for sort_by_option in all_questions[0].keys() %}
+            {%  set sort_criteria = ["submission_time", "view_number", "vote_number", "title", "message"] %}
+            {% for sort_by_option in sort_criteria %}
                 {% set sort_order = ["asc", "desc"] %}
                     {% for order in sort_order %}
                         <option value="{{ sort_by_option }}-{{ order }}">sort by: {{ sort_by_option }} {% if order=='asc'%} &#8595 {% else %} &#8593{% endif %}</option>
