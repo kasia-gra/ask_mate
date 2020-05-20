@@ -32,4 +32,3 @@ def save_image(file, upload_folder):
         filename = secure_filename(file.filename)
         file.save(os.path.join(upload_folder, filename))
         return str(filename)
-    return "function is working"

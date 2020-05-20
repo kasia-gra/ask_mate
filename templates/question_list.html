@@ -25,12 +25,16 @@
                     </td>
                     {% endif %}
                 {% endfor %}
-                    <td><form action="{{ url_for("question_vote_up", question_id=question['id']) }}">
-                    <button>vote_up</button>
-                    </form></td>
-                    <td><form action="{{ url_for("question_vote_down", question_id=question['id']) }}">
-                    <button>vote_down</button>
-                    </form></td>
+                    <td>
+                        <a href="{{ url_for("question_vote_up", question_id=question.get("id")) }}" methods="POST">
+                            <img src="{{ url_for('static', filename="icons/like_up.png") }}" width="100px" height="100px" alt="vote_up">
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{{ url_for("question_vote_down", question_id=question.get("id")) }}" methods="POST">
+                            <img src="{{ url_for('static', filename="icons/like_down.png") }}" width="100px" height="100px" alt="vote_down">
+                        </a>
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>

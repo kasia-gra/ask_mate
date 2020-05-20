@@ -2,9 +2,9 @@ from flask import Flask, render_template, request, redirect, make_response
 import connection, data_manager, util
 
 
-
 app = Flask(__name__)
 app.config["UPLOAD_FOLDER"] = data_manager.UPLOAD_FOLDER
+
 
 @app.route("/")
 @app.route("/list", methods=['GET', 'POST'])
@@ -33,6 +33,10 @@ def add_question():
 
 @app.route("/question/<question_id>")
 def show_question(question_id):
+    img_parameters = {
+        "img_width": "400px",
+        "img_height": "400px"
+    }
     record = data_manager.get_old_record(question_id, "questions")
     all_answers = data_manager.read_all_items_from_file_by_option("answers")
     answers_for_question_id = []
@@ -41,7 +45,7 @@ def show_question(question_id):
         if answer.get("question_id") == question_id:
             answer["submission_time"] = util.change_timestamp_to_date(answer.get("submission_time"))
             answers_for_question_id.append(answer)
-    return render_template("question_details.html", record=record, answers=answers_for_question_id, img_path=data_manager.UPLOAD_FOLDER)
+    return render_template("question_details.html", record=record, answers=answers_for_question_id, img_parameters=img_parameters)
 
 
 @app.route("/question/<question_id>/delete")
@@ -127,18 +131,6 @@ def answer_vote_down(answer_id):
         data_manager.update_vote_number("answers", answer_id, "down")
         return res
     return redirect("/question/" + question_id)
-
-
-@app.route("/question/upload_image", methods=["POST", "GET"])
-def upload_image():
-    if request.method == 'POST':
-        file = request.files['file']
-        if file and util.allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return str(filename)
-            # return redirect("/question/upload_image")
-    return render_template("upload_image.html")
 
 
 if __name__ == "__main__":

@@ -27,18 +27,26 @@
                             {% endif %}
                         {% endfor %}
                         <td><a href="{{ url_for("delete_answer", answer_id=answer.get("id")) }}">Delete</a></td>
-                        <td><form action="{{ url_for("answer_vote_up", answer_id=answer.get("id")) }}">
-                        <button>vote up</button>
-                        </form></td>
-                        <td><form action="{{ url_for("answer_vote_down", answer_id=answer.get("id")) }}">
-                        <button>vote down</button>
-                        </form></td>
+                        <td>
+                            <a href="{{ url_for("answer_vote_up", answer_id=answer.get("id")) }}" methods="POST">
+                                <img src="{{ url_for('static', filename="icons/like_up.png") }}" width="100px" height="100px" alt="vote_up">
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{{ url_for("answer_vote_down", answer_id=answer.get("id")) }}" methods="POST">
+                                <img src="{{ url_for('static', filename="icons/like_down.png") }}" width="100px" height="100px" alt="vote_down">
+                            </a>
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
     {% endif %}
-    <img src="{{ img_path + record.get("image") }}" width="200px" height="200px">
+    <p>
+        <a href="/change_size_of_image">
+            <img src="{{ url_for('static', filename="img/" + record.get("image")) }}" width="{{ img_parameters.img_width }}" height="{{ img_parameters.img_height }}" alt="No available image!">
+        </a>
+    </p>
     <form action="{{ url_for("add_answer", question_id=record.get("id")) }}">
         <button>Add answer</button>
     </form>
