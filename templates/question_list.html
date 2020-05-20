@@ -3,6 +3,28 @@
 {% block header %}
     <h1>All questions</h1>
 {% endblock %}
+{% block nav %}
+    <div class="fixed-menu">
+        You're free to
+        <form class="fixed-sorter" action="{{ url_for('questions_list', sort_by=sort_by) }}", method="post">
+            <select name="sort_by" id="sort_by">
+                {% set sort_criteria = ["submission_time", "view_number", "vote_number", "title", "message"] %}
+                {% for sort_by_option in sort_criteria %}
+                    {% set sort_order = ["asc", "desc"] %}
+                        {% for order in sort_order %}
+                            <option value="{{ sort_by_option }}-{{ order }}">sort by: {{ sort_by_option }} {% if order=='asc'%} &#8595 {% else %} &#8593{% endif %}</option>
+                        {% endfor %}
+                {% endfor %}
+            </select>
+            <button type="submit">Sort</button>
+        </form>
+        or you can
+        <form class="fixed-button" action="{{ url_for("add_question") }}">
+            <button>Ask new question</button>
+        </form>
+        our users.
+    </div>
+{% endblock %}
 {% block body %}
     <table class = content-table>
         {%  set headers = ["submission_time", "view_number", "vote_number", "title", "message", "vote_up", "vote_down"] %}
@@ -39,21 +61,4 @@
             {% endfor %}
         </tbody>
     </table>
-    <br/>
-    <form action="{{ url_for('questions_list', sort_by=sort_by) }}", method="post">
-        <select name="sort_by" id="sort_by">
-            {%  set sort_criteria = ["submission_time", "view_number", "vote_number", "title", "message"] %}
-            {% for sort_by_option in sort_criteria %}
-                {% set sort_order = ["asc", "desc"] %}
-                    {% for order in sort_order %}
-                        <option value="{{ sort_by_option }}-{{ order }}">sort by: {{ sort_by_option }} {% if order=='asc'%} &#8595 {% else %} &#8593{% endif %}</option>
-                    {% endfor %}
-            {% endfor %}
-        </select>
-            <button type="submit">Sort</button>
-    </form>
-    <br/>
-    <form action="{{ url_for("add_question") }}">
-        <button>Ask new question</button>
-    </form>
 {% endblock %}

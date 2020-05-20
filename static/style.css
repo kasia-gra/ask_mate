@@ -18,6 +18,7 @@ h1 {
     text-align: center;
     margin-left: auto;
     margin-right: auto;
+    padding-top: 70px;
 }
 
 p {
@@ -80,7 +81,7 @@ h3 {
 }
 
 .content-table tr td:nth-child(4){
- width: 200px;
+    width: 200px;
 }
 .content-table tbody tr:nth-of-type(even) {
     background-color: #f3f3f3;
@@ -88,4 +89,25 @@ h3 {
 
 .content-table tbody tr:last-of-type {
     border-bottom: 2px solid #009879;
+}
+
+.fixed-menu {
+    position: fixed;
+    background-color: #009879;
+    top: 0;
+    color: #ffffff;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: center;
+    vertical-align: center;
+    width: 100%;
+    display: inline-block;
+}
+
+.fixed-button {
+    display: inline-block;
+}
+
+.fixed-sorter {
+    display: inline-block;
 }
