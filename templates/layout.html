@@ -7,7 +7,13 @@
     </head>
     <body>
         {% block header %}{% endblock %}
-        {% block nav %}{% endblock %}
+        {% block nav %}
+            <div class="fixed-menu">
+                <a href="{{ url_for("questions_list") }}">HOMEPAGE</a>
+                {% block nav_extension %}
+                {% endblock %}
+            </div>
+        {% endblock %}
         {% block body %}{% endblock %}
         {% block footer %}{% endblock %}
     </body>

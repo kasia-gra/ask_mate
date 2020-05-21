@@ -1,9 +1,17 @@
 {% extends "layout.html" %}
 {% block title %} {{ record.get("title") }} {% endblock %}
 {% block header %}
-    <h1>{{ record.get("title") }}<small> ({{ record.get("id") }})</small></h1>
+{% endblock %}
+{% block nav %}
+    {{ super() }}
+    {% block nav_extension %}
+        <a href="{{ url_for("add_answer", question_id=record.get("id")) }}" class="fixed-button">Add answer</a>
+        <a href="{{ url_for("edit_question", question_id=record.get("id")) }}" class="fixed-button">Edit question</a>
+        <a href="{{ url_for("delete_question", question_id=record.get("id")) }}" class="fixed-button">Delete question</a>
+    {% endblock %}
 {% endblock %}
 {% block body %}
+    <h1>{{ record.get("title") }}<small> ({{ record.get("id") }})</small></h1>
     <p>{{ record.get("message") }}</p>
     <p><img src="{{ url_for('static', filename="img/" + record.get("image")) }}" width="400px" height="400px" alt="No available image!"></p>
     {% if answers == [] %}
@@ -50,8 +58,4 @@
             </tbody>
         </table>
     {% endif %}
-    <a href="{{ url_for("add_answer", question_id=record.get("id")) }}">Add answer</a>
-    <a href="{{ url_for("edit_question", question_id=record.get("id")) }}">Edit question</a>
-    <a href="{{ url_for("delete_question", question_id=record.get("id")) }}">Delete question</a>
-    <a href="{{ url_for("questions_list") }}">HOMEPAGE</a>
 {%  endblock %}

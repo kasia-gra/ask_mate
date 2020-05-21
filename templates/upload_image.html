@@ -1,6 +1,8 @@
 {% extends "layout.html" %}
 {% block title %}Upload Form{% endblock %}
 {% block header %}{% endblock %}
+{% block nav %}
+{% endblock %}
 {% block body %}
     <form id=question_form action={{ url_for("upload_image") }} method="POST" enctype="multipart/form-data">
         <label>Select image</label>
