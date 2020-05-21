@@ -3,7 +3,8 @@
 {% block header %}
 {% endblock %}
 {% block nav %}
-    <div class="fixed-menu">
+    {{ super() }}
+    {% block nav_extension %}
         You're free to
         <form class="fixed-sorter" action="{{ url_for('questions_list', sort_by=sort_by) }}", method="post">
             <select name="sort_by" id="sort_by">
@@ -20,7 +21,8 @@
         or you can
         <a href="{{ url_for("add_question") }}" class="fixed-button">Ask new question</a>
         our users.
-    </div>
+    {% endblock %}
+
 {% endblock %}
 {% block body %}
     <h1>Questions List</h1>
