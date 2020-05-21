@@ -19,11 +19,10 @@
     {% else %}
         <h3>Answers:</h3>
         <table class = content-table>
+            {%  set headers = ["submission_time", "vote_number", "message", "image", "delete_answer", "vote_up", "vote_down"] %}
             <thead>
-                <tr>{% for table_header in answers[0].keys() %}
-                        {% if table_header != "id" and table_header != "question_id" %}
-                            <th>{{ table_header.capitalize().replace("_", " ") }}</th>
-                        {% endif %}
+                <tr>{% for table_header in headers %}
+                        <th>{{ table_header.capitalize().replace("_", " ") }}</th>
                     {% endfor %}
                 </tr>
             </thead>
@@ -31,7 +30,7 @@
                 {% for answer in answers %}
                     <tr>
                         {% for table_header, answer_detail in answer.items() %}
-                            {% if table_header != "id" and table_header != "question_id" %}
+                            {% if table_header in headers %}
                                 {% if table_header == "image" %}
                                     <td>
                                         <img src="{{ url_for('static', filename="img/" + answer.get("question_id") + "/" + answer_detail) }}" width="100px" height="100px" alt="No image!">
