@@ -1,7 +1,6 @@
 {% extends "layout.html" %}
 {% block title %}Homepage{% endblock %}
 {% block header %}
-    <h1>Questions List</h1>
 {% endblock %}
 {% block nav %}
     <div class="fixed-menu">
@@ -24,6 +23,7 @@
     </div>
 {% endblock %}
 {% block body %}
+    <h1>Questions List</h1>
     <table class = content-table>
         {%  set headers = ["submission_time", "view_number", "vote_number", "title", "message", "vote_up", "vote_down"] %}
         <thead>

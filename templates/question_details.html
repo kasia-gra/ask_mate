@@ -1,9 +1,11 @@
 {% extends "layout.html" %}
 {% block title %} {{ record.get("title") }} {% endblock %}
 {% block header %}
-    <h1>{{ record.get("title") }}<small> ({{ record.get("id") }})</small></h1>
+{% endblock %}
+{% block nav %}
 {% endblock %}
 {% block body %}
+    <h1>{{ record.get("title") }}<small> ({{ record.get("id") }})</small></h1>
     <p>{{ record.get("message") }}</p>
     <p><img src="{{ url_for('static', filename="img/" + record.get("image")) }}" width="400px" height="400px" alt="No available image!"></p>
     {% if answers == [] %}
