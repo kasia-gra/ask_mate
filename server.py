@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, make_response
-import connection, data_manager, util
+import data_manager, util
 
 
 app = Flask(__name__)
@@ -24,8 +24,9 @@ def add_question():
     if request.method == "POST":
         new_record["title"] = request.form["title"]
         new_record["message"] = request.form["description"]
-        file = request.files['file']
-        new_record["image"] = util.save_image(file, app.config['UPLOAD_FOLDER'], "questions")
+        if 'file' in request.files:
+            file = request.files['file']
+            new_record["image"] = util.save_image(file, app.config['UPLOAD_FOLDER'], "questions")
         data_manager.add_record_to_file(new_record, "questions")
         return redirect("/")
     return render_template("question_form.html", old_record=new_record, is_new=True)
@@ -79,8 +80,9 @@ def add_answer(question_id):
     new_record = {"question_id": str(question_id)}
     if request.method == "POST":
         new_record["message"] = request.form["description"]
-        file = request.files['file']
-        new_record["image"] = util.save_image(file, app.config['UPLOAD_FOLDER'], "answers", question_id)
+        if 'file' in request.files:
+            file = request.files['file']
+            new_record["image"] = util.save_image(file, app.config['UPLOAD_FOLDER'], "answers", question_id)
         data_manager.add_record_to_file(new_record, "answers")
         return redirect("/question/" + question_id)
     return render_template("answer_form.html", old_record=new_record)
