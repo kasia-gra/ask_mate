@@ -35,3 +35,12 @@ def save_image(file, upload_folder):
         filename = secure_filename(file.filename)
         file.save(os.path.join(upload_folder, filename))
         return str(filename)
+
+
+def sort_dictionary(dicts_list, sort_by):
+    criteria_and_order_list = sort_by.split("-")
+    criteria = criteria_and_order_list[0]
+    order = criteria_and_order_list[1]
+    order_sort = {"desc": 1, "asc": 0}
+    dicts_list.sort(key=lambda dictionary: dictionary[criteria], reverse=order_sort[order])
+    return dicts_list

@@ -9,12 +9,12 @@ app.config["UPLOAD_FOLDER"] = data_manager.UPLOAD_FOLDER
 @app.route("/")
 @app.route("/list", methods=['GET', 'POST'])
 def questions_list():
-    all_questions = connection.format_dictionary_data()
+    all_questions = data_manager.format_dictionary_data()
     if request.method == 'POST':
         sort_by = request.form.get("sort_by")
     else:
         sort_by = "submission_time-asc"
-    all_questions = connection.sort_dictionary(all_questions, sort_by)
+    all_questions = util.sort_dictionary(all_questions, sort_by)
     return render_template("question_list.html", all_questions=all_questions, sort_by=sort_by)
 
 

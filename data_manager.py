@@ -1,29 +1,27 @@
-import csv
+from datetime import datetime
 import os
 import util
-dirpath = os.path.dirname(__file__)
-ANSWER_FILE_PATH = os.path.join(dirpath, "sample_data/answer.csv")
-QUESTION_FILE_PATH = os.path.join(dirpath, "sample_data/question.csv")
+import connection
+
+dir_path = os.path.dirname(__file__)
+ANSWER_FILE_PATH = os.path.join(dir_path, "sample_data/answer.csv")
+QUESTION_FILE_PATH = os.path.join(dir_path, "sample_data/question.csv")
 QUESTION_HEADERS = ["id", "submission_time", "view_number", "vote_number", "title", "message", "image"]
 ANSWER_HEADERS = ["id", "submission_time", "vote_number", "question_id", "message", "image"]
-UPLOAD_FOLDER = os.path.join(dirpath, "static/img/")
+UPLOAD_FOLDER = os.path.join(dir_path, "static/img/")
+NUMERICAL_VALUE_HEADERS = ["id", "view_number", "vote_number", "question_id"]
+DATE_HEADERS = ["submission_time"]
 
 
-def get_dict_list_from_csv_file(option):
-    dicts_list = []
-    filepath = get_file_path(option)
-    with open(filepath, "r") as csvfile:
-        reader = csv.DictReader(csvfile, fieldnames=get_headers_by_option(option))
-        for dictionary in reader:
-            dicts_list.append(dictionary)
+def format_dictionary_data():
+    dicts_list = connection.get_dict_list_from_csv_file("questions")[1::]
+    for dictionary in dicts_list:
+        for key, value in dictionary.items():
+            if key in NUMERICAL_VALUE_HEADERS:
+                dictionary[key] = int(value)
+            elif key in DATE_HEADERS:
+                dictionary[key] = datetime.utcfromtimestamp(int(value)).strftime('%Y-%m-%d %H:%M:%S')
     return dicts_list
-
-
-def save_to_file(all_records, option):
-    with open(get_file_path(option), "w", newline="") as file:
-        data = csv.DictWriter(file, fieldnames=get_headers_by_option(option))
-        for element in all_records:
-            data.writerow(element)
 
 
 def add_record_to_file(new_record, option):
@@ -33,7 +31,7 @@ def add_record_to_file(new_record, option):
     else:
         add_answer(new_record)
     all_records.append(new_record)
-    save_to_file(all_records, option)
+    connection.save_to_file(all_records, option)
 
 
 def add_question(new_record):
@@ -53,7 +51,7 @@ def edit_record_in_file(record, option):
     all_records = read_all_items_from_file_by_option(option)
     if option == "questions":
         edit_question(record, all_records)
-        save_to_file(all_records, option)
+        connection.save_to_file(all_records, option)
 
 
 def edit_question(record, all_records):
@@ -71,7 +69,7 @@ def delete_question_from_file(record_id):
         if question["id"] == record_id:
             index_of_question = all_questions.index(question)
     all_questions.pop(index_of_question)
-    save_to_file(all_questions, "questions")
+    connection.save_to_file(all_questions, "questions")
 
 
 def delete_answer_from_file(record_id):
@@ -80,13 +78,13 @@ def delete_answer_from_file(record_id):
         if answer["id"] == record_id:
             index_of_question = all_answers.index(answer)
     all_answers.pop(index_of_question)
-    save_to_file(all_answers, "answers")
+    connection.save_to_file(all_answers, "answers")
 
 
 def read_all_items_from_file_by_option(option="questions"):
     if option == "questions":
-        return get_dict_list_from_csv_file("questions")
-    return get_dict_list_from_csv_file("answers")
+        return connection.get_dict_list_from_csv_file("questions")
+    return connection.get_dict_list_from_csv_file("answers")
 
 
 def get_old_record(record_id, option):
@@ -113,14 +111,14 @@ def increase_view_number(question_id):
     for question in all_questions:
         if question["id"] == question_id:
             question["view_number"] = str(int(question["view_number"]) + 1)
-    save_to_file(all_questions, "questions")
+    connection.save_to_file(all_questions, "questions")
 
 
-def update_vote_number(option, id, vote_direction):
+def update_vote_number(option, record_id, vote_direction):
     vote_dic = {"up":1, "down": -1}
-    all_records = get_dict_list_from_csv_file(option)
+    all_records = connection.get_dict_list_from_csv_file(option)
     for record in all_records:
-        if record["id"] == id:
+        if record["id"] == record_id:
             record["vote_number"] = str(int(record["vote_number"]) + vote_dic[vote_direction])
             break
-    save_to_file(all_records, option)
+    connection.save_to_file(all_records, option)
