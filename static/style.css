@@ -45,6 +45,7 @@ table, th, td {
     border-collapse: collapse;
     border-style: groove;
     border-width: 1px;
+    margin-bottom: 50px;
 }
 
 h3 {
@@ -109,5 +110,19 @@ h3 {
 }
 
 .fixed-sorter {
+    display: inline-block;
+}
+
+.fixed-footer {
+    position: fixed;
+    background-color: #009879;
+    bottom: 0;
+    color: #ffffff;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 5px;
+    text-align: left;
+    vertical-align: center;
+    width: 100%;
     display: inline-block;
 }
