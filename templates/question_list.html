@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block title %}Homepage{% endblock %}
 {% block header %}
-    <h1>All questions</h1>
+    <h1>Questions List</h1>
 {% endblock %}
 {% block nav %}
     <div class="fixed-menu">
@@ -19,9 +19,7 @@
             <button type="submit">Sort</button>
         </form>
         or you can
-        <form class="fixed-button" action="{{ url_for("add_question") }}">
-            <button>Ask new question</button>
-        </form>
+        <a href="{{ url_for("add_question") }}" class="fixed-button">Ask new question</a>
         our users.
     </div>
 {% endblock %}
