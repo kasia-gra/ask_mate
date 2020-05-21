@@ -84,6 +84,9 @@ h3 {
     background-color: #f3f3f3;
 }
 
+.content-table tbody tr:nth-of-type(even) {
+    background-color: whitesmoke;
+}
 .content-table tbody tr:last-of-type {
     border-bottom: 2px solid #57BC90;
 }
@@ -134,20 +137,21 @@ h3 {
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 }
 
-
 .container_nav_menu{
-    background-color: whitesmoke;
+    background-color: transparent;
     width:70%;
     margin-left:15%;
     margin-right:15%;
+    top: 5%;
+    position: fixed;
 }
 
 .nav_button{
+    display:inline-block;
 	box-shadow: 0px 10px 14px -7px #276873;
 	background:linear-gradient(to bottom, #599bb3 5%, #408c99 100%);
 	background-color:#599bb3;
 	border-radius:8px;
-	display:inline-block;
 	cursor:pointer;
 	color:#ffffff;
 	font-family:sans-serif;
