@@ -1,9 +1,11 @@
 {% extends "layout.html" %}
 {% block title %}Question Form{% endblock %}
 {% block header %}
-    <h1>{{ "Add new question" if is_new else "Edit your question" }}</h1>
+{% endblock %}
+{% block nav %}
 {% endblock %}
 {% block body %}
+    <h1>{{ "Add new question" if is_new else "Edit your question" }}</h1>
     <form id=question_form action={{ "/question" if is_new else "/question/" + old_record.id + "/edit" }} method="POST" enctype="multipart/form-data">
         <label for="title">Question title:</label><br/>
         <input id="title" name="title" type="text" value='{{ old_record.title }}'><br/>
