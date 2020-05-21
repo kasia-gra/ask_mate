@@ -5,19 +5,6 @@
 {% block nav %}
     {{ super() }}
     {% block nav_extension %}
-        You're free to
-        <form class="fixed-sorter" action="{{ url_for('questions_list', sort_by=sort_by) }}", method="post">
-            <select name="sort_by" id="sort_by">
-                {% set sort_criteria = ["submission_time", "view_number", "vote_number", "title", "message"] %}
-                {% for sort_by_option in sort_criteria %}
-                    {% set sort_order = ["asc", "desc"] %}
-                        {% for order in sort_order %}
-                            <option value="{{ sort_by_option }}-{{ order }}">sort by: {{ sort_by_option }} {% if order=='asc'%} &#8595 {% else %} &#8593{% endif %}</option>
-                        {% endfor %}
-                {% endfor %}
-            </select>
-            <button type="submit">Sort</button>
-        </form>
     {% endblock %}
 {% endblock %}
 {% block body %}
@@ -26,7 +13,21 @@
         <a href="{{ url_for("add_question") }}" class="nav_button">Ask new question</a>
         </p>
     </div>
-    <h1>Questions List</h1>
+    <div class="drop_down_container">
+        <form action="{{ url_for('questions_list', sort_by=sort_by) }}", method="post">
+            <select class="select" name="sort_by" id="sort_by">
+                {% set sort_criteria = ["submission_time", "view_number", "vote_number", "title", "message"] %}
+                {% for sort_by_option in sort_criteria %}
+                    {% set sort_order = ["asc", "desc"] %}
+                        {% for order in sort_order %}
+                            <option value="{{ sort_by_option }}-{{ order }}">sort by: {{ sort_by_option }} {% if order=='asc'%} &#8595 {% else %} &#8593{% endif %}</option>
+                        {% endfor %}
+                {% endfor %}
+            </select>
+            <button class="select_button" type="submit">Sort</button>
+        </form>
+    </div>
+    <h1>All questions</h1>
     <table class = content-table>
         {%  set headers = ["submission_time", "view_number", "vote_number", "title", "message", "vote_up", "vote_down"] %}
         <thead>
@@ -50,12 +51,12 @@
                 {% endfor %}
                     <td>
                         <a href="{{ url_for("question_vote_up", question_id=question.get("id")) }}" methods="POST">
-                            <img src="{{ url_for('static', filename="icons/like_up.png") }}" width="100px" height="100px" alt="vote_up">
+                            <img src="{{ url_for('static', filename="icons/like_up.png") }}" width="50px" height="50px" alt="vote_up">
                         </a>
                     </td>
                     <td>
                         <a href="{{ url_for("question_vote_down", question_id=question.get("id")) }}" methods="POST">
-                            <img src="{{ url_for('static', filename="icons/like_down.png") }}" width="100px" height="100px" alt="vote_down">
+                            <img src="{{ url_for('static', filename="icons/like_down.png") }}" width="50px" height="50px" alt="vote_down">
                         </a>
                     </td>
                 </tr>

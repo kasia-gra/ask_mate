@@ -9,7 +9,10 @@
         {% block header %}{% endblock %}
         {% block nav %}
             <div class="fixed-menu">
-                <a href="{{ url_for("questions_list") }}">HOMEPAGE</a>
+                <a href="{{ url_for("questions_list") }}" class="home_icon">
+                    <img src="{{ url_for('static', filename="icons/home.png") }}" width="70px" height="70px" alt="HOME">
+                </a>
+
                 {% block nav_extension %}
                 {% endblock %}
             </div>

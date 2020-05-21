@@ -5,23 +5,20 @@
 {% block nav %}
     {{ super() }}
     {% block nav_extension %}
-        <a href="{{ url_for("add_answer", question_id=record.get("id")) }}" class="fixed-button">Add answer</a>
-        <a href="{{ url_for("edit_question", question_id=record.get("id")) }}" class="fixed-button">Edit question</a>
-        <a href="{{ url_for("delete_question", question_id=record.get("id")) }}" class="fixed-button">Delete question</a>
     {% endblock %}
 {% endblock %}
 {% block body %}
     <div class="container_nav_menu">
-    <p>
-    <a href="{{ url_for("add_answer", question_id=record.get("id")) }}" class="nav_button">Add answer</a>
-    <a href="{{ url_for("edit_question", question_id=record.get("id")) }}" class="nav_button">Edit question</a>
-    <a href="{{ url_for("delete_question", question_id=record.get("id")) }}" class="nav_button">Delete question</a>
-    </p>
+        <p>
+        <a href="{{ url_for("add_answer", question_id=record.get("id")) }}" class="nav_button">Add answer</a>
+        <a href="{{ url_for("edit_question", question_id=record.get("id")) }}" class="nav_button">Edit question</a>
+        <a href="{{ url_for("delete_question", question_id=record.get("id")) }}" class="nav_button">Delete question</a>
+        </p>
     </div>
-    <h1>{{ record.get("title") }}<small> ({{ record.get("id") }})</small></h1>
     <div class="question_container">
-            <img src="{{ url_for('static', filename="img/" + record.get("image")) }}" width="400px" height="400px" alt="No available image!" align="left">
-            <p>{{ record.get("message") }}</p>
+        <h2>{{ record.get("title") }}</h2>
+        <img src="{{ url_for('static', filename="img/" + record.get("image")) }}" width="400px" height="400px" alt="No available image!" align="left">
+        <p>{{ record.get("message") }}</p>
     </div>
     {% if answers == [] %}
         <h3>No answers yet</h3>
