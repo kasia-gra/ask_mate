@@ -68,6 +68,7 @@ def delete_question_from_file(record_id):
     for question in all_questions:
         if question["id"] == record_id:
             index_of_question = all_questions.index(question)
+            util.remove_question_image_with_answer_images(question["id"], question["image"])
     all_questions.pop(index_of_question)
     connection.save_to_file(all_questions, "questions")
 
@@ -77,6 +78,7 @@ def delete_answer_from_file(record_id):
     for answer in all_answers:
         if answer["id"] == record_id:
             index_of_question = all_answers.index(answer)
+            util.remove_answer_image(answer["question_id"], answer["image"])
     all_answers.pop(index_of_question)
     connection.save_to_file(all_answers, "answers")
 

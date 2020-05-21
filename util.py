@@ -1,6 +1,7 @@
 from datetime import datetime
 import data_manager
 import os
+import glob
 from werkzeug.utils import secure_filename
 
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
@@ -49,3 +50,20 @@ def sort_dictionary(dicts_list, sort_by):
     order_sort = {"desc": 1, "asc": 0}
     dicts_list.sort(key=lambda dictionary: dictionary[criteria], reverse=order_sort[order])
     return dicts_list
+
+
+def remove_answer_image(question_id, image_name):
+    if os.path.exists(data_manager.UPLOAD_FOLDER + image_name) and image_name != "":
+        file_path = data_manager.UPLOAD_FOLDER + question_id + "/" + image_name
+        os.remove(file_path)
+
+
+def remove_question_image_with_answer_images(question_id, image_name):
+    if image_name != "":
+        file_path = data_manager.UPLOAD_FOLDER + image_name
+        os.remove(file_path)
+    all_images_in_folder = glob.glob(data_manager.UPLOAD_FOLDER + question_id + "/*")
+    for image in all_images_in_folder:
+        os.remove(image)
+    folder_path = data_manager.UPLOAD_FOLDER + question_id
+    os.rmdir(folder_path)
