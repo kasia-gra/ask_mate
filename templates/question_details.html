@@ -26,7 +26,7 @@
                             {% if table_header != "id" and table_header != "question_id" %}
                                 {% if table_header == "image" %}
                                     <td>
-                                        <img src="{{ url_for('static', filename="img/" + answer_detail) }}" width="100px" height="100px" alt="No image!">
+                                        <img src="{{ url_for('static', filename="img/" + answer.get("question_id") + "/" + answer_detail) }}" width="100px" height="100px" alt="No image!">
                                     </td>
                                 {% else %}
                                     <td>{{ answer_detail }}</td>

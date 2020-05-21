@@ -25,7 +25,7 @@ def add_question():
         new_record["title"] = request.form["title"]
         new_record["message"] = request.form["description"]
         file = request.files['file']
-        new_record["image"] = util.save_image(file, app.config['UPLOAD_FOLDER'])
+        new_record["image"] = util.save_image(file, app.config['UPLOAD_FOLDER'], "questions")
         data_manager.add_record_to_file(new_record, "questions")
         return redirect("/")
     return render_template("question_form.html", old_record=new_record, is_new=True)
@@ -61,7 +61,7 @@ def edit_question(question_id):
         old_record["title"] = request.form["title"]
         old_record["message"] = request.form["description"]
         file = request.files['file']
-        old_record["image"] = util.save_image(file, app.config['UPLOAD_FOLDER'])
+        old_record["image"] = util.save_image(file, app.config['UPLOAD_FOLDER'], "questions")
         data_manager.edit_record_in_file(old_record, "questions")
         return redirect("/question/" + question_id)
     return render_template("question_form.html", old_record=old_record, is_new=False)
@@ -80,7 +80,7 @@ def add_answer(question_id):
     if request.method == "POST":
         new_record["message"] = request.form["description"]
         file = request.files['file']
-        new_record["image"] = util.save_image(file, app.config['UPLOAD_FOLDER'])
+        new_record["image"] = util.save_image(file, app.config['UPLOAD_FOLDER'], "answers", question_id)
         data_manager.add_record_to_file(new_record, "answers")
         return redirect("/question/" + question_id)
     return render_template("answer_form.html", old_record=new_record)
