@@ -22,7 +22,6 @@
         <a href="{{ url_for("add_question") }}" class="fixed-button">Ask new question</a>
         our users.
     {% endblock %}
-
 {% endblock %}
 {% block body %}
     <h1>Questions List</h1>
@@ -62,3 +61,4 @@
         </tbody>
     </table>
 {% endblock %}
+{% block footer %}{{ super() }}{% endblock %}
