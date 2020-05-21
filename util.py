@@ -53,7 +53,7 @@ def sort_dictionary(dicts_list, sort_by):
 
 
 def remove_answer_image(question_id, image_name):
-    if os.path.exists(data_manager.UPLOAD_FOLDER + image_name) and image_name != "":
+    if image_name != "":
         file_path = data_manager.UPLOAD_FOLDER + question_id + "/" + image_name
         os.remove(file_path)
 
