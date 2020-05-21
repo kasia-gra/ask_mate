@@ -1,18 +1,16 @@
 body {
-    background-color: white;
-    color: black;
+    background: linear-gradient(to right, whitesmoke, rgba(119, 201, 212, 0.07), rgba(87, 188, 144, 0.32));
+    font-family:Arial;
     font-style: normal;
 }
 
 a {
-    color: black;
     font-style: normal;
     text-decoration-line: none;
     font-weight: bold;
 }
 
 h1 {
-    color: navy;
     font-style: normal;
     font-weight: bold;
     text-align: center;
@@ -22,15 +20,11 @@ h1 {
 }
 
 p {
-    color: indigo;
-    font-style: italic;
-    text-align: center;
-    margin-left: auto;
-    margin-right: auto;
+    padding: 10px;
+    margin-left: 5%;
 }
 
 form {
-    color: navy;
     font-style: normal;
     font-weight: bold;
     text-align: center;
@@ -66,10 +60,12 @@ h3 {
 }
 
 .content-table thead tr {
-    background-color: #009879;
+    background-color: #57BC90;
     color: #ffffff;
     text-align: left;
+    font-family:sans-serif;
     font-weight: bold;
+	padding:13px 32px;
 }
 
 .content-table th,
@@ -89,12 +85,12 @@ h3 {
 }
 
 .content-table tbody tr:last-of-type {
-    border-bottom: 2px solid #009879;
+    border-bottom: 2px solid #57BC90;
 }
 
 .fixed-menu {
     position: fixed;
-    background-color: #009879;
+    background-color: #57BC90;
     top: 0;
     color: #ffffff;
     padding-top: 10px;
@@ -115,7 +111,7 @@ h3 {
 
 .fixed-footer {
     position: fixed;
-    background-color: #009879;
+    background-color: #57BC90;
     bottom: 0;
     color: #ffffff;
     padding-top: 5px;
@@ -125,4 +121,40 @@ h3 {
     vertical-align: center;
     width: 100%;
     display: inline-block;
+}
+
+.question_container {
+    background-color: whitesmoke;
+    width:70%;
+    margin-left:15%;
+    margin-right:15%;
+    min-width: 400px;
+    border-radius: 5px 5px 0 0;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+
+.container_nav_menu{
+    background-color: whitesmoke;
+    width:70%;
+    margin-left:15%;
+    margin-right:15%;
+}
+
+.nav_button{
+	box-shadow: 0px 10px 14px -7px #276873;
+	background:linear-gradient(to bottom, #599bb3 5%, #408c99 100%);
+	background-color:#599bb3;
+	border-radius:8px;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:sans-serif;
+	font-size:15px;
+	font-weight:bold;
+	padding:10px 22px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #3d768a;
+    float: left
 }

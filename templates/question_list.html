@@ -18,12 +18,14 @@
             </select>
             <button type="submit">Sort</button>
         </form>
-        or you can
-        <a href="{{ url_for("add_question") }}" class="fixed-button">Ask new question</a>
-        our users.
     {% endblock %}
 {% endblock %}
 {% block body %}
+    <div class="container_nav_menu">
+        <p>
+        <a href="{{ url_for("add_question") }}" class="nav_button">Ask new question</a>
+        </p>
+    </div>
     <h1>Questions List</h1>
     <table class = content-table>
         {%  set headers = ["submission_time", "view_number", "vote_number", "title", "message", "vote_up", "vote_down"] %}
