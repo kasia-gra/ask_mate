@@ -94,16 +94,12 @@ def get_old_record(record_id, option):
             return element
 
 
-def get_headers_by_option(option):
-    if option == "questions":
-        return QUESTION_HEADERS
-    return ANSWER_HEADERS
+def get_headers_by_option(option="questions"):
+    return ANSWER_HEADERS if option == "answers" else QUESTION_HEADERS
 
 
 def get_file_path(option="answers"):
-    if option == "answers":
-        return ANSWER_FILE_PATH
-    return QUESTION_FILE_PATH
+    return ANSWER_FILE_PATH if option == "answers" else QUESTION_FILE_PATH
 
 
 def increase_view_number(question_id):
@@ -122,3 +118,9 @@ def update_vote_number(option, record_id, vote_direction):
             record["vote_number"] = str(int(record["vote_number"]) + vote_dic[vote_direction])
             break
     connection.save_to_file(all_records, option)
+
+
+def make_vote_for_question(question_id, result):
+    result.set_cookie("q" + question_id, "voted")
+    update_vote_number("questions", question_id, "down")
+    return result
