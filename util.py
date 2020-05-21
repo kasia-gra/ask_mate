@@ -34,7 +34,7 @@ def allowed_file(filename):
 def save_image(file, upload_folder, option, folder_id=None):
     if file and allowed_file(file.filename):
         name_options = {"questions": "q", "answers": "a"}
-        filename = name_options[option] + "_" + get_latest_id(option) + "_" + secure_filename(file.filename)
+        filename = str(name_options[option] + "_" + str(get_latest_id(option)) + "_" + secure_filename(file.filename))
         if option == "answers":
             upload_folder = os.path.join(upload_folder, folder_id)
             if not os.path.exists(upload_folder):

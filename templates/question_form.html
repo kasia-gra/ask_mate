@@ -9,7 +9,7 @@
     <h1>{{ "Add new question" if is_new else "Edit your question" }}</h1>
     <form id=question_form action={{ "/question" if is_new else "/question/" + old_record.id + "/edit" }} method="POST" enctype="multipart/form-data">
         <label for="title">Question title:</label><br/>
-        <input id="title" minlength="5" name="title" type="text" value='{{ old_record.title }}'><br/>
+        <input id="title" name="title" type="text" required="required" minlength="5" value='{{ old_record.title }}'><br/>
         <label for="description">Question message:</label><br/>
         <textarea id="description" name="description" rows="10" cols="100">{{ old_record.message }}</textarea><br/>
         <label>Select image</label>
