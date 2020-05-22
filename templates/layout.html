@@ -7,15 +7,16 @@
     </head>
     <body>
         {% block header %}{% endblock %}
-        {% block nav %}
+            {% block nav %}
             <div class="fixed-menu">
-                <a href="{{ url_for("questions_list") }}" class="home_icon">
-                    <img src="{{ url_for('static', filename="icons/home.png") }}" width="70px" height="70px" alt="HOME">
+                <div class="home_icon">
+                <a href="{{ url_for("questions_list") }}" >
+                    <img src="{{ url_for('static', filename="icons/home.png") }}" width="50px" height="50px" alt="HOME">
                 </a>
-
-                {% block nav_extension %}
-                {% endblock %}
+                </div>
             </div>
+            {% block nav_extension %}
+            {% endblock %}
         {% endblock %}
         {% block body %}{% endblock %}
         {% block footer %}
