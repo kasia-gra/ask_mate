@@ -1,5 +1,5 @@
 body {
-    background: rgba(245, 245, 245, 0.43);
+    background: linear-gradient(to right, whitesmoke, rgba(119, 201, 212, 0.07), rgba(87, 188, 144, 0.32));
     font-family:Arial;
     font-style: normal;
 }
@@ -12,14 +12,16 @@ a {
 
 h1 {
     font-style: normal;
-    text-align: left;
-    margin-left: 15%;
+    font-weight: bold;
+    text-align: center;
+    margin-left: auto;
     margin-right: auto;
-    padding-top: 10px;
+    padding-top: 70px;
 }
 
 p {
     padding: 10px;
+    margin-left: 5%;
 }
 
 form {
@@ -30,15 +32,15 @@ form {
     margin-right: auto;
 }
 
-/*table, th, td {*/
-/*    text-align:center;*/
-/*    margin-left:auto;*/
-/*    margin-right:auto;*/
-/*    border-collapse: collapse;*/
-/*    border-style: groove;*/
-/*    border-width: 1px;*/
-/*    margin-bottom: 50px;*/
-/*}*/
+table, th, td {
+    text-align:center;
+    margin-left:auto;
+    margin-right:auto;
+    border-collapse: collapse;
+    border-style: groove;
+    border-width: 1px;
+    margin-bottom: 50px;
+}
 
 h3 {
     text-align: center;
@@ -58,11 +60,10 @@ h3 {
 }
 
 .content-table thead tr {
-    background-color: #f5683c;
-    color: whitesmoke;
+    background-color: #57BC90;
+    color: #ffffff;
     text-align: left;
     font-family:sans-serif;
-    font-size:15px;
     font-weight: bold;
 	padding:13px 32px;
 }
@@ -79,31 +80,25 @@ h3 {
 .content-table tr td:nth-child(4){
     width: 200px;
 }
-.content-table tbody tr:nth-of-type(odd) {
-    background-color: rgba(87, 188, 144, 0.04);
-}
-
 .content-table tbody tr:nth-of-type(even) {
-    background-color: ghostwhite;
-
+    background-color: #f3f3f3;
 }
+
 .content-table tbody tr:last-of-type {
-    border-bottom: 2px solid #FFCB9A;
+    border-bottom: 2px solid #57BC90;
 }
 
 .fixed-menu {
-    position: absolute;
+    position: fixed;
+    background-color: #57BC90;
     top: 0;
-    background-color: transparent;
+    color: #ffffff;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: center;
+    vertical-align: center;
     width: 100%;
-    height: 20px;
-    padding: 20px;
-}
-
-.home_icon {
-    margin-right: 15%;
-    float: right;
-    padding: 20px;
+    display: inline-block;
 }
 
 .fixed-button {
@@ -116,7 +111,7 @@ h3 {
 
 .fixed-footer {
     position: fixed;
-    background-color: #276873;
+    background-color: #57BC90;
     bottom: 0;
     color: #ffffff;
     padding-top: 5px;
@@ -133,28 +128,26 @@ h3 {
     width:70%;
     margin-left:15%;
     margin-right:15%;
-    margin-top: 120px;
     min-width: 400px;
     border-radius: 5px 5px 0 0;
     overflow: hidden;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 }
 
+
 .container_nav_menu{
-    background-color: transparent;
+    background-color: whitesmoke;
     width:70%;
     margin-left:15%;
     margin-right:15%;
-    top: 15px;
-    position: fixed;
 }
 
 .nav_button{
-    display:inline-block;
 	box-shadow: 0px 10px 14px -7px #276873;
 	background:linear-gradient(to bottom, #599bb3 5%, #408c99 100%);
 	background-color:#599bb3;
 	border-radius:8px;
+	display:inline-block;
 	cursor:pointer;
 	color:#ffffff;
 	font-family:sans-serif;
@@ -165,29 +158,3 @@ h3 {
 	text-shadow:0px 1px 0px #3d768a;
     float: left
 }
-
-.drop_down_container {
-    background-color: transparent;
-    margin-left:15%;
-    margin-right:15%;
-    margin-top: 100px;
-}
-
-.select, .select_button {
-    background-color: rgba(89, 157, 182, 0.56);
-    border: transparent;
-    box-shadow: 0px 10px 14px -7px #467a8e;
-    border-radius:8px;
-    color: whitesmoke;
-    margin-top: 10px;
-    text-align: left;
-    font-family:sans-serif;
-    font-size:15px;
-    font-weight: bold;
-	display: block;
-    alignment: left;
-	font-size: 15px;
-	font-family: sans-serif;
-    padding:10px 22px;
-}
-
