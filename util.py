@@ -61,9 +61,12 @@ def remove_answer_image(question_id, image_name):
 def remove_question_image_with_answer_images(question_id, image_name):
     if image_name != "":
         file_path = data_manager.UPLOAD_FOLDER + image_name
-        os.remove(file_path)
+        if os.path.isfile(file_path):
+            os.remove(file_path)
     all_images_in_folder = glob.glob(data_manager.UPLOAD_FOLDER + question_id + "/*")
     for image in all_images_in_folder:
-        os.remove(image)
+        if os.path.isfile(image):
+            os.remove(image)
     folder_path = data_manager.UPLOAD_FOLDER + question_id
-    os.rmdir(folder_path)
+    if os.path.isfile(folder_path):
+        os.rmdir(folder_path)
