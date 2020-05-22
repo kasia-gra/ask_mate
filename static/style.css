@@ -90,7 +90,7 @@ h3 {
 
 .fixed-menu {
     position: fixed;
-    background-color: #57BC90;
+    background-color: transparent;
     top: 0;
     color: #ffffff;
     padding-top: 10px;
