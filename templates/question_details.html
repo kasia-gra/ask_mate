@@ -51,12 +51,12 @@
                             <a href="{{ url_for("delete_answer", answer_id=answer.get("id")) }}">Delete</a></td>
                         <td>
                             <a href="{{ url_for("answer_vote_up", answer_id=answer.get("id")) }}" methods="POST">
-                                <img src="{{ url_for('static', filename="icons/like_up.png") }}" width="100px" height="100px" alt="vote_up">
+                                <img src="{{ url_for('static', filename="icons/like_up.png") }}" width="50px" height="50px" alt="vote_up">
                             </a>
                         </td>
                         <td>
                             <a href="{{ url_for("answer_vote_down", answer_id=answer.get("id")) }}" methods="POST">
-                                <img src="{{ url_for('static', filename="icons/like_down.png") }}" width="100px" height="100px" alt="vote_down">
+                                <img src="{{ url_for('static', filename="icons/like_down.png") }}" width="50px" height="50px" alt="vote_down">
                             </a>
                         </td>
                     </tr>
