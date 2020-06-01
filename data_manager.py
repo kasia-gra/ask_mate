@@ -1,7 +1,7 @@
 from datetime import datetime
 import os
 import util
-import connection
+import csv
 
 dir_path = os.path.dirname(__file__)
 ANSWER_FILE_PATH = os.path.join(dir_path, "sample_data/answer.csv")
@@ -13,8 +13,25 @@ NUMERICAL_VALUE_HEADERS = ["id", "view_number", "vote_number", "question_id"]
 DATE_HEADERS = ["submission_time"]
 
 
+def get_dict_list_from_csv_file(option):
+    dicts_list = []
+    filepath = get_file_path(option)
+    with open(filepath, "r") as csvfile:
+        reader = csv.DictReader(csvfile, fieldnames=get_headers_by_option(option))
+        for dictionary in reader:
+            dicts_list.append(dictionary)
+    return dicts_list
+
+
+def save_to_file(all_records, option):
+    with open(get_file_path(option), "w", newline="") as file:
+        data = csv.DictWriter(file, fieldnames=get_headers_by_option(option))
+        for element in all_records:
+            data.writerow(element)
+
+
 def format_dictionary_data():
-    dicts_list = connection.get_dict_list_from_csv_file("questions")[1::]
+    dicts_list = get_dict_list_from_csv_file("questions")[1::]
     for dictionary in dicts_list:
         for key, value in dictionary.items():
             if key in NUMERICAL_VALUE_HEADERS:
@@ -31,7 +48,7 @@ def add_record_to_file(new_record, option):
     else:
         add_answer(new_record)
     all_records.append(new_record)
-    connection.save_to_file(all_records, option)
+    save_to_file(all_records, option)
 
 
 def add_question(new_record):
@@ -51,7 +68,7 @@ def edit_record_in_file(record, option):
     all_records = read_all_items_from_file_by_option(option)
     if option == "questions":
         edit_question(record, all_records)
-        connection.save_to_file(all_records, option)
+        save_to_file(all_records, option)
 
 
 def edit_question(record, all_records):
@@ -70,7 +87,7 @@ def delete_question_from_file(record_id):
             index_of_question = all_questions.index(question)
             util.remove_question_image_with_answer_images(question["id"], question["image"])
     all_questions.pop(index_of_question)
-    connection.save_to_file(all_questions, "questions")
+    save_to_file(all_questions, "questions")
 
 
 def delete_answer_from_file(record_id):
@@ -80,13 +97,13 @@ def delete_answer_from_file(record_id):
             index_of_question = all_answers.index(answer)
             util.remove_answer_image(answer["question_id"], answer["image"])
     all_answers.pop(index_of_question)
-    connection.save_to_file(all_answers, "answers")
+    save_to_file(all_answers, "answers")
 
 
 def read_all_items_from_file_by_option(option="questions"):
     if option == "questions":
-        return connection.get_dict_list_from_csv_file("questions")
-    return connection.get_dict_list_from_csv_file("answers")
+        return get_dict_list_from_csv_file("questions")
+    return get_dict_list_from_csv_file("answers")
 
 
 def get_old_record(record_id, option):
@@ -109,17 +126,17 @@ def increase_view_number(question_id):
     for question in all_questions:
         if question["id"] == question_id:
             question["view_number"] = str(int(question["view_number"]) + 1)
-    connection.save_to_file(all_questions, "questions")
+    save_to_file(all_questions, "questions")
 
 
 def update_vote_number(option, record_id, vote_direction):
     vote_dic = {"up":1, "down": -1}
-    all_records = connection.get_dict_list_from_csv_file(option)
+    all_records = get_dict_list_from_csv_file(option)
     for record in all_records:
         if record["id"] == record_id:
             record["vote_number"] = str(int(record["vote_number"]) + vote_dic[vote_direction])
             break
-    connection.save_to_file(all_records, option)
+    save_to_file(all_records, option)
 
 
 def make_vote_for_question(question_id, result):
