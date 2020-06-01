@@ -40,7 +40,8 @@ def show_question(question_id):
         if str(answer.get("question_id")) == str(question_id):
             # answer["submission_time"] = util.change_timestamp_to_date(answer.get("submission_time"))
             pass
-    return render_template("question_details.html", record=record, answers=all_answers)
+    question_comments = data_manager.get_question_comments(question_id)
+    return render_template("question_details.html", record=record, answers=all_answers, question_comments=question_comments)
 
 
 @app.route("/question/<question_id>/delete")
@@ -142,7 +143,7 @@ def comment_question(question_id):
         new_record["submission_time"] = util.get_new_timestamp()
         new_record["answer_id"] = None
         data_manager.add_comment(new_record)
-        redirect(url_for("show_question"))
+        return redirect(url_for("show_question", question_id=question_id))
     return render_template("comment_form.html", question_id=question_id)
 
 

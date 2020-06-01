@@ -77,7 +77,7 @@ def add_comment(cursor: RealDictCursor, new_record: dict):
     (question_id, answer_id, message, submission_time, edited_count)
     VALUES (%s, %s, %s, %s, %s);
     """
-    cursor.execute(query, (new_record["question_id"], new_record["answer_id"], \
+    cursor.execute(query, (new_record["question_id"], new_record["answer_id"],
                    new_record["message"], new_record["submission_time"], new_record["edited_count"]))
 
 
@@ -156,6 +156,16 @@ def delete_answer(cursor: RealDictCursor, record_id: int):
 @connection.connection_handler
 def delete_comment(cursor: RealDictCursor, record_id: int):
     pass
+
+
+@connection.connection_handler
+def get_question_comments(cursor: RealDictCursor, question_id: int):
+    query = """
+    SELECT submission_time, message, edited_count from comment
+    WHERE question_id = %s
+    """
+    cursor.execute(query, (question_id,))
+    return cursor.fetchall()
 
 
 @connection.connection_handler
