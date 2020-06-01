@@ -17,17 +17,6 @@ NUMERICAL_VALUE_HEADERS = ["id", "view_number", "vote_number", "question_id"]
 DATE_HEADERS = ["submission_time"]
 
 
-def format_dictionary_data():
-    dicts_list = get_all_records("question")
-    # for dictionary in dicts_list:
-    #     for key, value in dictionary.items():
-    #         if key in NUMERICAL_VALUE_HEADERS:
-    #             dictionary[key] = int(value)
-    #         elif key in DATE_HEADERS:
-    #             dictionary[key] = datetime.utcfromtimestamp(int(value)).strftime('%Y-%m-%d %H:%M:%S')
-    return dicts_list
-
-
 @connection.connection_handler
 def get_all_records(cursor: RealDictCursor, table: str):
     cursor.execute(f"""
@@ -48,29 +37,37 @@ def add_record(new_record, option):
 
 @connection.connection_handler
 def add_question(cursor: RealDictCursor, new_record: dict):
-    cursor.execute("""
+    if new_record["image"]:
+        new_path = new_record["image"]
+    else:
+        new_path = ""
+    cursor.execute(f"""
                     INSERT INTO question
-                        (title, message, image, vote_number, view_number, submission_time)
+                        (title, message, image, vote_number, view_number)
                     VALUES
-                        (%(title)s, %(message)s, %(img_path)s, 0, 0, %(timestamp)s);
+                        (%(title)s, %(message)s, %(img_path)s, 0, 0);
                     """, {
                         'title': new_record["title"],
                         'message': new_record["message"],
-                        'img_path': new_record["image"],
-                        'timestamp': util.get_new_timestamp()})
+                        'img_path': new_path
+                        })
 
 
 @connection.connection_handler
 def add_answer(cursor: RealDictCursor, new_record: dict):
+    if new_record["image"]:
+        new_path = new_record["image"]
+    else:
+        new_path = ""
     cursor.execute("""
                     INSERT INTO answer
-                        (message, image, vote_number, submission_time)
+                        (message, image, vote_number)
                     VALUES
-                        (%(title)s, %(message)s, %(img_path)s, 0, %(timestamp)s);
+                        (%(title)s, %(message)s, %(img_path)s, 0);
                     """, {
                         'message': new_record["message"],
-                        'img_path': new_record["image"],
-                        'timestamp': util.get_new_timestamp()})
+                        'img_path': new_path
+                        })
 
 
 @connection.connection_handler
@@ -95,13 +92,12 @@ def edit_question(cursor: RealDictCursor, new_record: dict):
                         title = %(title)s,
                         message = %(message)s,
                         image = %(img_path)s,
-                        submission_time = %(timestamp)s
+                        submission_time = CURRENT_TIMESTAMP
                     WHERE id = %(id)s;
                     """, {
                         'title': new_record["title"],
                         'message': new_record["message"],
                         'img_path': new_record["image"],
-                        'timestamp': util.get_new_timestamp(),
                         'id': int(new_record["id"])})
 
 
@@ -113,12 +109,11 @@ def edit_answer(cursor: RealDictCursor, new_record: dict):
                         title = %(title)s,
                         message = %(message)s,
                         image = %(img_path)s,
-                        submission_time = %(timestamp)s
+                        submission_time = CURRENT_TIMESTAMP
                     WHERE id = %(id)s;
                     """, {
                         'message': new_record["message"],
                         'img_path': new_record["image"],
-                        'timestamp': util.get_new_timestamp(),
                         'id': int(new_record["id"])})
 
 

@@ -1,4 +1,5 @@
-from datetime import datetime
+import time
+import datetime
 import data_manager
 import os
 import glob
@@ -8,8 +9,8 @@ ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 
 def get_new_timestamp():
-    now = datetime.now()
-    return str(datetime.timestamp(now))[:10:]
+    now = time.strftime('%Y-%m-%d %H:%M:%S')
+    return now
 
 
 def get_latest_id(option="questions"):
