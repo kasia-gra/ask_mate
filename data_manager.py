@@ -174,25 +174,20 @@ def increase_view_number(cursor: RealDictCursor, question_id: int):
                 WHERE id = %(id)s;
            """, {'id': question_id})
 
-# def increase_view_number(question_id):
-#     all_questions = read_all_items_from_file_by_option("question")
-#     for question in all_questions:
-#         if question["id"] == question_id:
-#             question["view_number"] = str(int(question["view_number"]) + 1)
-#     save_to_file(all_questions, "question")
-#
-#
-# def update_vote_number(option, record_id, vote_direction):
-#     vote_dic = {"up": 1, "down": -1}
-#     all_records = get_dictionary_from_database(option)
-#     for record in all_records:
-#         if record["id"] == record_id:
-#             record["vote_number"] = str(int(record["vote_number"]) + vote_dic[vote_direction])
-#             break
-#     save_to_file(all_records, option)
-#
-#
-# def make_vote_for_question(question_id, result):
-#     result.set_cookie("q" + question_id, "voted")
-#     update_vote_number("question", question_id, "down")
-#     return result
+
+
+@connection.connection_handler
+def update_vote_number(cursor: RealDictCursor, option: str, record_id: int, vote_direction: str):
+    vote_dic = {"up": 1, "down": -1}
+    vote = vote_dic[vote_direction]
+    cursor.execute(f"""
+                UPDATE {option}
+                SET vote_number = vote_number + {vote}
+                WHERE id = %(id)s;
+           """, {'id': record_id})
+
+
+def make_vote_for_question(question_id, result):
+    result.set_cookie("q" + question_id, "voted")
+    update_vote_number("question", question_id, "down")
+    return result
