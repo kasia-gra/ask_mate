@@ -166,6 +166,14 @@ def get_file_path(option="answer"):
     return ANSWER_FILE_PATH if option == "answer" else QUESTION_FILE_PATH
 
 
+@connection.connection_handler
+def increase_view_number(cursor: RealDictCursor, question_id: int):
+    cursor.execute(f"""
+                UPDATE question
+                SET view_number = view_number + 1
+                WHERE id = %(id)s;
+           """, {'id': question_id})
+
 # def increase_view_number(question_id):
 #     all_questions = read_all_items_from_file_by_option("question")
 #     for question in all_questions:
