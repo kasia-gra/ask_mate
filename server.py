@@ -26,16 +26,16 @@ def add_question():
         new_record["message"] = request.form["description"]
         if 'file' in request.files:
             file = request.files['file']
-            new_record["image"] = util.save_image(file, app.config['UPLOAD_FOLDER'], "questions")
-        data_manager.add_record_to_file(new_record, "questions")
+            new_record["image"] = util.save_image(file, app.config['UPLOAD_FOLDER'], "question")
+        data_manager.add_record_to_file(new_record, "question")
         return redirect("/")
     return render_template("question_form.html", old_record=new_record, is_new=True)
 
 
 @app.route("/question/<question_id>")
 def show_question(question_id):
-    record = data_manager.get_old_record(question_id, "questions")
-    all_answers = data_manager.read_all_items_from_file_by_option("answers")
+    record = data_manager.get_old_record(question_id, "question")
+    all_answers = data_manager.read_all_items_from_file_by_option("answer")
     answers_for_question_id = []
     data_manager.increase_view_number(question_id)
     for answer in all_answers:
@@ -47,7 +47,7 @@ def show_question(question_id):
 
 @app.route("/question/<question_id>/delete")
 def delete_question(question_id):
-    all_answers = data_manager.read_all_items_from_file_by_option("answers")
+    all_answers = data_manager.read_all_items_from_file_by_option("answer")
     for answer in all_answers:
         if answer.get("question_id") == question_id:
             data_manager.delete_answer_from_file(answer.get("id"))
@@ -57,21 +57,21 @@ def delete_question(question_id):
 
 @app.route("/question/<question_id>/edit", methods=["POST", "GET"])
 def edit_question(question_id):
-    old_record = data_manager.get_old_record(question_id, "questions")
+    old_record = data_manager.get_old_record(question_id, "question")
     if request.method == "POST":
         old_record["title"] = request.form["title"]
         old_record["message"] = request.form["description"]
         if 'file' in request.files:
             file = request.files['file']
-            old_record["image"] = util.save_image(file, app.config['UPLOAD_FOLDER'], "questions")
-        data_manager.edit_record_in_file(old_record, "questions")
+            old_record["image"] = util.save_image(file, app.config['UPLOAD_FOLDER'], "question")
+        data_manager.edit_record_in_file(old_record, "question")
         return redirect("/question/" + question_id)
     return render_template("question_form.html", old_record=old_record, is_new=False)
 
 
 @app.route("/answer/<answer_id>/delete")
 def delete_answer(answer_id):
-    old_record = data_manager.get_old_record(answer_id, "answers")
+    old_record = data_manager.get_old_record(answer_id, "answer")
     data_manager.delete_answer_from_file(answer_id)
     return redirect("/question/" + old_record["question_id"])
 
@@ -83,8 +83,8 @@ def add_answer(question_id):
         new_record["message"] = request.form["description"]
         if 'file' in request.files:
             file = request.files['file']
-            new_record["image"] = util.save_image(file, app.config['UPLOAD_FOLDER'], "answers", question_id)
-        data_manager.add_record_to_file(new_record, "answers")
+            new_record["image"] = util.save_image(file, app.config['UPLOAD_FOLDER'], "answer", question_id)
+        data_manager.add_record_to_file(new_record, "answer")
         return redirect("/question/" + question_id)
     return render_template("answer_form.html", old_record=new_record)
 
@@ -94,7 +94,7 @@ def question_vote_up(question_id):
     if request.cookies.get("q" + question_id) != "voted":
         res = make_response(redirect("/"))
         res.set_cookie("q" + question_id, "voted")
-        data_manager.update_vote_number("questions", question_id, "up")
+        data_manager.update_vote_number("question", question_id, "up")
         return res
     return redirect("/")
 
@@ -104,31 +104,31 @@ def question_vote_down(question_id):
     if request.cookies.get("q" + question_id) != "voted":
         res = make_response(redirect("/"))
         res.set_cookie("q" + question_id, "voted")
-        data_manager.update_vote_number("questions", question_id, "down")
+        data_manager.update_vote_number("question", question_id, "down")
         return res
     return redirect("/")
 
 
 @app.route("/answer/<answer_id>/vote_up")
 def answer_vote_up(answer_id):
-    answer = data_manager.get_old_record(answer_id, "answers")
+    answer = data_manager.get_old_record(answer_id, "answer")
     question_id = answer.get("question_id")
     if request.cookies.get("a" + answer_id) != "voted":
         res = make_response(redirect("/question/" + question_id))
         res.set_cookie("a" + answer_id, "voted")
-        data_manager.update_vote_number("answers", answer_id, "up")
+        data_manager.update_vote_number("answer", answer_id, "up")
         return res
     return redirect("/question/" + question_id)
 
 
 @app.route("/answer/<answer_id>/vote_down")
 def answer_vote_down(answer_id):
-    answer = data_manager.get_old_record(answer_id, "answers")
+    answer = data_manager.get_old_record(answer_id, "answer")
     question_id = answer.get("question_id")
     if request.cookies.get("a" + answer_id) != "voted":
         res = make_response(redirect("/question/" + question_id))
         res.set_cookie("a" + answer_id, "voted")
-        data_manager.update_vote_number("answers", answer_id, "down")
+        data_manager.update_vote_number("answer", answer_id, "down")
         return res
     return redirect("/question/" + question_id)
 
