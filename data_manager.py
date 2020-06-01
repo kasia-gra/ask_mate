@@ -19,22 +19,11 @@ DATE_HEADERS = ["submission_time"]
 
 @connection.connection_handler
 def get_dict_list_from_csv_file(cursor: RealDictCursor, option: str):
-    option = option.replace("'", "")
-    cursor.execute("""
+    cursor.execute(f"""
                         SELECT *
-                        FROM %(table_name_option);
-                        """, {'table_name_option': option})
+                        FROM {option};
+                        """)
     return cursor.fetchall()
-
-
-# def get_dict_list_from_csv_file(option):
-#     dicts_list = []
-#     filepath = get_file_path(option)
-#     with open(filepath, "r") as csvfile:
-#         reader = csv.DictReader(csvfile, fieldnames=get_headers_by_option(option))
-#         for dictionary in reader:
-#             dicts_list.append(dictionary)
-#     return dicts_list
 
 
 def save_to_file(all_records, option):
@@ -45,13 +34,13 @@ def save_to_file(all_records, option):
 
 
 def format_dictionary_data():
-    dicts_list = get_dict_list_from_csv_file("question")[1::]
-    for dictionary in dicts_list:
-        for key, value in dictionary.items():
-            if key in NUMERICAL_VALUE_HEADERS:
-                dictionary[key] = int(value)
-            elif key in DATE_HEADERS:
-                dictionary[key] = datetime.utcfromtimestamp(int(value)).strftime('%Y-%m-%d %H:%M:%S')
+    dicts_list = get_dict_list_from_csv_file("question")
+    # for dictionary in dicts_list:
+    #     for key, value in dictionary.items():
+    #         if key in NUMERICAL_VALUE_HEADERS:
+    #             dictionary[key] = int(value)
+    #         elif key in DATE_HEADERS:
+    #             dictionary[key] = datetime.utcfromtimestamp(int(value)).strftime('%Y-%m-%d %H:%M:%S')
     return dicts_list
 
 
