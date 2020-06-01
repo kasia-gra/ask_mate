@@ -29,12 +29,12 @@ def format_dictionary_data():
 
 
 @connection.connection_handler
-def get_dictionary_from_database(cursor: RealDictCursor, table: str):
+def get_all_records(cursor: RealDictCursor, table: str):
     cursor.execute(f"SELECT * FROM {table};")
     return cursor.fetchall()
 
 
-def add_record_to_file(new_record, option):
+def add_record(new_record, option):
     if option == "question":
         add_question(new_record)
     elif option == "answer":
@@ -75,7 +75,7 @@ def add_comment(cursor: RealDictCursor, new_record: dict):
     pass
 
 
-def edit_record_in_file(new_record, option):
+def edit_record(new_record, option):
     if option == "question":
         edit_question(new_record)
     elif option == "answer":
@@ -98,7 +98,8 @@ def edit_question(cursor: RealDictCursor, new_record: dict):
                         'title': new_record["title"],
                         'message': new_record["message"],
                         'img_path': new_record["image"],
-                        'timestamp': util.get_new_timestamp()})
+                        'timestamp': util.get_new_timestamp(),
+                        'id': int(new_record["id"])})
 
 
 @connection.connection_handler
@@ -114,7 +115,8 @@ def edit_answer(cursor: RealDictCursor, new_record: dict):
                     """, {
                         'message': new_record["message"],
                         'img_path': new_record["image"],
-                        'timestamp': util.get_new_timestamp()})
+                        'timestamp': util.get_new_timestamp(),
+                        'id': int(new_record["id"])})
 
 
 @connection.connection_handler
@@ -122,31 +124,37 @@ def edit_comment(cursor: RealDictCursor, new_record: dict):
     pass
 
 
-def delete_question_from_file(record_id):
-    all_questions = read_all_items_from_file_by_option("question")
-    for question in all_questions:
-        if question["id"] == record_id:
-            index_of_question = all_questions.index(question)
-            util.remove_question_image_with_answer_images(question["id"], question["image"])
-    all_questions.pop(index_of_question)
-    save_to_file(all_questions, "question")
+def delete_record(record_id, option):
+    if option == "question":
+        delete_question(record_id)
+    elif option == "answer":
+        delete_answer(record_id)
+    else:
+        delete_comment(record_id)
 
 
-def delete_answer_from_file(record_id):
-    all_answers = read_all_items_from_file_by_option("answer")
-    for answer in all_answers:
-        if answer["id"] == record_id:
-            index_of_question = all_answers.index(answer)
-            util.remove_answer_image(answer["question_id"], answer["image"])
-    all_answers.pop(index_of_question)
-    save_to_file(all_answers, "answer")
+@connection.connection_handler
+def delete_question(cursor: RealDictCursor, record_id: int):
+    cursor.execute(f"""
+                    DELETE FROM question
+                    WHERE id = %(id)s;
+                    """, {'id': record_id})
 
 
-def read_all_items_from_file_by_option(option="question"):
-    return get_dictionary_from_database(option)
+@connection.connection_handler
+def delete_answer(cursor: RealDictCursor, record_id: int):
+    cursor.execute(f"""
+                    DELETE FROM answer
+                    WHERE id = %(id)s;
+                    """, {'id': record_id})
 
 
-def get_old_record(record_id, option):
+@connection.connection_handler
+def delete_comment(cursor: RealDictCursor, record_id: int):
+    pass
+
+
+def get_specific_record(record_id, option):
     all_records = read_all_items_from_file_by_option(option)
     for element in all_records:
         if record_id == element["id"]:
