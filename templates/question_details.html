@@ -39,7 +39,7 @@
                             {% if table_header in headers %}
                                 {% if table_header == "image" %}
                                     <td>
-                                        <img src="{{ url_for('static', filename="img/" + answer.get("question_id") + "/" + answer_detail) }}"
+                                        <img src="{{ url_for('static', filename="img/" + answer.get("question_id")|string + "/" + answer_detail) }}"
                                              width="100px" height="100px" alt="No image!">
                                     </td>
                                 {% else %}
