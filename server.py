@@ -1,6 +1,5 @@
-from flask import Flask, render_template, request, redirect, make_response
+from flask import Flask, render_template, request, redirect, make_response, url_for
 import data_manager, util
-
 
 app = Flask(__name__)
 app.config["UPLOAD_FOLDER"] = data_manager.UPLOAD_FOLDER
@@ -131,6 +130,14 @@ def answer_vote_down(answer_id):
         data_manager.update_vote_number("answer", answer_id, "down")
         return res
     return redirect("/question/" + question_id)
+
+
+@app.route("/question/<question_id>/new-comment", methods=["POST", "GET"])
+def comment_question(question_id):
+    if request.method == "POST":
+        message = request.form["message"]
+        redirect(url_for("show_question"))
+    return render_template("comment_form.html", question_id=question_id)
 
 
 if __name__ == "__main__":
