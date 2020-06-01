@@ -169,22 +169,40 @@ def get_file_path(option="answer"):
     return ANSWER_FILE_PATH if option == "answer" else QUESTION_FILE_PATH
 
 
-def increase_view_number(question_id):
-    all_questions = read_all_items_from_file_by_option("question")
-    for question in all_questions:
-        if question["id"] == question_id:
-            question["view_number"] = str(int(question["view_number"]) + 1)
-    save_to_file(all_questions, "question")
+@connection.connection_handler
+def increase_view_number(cursor: RealDictCursor, question_id: int):
+    query = """
+            UPDATE question
+            SET view_number = view_number + 1
+            WHERE id = %(q_id)s
+            """
+    cursor.execute(query, {'q_id': question_id})
+
+# def increase_view_number(question_id):
+#     all_questions = read_all_items_from_file_by_option("question")
+#     for question in all_questions:
+#         if question["id"] == question_id:
+#             question["view_number"] = str(int(question["view_number"]) + 1)
+#     save_to_file(all_questions, "question")
 
 
-def update_vote_number(option, record_id, vote_direction):
+@connection.connection_handler
+def update_vote_number(cursor: RealDictCursor, option: str, record_id: int, vote_direction: str):
     vote_dic = {"up": 1, "down": -1}
-    all_records = get_dictionary_from_database(option)
-    for record in all_records:
-        if record["id"] == record_id:
-            record["vote_number"] = str(int(record["vote_number"]) + vote_dic[vote_direction])
-            break
-    save_to_file(all_records, option)
+    vote = vote_dic[vote_direction]
+    query = f"UPDATE {option} " \
+            f"SET vote_number = vote_number + {vote} " \
+            f"WHERE id = %(q_id)s"
+    cursor.execute(query, {'q_id': id})
+
+# def update_vote_number(option, record_id, vote_direction):
+#     vote_dic = {"up": 1, "down": -1}
+#     all_records = get_dictionary_from_database(option)
+#     for record in all_records:
+#         if record["id"] == record_id:
+#             record["vote_number"] = str(int(record["vote_number"]) + vote_dic[vote_direction])
+#             break
+#     save_to_file(all_records, option)
 
 
 def make_vote_for_question(question_id, result):
