@@ -35,11 +35,11 @@ def add_question():
 def show_question(question_id):
     record = data_manager.get_specific_record(question_id, "question")
     all_answers = data_manager.get_all_records("answer")
-    # data_manager.increase_view_number(question_id)
-    # for answer in all_answers:
-    #     if str(answer.get("question_id")) == str(question_id):
-    #         # answer["submission_time"] = util.change_timestamp_to_date(answer.get("submission_time"))
-    #         pass
+    data_manager.increase_view_number(question_id)
+    for answer in all_answers:
+        if str(answer.get("question_id")) == str(question_id):
+            # answer["submission_time"] = util.change_timestamp_to_date(answer.get("submission_time"))
+            pass
     return render_template("question_details.html", record=record, answers=all_answers)
 
 
