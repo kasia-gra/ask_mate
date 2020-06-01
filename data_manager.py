@@ -17,41 +17,8 @@ NUMERICAL_VALUE_HEADERS = ["id", "view_number", "vote_number", "question_id"]
 DATE_HEADERS = ["submission_time"]
 
 
-@connection.connection_handler
-def get_dict_list_from_csv_file(cursor: RealDictCursor, table: str):
-    cursor.execute(f"SELECT * FROM {table};")
-    return cursor.fetchall()
-
-
-@connection.connection_handler
-def add_question(cursor: RealDictCursor, new_record: dict):
-    cursor.execute(f"""
-                    INSERT INTO question
-                        (title, message, image, vote_number, view_number, submission_time)
-                    VALUES
-                        (%(title)s, %(message)s, %(img_path)s, 0, 0, %(timestamp)s);
-                    """, {
-                    'title': new_record["title"],
-                    'message': new_record["message"],
-                    'img_path': new_record["image"],
-                    'timestamp': util.get_new_timestamp()})
-
-
-@connection.connection_handler
-def add_answer(cursor: RealDictCursor, new_record: dict):
-    cursor.execute(f"""
-                    INSERT INTO answer
-                        (message, image, vote_number, submission_time)
-                    VALUES
-                        (%(title)s, %(message)s, %(img_path)s, 0, %(timestamp)s);
-                    """, {
-                    'message': new_record["message"],
-                    'img_path': new_record["image"],
-                    'timestamp': util.get_new_timestamp()})
-
-
 def format_dictionary_data():
-    dicts_list = get_dict_list_from_csv_file("question")
+    dicts_list = get_dictionary_from_database("question")
     # for dictionary in dicts_list:
     #     for key, value in dictionary.items():
     #         if key in NUMERICAL_VALUE_HEADERS:
@@ -61,43 +28,98 @@ def format_dictionary_data():
     return dicts_list
 
 
+@connection.connection_handler
+def get_dictionary_from_database(cursor: RealDictCursor, table: str):
+    cursor.execute(f"SELECT * FROM {table};")
+    return cursor.fetchall()
+
+
 def add_record_to_file(new_record, option):
-    all_records = read_all_items_from_file_by_option(option)
     if option == "question":
         add_question(new_record)
-    else:
+    elif option == "answer":
         add_answer(new_record)
-    all_records.append(new_record)
-    save_to_file(all_records, option)
+    else:
+        add_comment(new_record)
 
 
-def add_question(new_record):
-    new_record["id"] = util.get_latest_id("question")
-    new_record["submission_time"] = util.get_new_timestamp()
-    new_record["view_number"] = 0
-    new_record["vote_number"] = 0
+@connection.connection_handler
+def add_question(cursor: RealDictCursor, new_record: dict):
+    cursor.execute("""
+                    INSERT INTO question
+                        (title, message, image, vote_number, view_number, submission_time)
+                    VALUES
+                        (%(title)s, %(message)s, %(img_path)s, 0, 0, %(timestamp)s);
+                    """, {
+                        'title': new_record["title"],
+                        'message': new_record["message"],
+                        'img_path': new_record["image"],
+                        'timestamp': util.get_new_timestamp()})
 
 
-def add_answer(new_record):
-    new_record["id"] = util.get_latest_id("answer")
-    new_record["submission_time"] = util.get_new_timestamp()
-    new_record["vote_number"] = 0
+@connection.connection_handler
+def add_answer(cursor: RealDictCursor, new_record: dict):
+    cursor.execute("""
+                    INSERT INTO answer
+                        (message, image, vote_number, submission_time)
+                    VALUES
+                        (%(title)s, %(message)s, %(img_path)s, 0, %(timestamp)s);
+                    """, {
+                        'message': new_record["message"],
+                        'img_path': new_record["image"],
+                        'timestamp': util.get_new_timestamp()})
 
 
-def edit_record_in_file(record, option):
-    all_records = read_all_items_from_file_by_option(option)
+@connection.connection_handler
+def add_comment(cursor: RealDictCursor, new_record: dict):
+    pass
+
+
+def edit_record_in_file(new_record, option):
     if option == "question":
-        edit_question(record, all_records)
-        save_to_file(all_records, option)
+        edit_question(new_record)
+    elif option == "answer":
+        edit_answer(new_record)
+    else:
+        edit_comment(new_record)
 
 
-def edit_question(record, all_records):
-    for element in all_records:
-        if element["id"] == str(record["id"]):
-            element["title"] = record["title"]
-            element["message"] = record["message"]
-            element["image"] = record["image"]
-            element["submission_time"] = util.get_new_timestamp()
+@connection.connection_handler
+def edit_question(cursor: RealDictCursor, new_record: dict):
+    cursor.execute(f"""
+                    UPDATE question
+                    SET
+                        title = %(title)s,
+                        message = %(message)s,
+                        image = %(img_path)s,
+                        submission_time = %(timestamp)s
+                    WHERE id = %(id)s;
+                    """, {
+                        'title': new_record["title"],
+                        'message': new_record["message"],
+                        'img_path': new_record["image"],
+                        'timestamp': util.get_new_timestamp()})
+
+
+@connection.connection_handler
+def edit_answer(cursor: RealDictCursor, new_record: dict):
+    cursor.execute(f"""
+                    UPDATE answer
+                    SET
+                        title = %(title)s,
+                        message = %(message)s,
+                        image = %(img_path)s,
+                        submission_time = %(timestamp)s
+                    WHERE id = %(id)s;
+                    """, {
+                        'message': new_record["message"],
+                        'img_path': new_record["image"],
+                        'timestamp': util.get_new_timestamp()})
+
+
+@connection.connection_handler
+def edit_comment(cursor: RealDictCursor, new_record: dict):
+    pass
 
 
 def delete_question_from_file(record_id):
@@ -121,9 +143,7 @@ def delete_answer_from_file(record_id):
 
 
 def read_all_items_from_file_by_option(option="question"):
-    if option == "question":
-        return get_dict_list_from_csv_file("question")
-    return get_dict_list_from_csv_file("answer")
+    return get_dictionary_from_database(option)
 
 
 def get_old_record(record_id, option):
@@ -151,7 +171,7 @@ def increase_view_number(question_id):
 
 def update_vote_number(option, record_id, vote_direction):
     vote_dic = {"up": 1, "down": -1}
-    all_records = get_dict_list_from_csv_file(option)
+    all_records = get_dictionary_from_database(option)
     for record in all_records:
         if record["id"] == record_id:
             record["vote_number"] = str(int(record["vote_number"]) + vote_dic[vote_direction])
