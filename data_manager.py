@@ -18,7 +18,7 @@ DATE_HEADERS = ["submission_time"]
 
 
 def format_dictionary_data():
-    dicts_list = get_dictionary_from_database("question")
+    dicts_list = get_all_records("question")
     # for dictionary in dicts_list:
     #     for key, value in dictionary.items():
     #         if key in NUMERICAL_VALUE_HEADERS:
@@ -154,11 +154,10 @@ def delete_comment(cursor: RealDictCursor, record_id: int):
     pass
 
 
-def get_specific_record(record_id, option):
-    all_records = read_all_items_from_file_by_option(option)
-    for element in all_records:
-        if record_id == element["id"]:
-            return element
+@connection.connection_handler
+def get_specific_record(cursor: RealDictCursor, record_id: int, option: str):
+    cursor.execute(f"SELECT * FROM {option} WHERE id = {record_id};")
+    return cursor.fetchone()
 
 
 def get_headers_by_option(option="question"):
@@ -169,25 +168,25 @@ def get_file_path(option="answer"):
     return ANSWER_FILE_PATH if option == "answer" else QUESTION_FILE_PATH
 
 
-def increase_view_number(question_id):
-    all_questions = read_all_items_from_file_by_option("question")
-    for question in all_questions:
-        if question["id"] == question_id:
-            question["view_number"] = str(int(question["view_number"]) + 1)
-    save_to_file(all_questions, "question")
-
-
-def update_vote_number(option, record_id, vote_direction):
-    vote_dic = {"up": 1, "down": -1}
-    all_records = get_dictionary_from_database(option)
-    for record in all_records:
-        if record["id"] == record_id:
-            record["vote_number"] = str(int(record["vote_number"]) + vote_dic[vote_direction])
-            break
-    save_to_file(all_records, option)
-
-
-def make_vote_for_question(question_id, result):
-    result.set_cookie("q" + question_id, "voted")
-    update_vote_number("question", question_id, "down")
-    return result
+# def increase_view_number(question_id):
+#     all_questions = read_all_items_from_file_by_option("question")
+#     for question in all_questions:
+#         if question["id"] == question_id:
+#             question["view_number"] = str(int(question["view_number"]) + 1)
+#     save_to_file(all_questions, "question")
+#
+#
+# def update_vote_number(option, record_id, vote_direction):
+#     vote_dic = {"up": 1, "down": -1}
+#     all_records = get_dictionary_from_database(option)
+#     for record in all_records:
+#         if record["id"] == record_id:
+#             record["vote_number"] = str(int(record["vote_number"]) + vote_dic[vote_direction])
+#             break
+#     save_to_file(all_records, option)
+#
+#
+# def make_vote_for_question(question_id, result):
+#     result.set_cookie("q" + question_id, "voted")
+#     update_vote_number("question", question_id, "down")
+#     return result
