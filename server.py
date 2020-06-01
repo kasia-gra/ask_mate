@@ -8,7 +8,7 @@ app.config["UPLOAD_FOLDER"] = data_manager.UPLOAD_FOLDER
 @app.route("/")
 @app.route("/list", methods=['GET', 'POST'])
 def questions_list():
-    all_questions = data_manager.format_dictionary_data()
+    all_questions = data_manager.get_all_records("question")
     if request.method == 'POST':
         sort_by = request.form.get("sort_by")
     else:
@@ -35,11 +35,11 @@ def add_question():
 def show_question(question_id):
     record = data_manager.get_specific_record(question_id, "question")
     all_answers = data_manager.get_all_records("answer")
-    # data_manager.increase_view_number(question_id)
-    # for answer in all_answers:
-    #     if str(answer.get("question_id")) == str(question_id):
-    #         # answer["submission_time"] = util.change_timestamp_to_date(answer.get("submission_time"))
-    #         pass
+    data_manager.increase_view_number(question_id)
+    for answer in all_answers:
+        if str(answer.get("question_id")) == str(question_id):
+            # answer["submission_time"] = util.change_timestamp_to_date(answer.get("submission_time"))
+            pass
     return render_template("question_details.html", record=record, answers=all_answers)
 
 
@@ -62,7 +62,7 @@ def edit_question(question_id):
         if 'file' in request.files:
             file = request.files['file']
             old_record["image"] = util.save_image(file, app.config['UPLOAD_FOLDER'], "question")
-        data_manager.edit_record_in_file(old_record, "question")
+        data_manager.edit_record(old_record, "question")
         return redirect("/question/" + question_id)
     return render_template("question_form.html", old_record=old_record, is_new=False)
 

@@ -42,7 +42,7 @@
                     {% if data_header in headers %}
                     <td>
                         {% if data_header == "title" %}
-                            <a href="{{ url_for("show_question", question_id=question.get("id")) }}">{{ question_detail }}</a>
+                            <a href="{{ url_for("show_question", question_id=question.get("id")|string) }}">{{ question_detail }}</a>
                         {% else %}
                             {{ question_detail }}
                         {% endif %}
@@ -50,12 +50,12 @@
                     {% endif %}
                 {% endfor %}
                     <td>
-                        <a href="{{ url_for("question_vote_up", question_id=question.get("id")) }}" methods="POST">
+                        <a href="{{ url_for("question_vote_up", question_id=question.get("id")|string) }}" methods="POST">
                             <img src="{{ url_for('static', filename="icons/like_up.png") }}" width="50px" height="50px" alt="vote_up">
                         </a>
                     </td>
                     <td>
-                        <a href="{{ url_for("question_vote_down", question_id=question.get("id")) }}" methods="POST">
+                        <a href="{{ url_for("question_vote_down", question_id=question.get("id")|string) }}" methods="POST">
                             <img src="{{ url_for('static', filename="icons/like_down.png") }}" width="50px" height="50px" alt="vote_down">
                         </a>
                     </td>

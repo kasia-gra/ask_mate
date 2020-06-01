@@ -1,4 +1,5 @@
-from datetime import datetime
+import time
+import datetime
 import data_manager
 import os
 import glob
@@ -8,12 +9,12 @@ ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 
 def get_new_timestamp():
-    now = datetime.now()
-    return str(datetime.timestamp(now))[:10:]
+    now = time.strftime('%Y-%m-%d %H:%M:%S')
+    return now
 
 
 def get_latest_id(option="questions"):
-    all_records = data_manager.read_all_items_from_file_by_option(option)
+    all_records = data_manager.get_all_records(option)
     index_of_last_record = len(all_records) - 1
     if all_records[index_of_last_record]["id"] == "id":
         return 1
@@ -33,9 +34,9 @@ def allowed_file(filename):
 
 def save_image(file, upload_folder, option, folder_id=None):
     if file and allowed_file(file.filename):
-        name_options = {"questions": "q", "answers": "a"}
+        name_options = {"question": "q", "answer": "a"}
         filename = str(name_options[option] + "_" + str(get_latest_id(option)) + "_" + secure_filename(file.filename))
-        if option == "answers":
+        if option == "answer":
             upload_folder = os.path.join(upload_folder, folder_id)
             if not os.path.exists(upload_folder):
                 os.mkdir(upload_folder)
