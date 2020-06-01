@@ -14,7 +14,10 @@ def questions_list():
     else:
         sort_by = "submission_time-asc"
     all_questions = util.sort_dictionary(all_questions, sort_by)
-    return render_template("question_list.html", all_questions=all_questions, sort_by=sort_by)
+    search_phrase = request.args.get('search_phrase')
+    if search_phrase:
+        return search_for_questions(search_phrase)
+    return render_template("question_list.html", all_questions=all_questions, sort_by=sort_by, search_phrase=search_phrase)
 
 
 @app.route("/question", methods=["POST", "GET"])
@@ -140,6 +143,12 @@ def comment_question(question_id):
         redirect(url_for("show_question"))
     return render_template("comment_form.html", question_id=question_id)
 
+
+@app.route('/search_phrase')
+def search_for_questions(search_phrase):
+    res = data_manager.search_for_phrase(search_phrase)
+    return str(res)
+    # return render_template("search_results.html")
 
 if __name__ == "__main__":
     app.run(

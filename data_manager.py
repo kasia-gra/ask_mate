@@ -191,3 +191,15 @@ def make_vote_for_question(question_id, result):
     result.set_cookie("q" + question_id, "voted")
     update_vote_number("question", question_id, "down")
     return result
+
+
+@connection.connection_handler
+def search_for_phrase(cursor: RealDictCursor, search_phrase: str) -> list:
+    cursor.execute(f"""
+                SELECT question.title, question.message
+                FROM question
+                FULL JOIN answer
+                ON question.id = answer.question_id
+                WHERE question.message ILIKE %(phrase)s OR question.title ILIKE %(phrase)s OR answer.message ILIKE %(phrase)s;
+           """, {'phrase': '%' + search_phrase + '%'})
+    return cursor.fetchall()

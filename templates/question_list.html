@@ -10,8 +10,13 @@
 {% block body %}
     <div class="container_nav_menu">
         <p>
-        <a href="{{ url_for("add_question") }}" class="nav_button">Ask new question</a>
+            <a href="{{ url_for("add_question") }}" class="nav_button">Ask new question</a>
         </p>
+        <form>
+            <label for="search_phrase">Search for phrase</label>
+            <input id="search_phrase" name="search_phrase" type="text">
+            <button type="submit">Search</button>
+        </form>
     </div>
         <div class="drop_down_container">
         <form action="{{ url_for('questions_list', sort_by=sort_by) }}", method="post">
