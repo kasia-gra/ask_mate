@@ -26,8 +26,6 @@ def add_question():
         if 'file' in request.files:
             file = request.files['file']
             new_record["image"] = util.save_image(file, app.config['UPLOAD_FOLDER'], "question")
-        else:
-            new_record["image"] = ""
         data_manager.add_record(new_record, "question")
         return redirect("/")
     return render_template("question_form.html", old_record=new_record, is_new=True)
@@ -37,10 +35,11 @@ def add_question():
 def show_question(question_id):
     record = data_manager.get_specific_record(question_id, "question")
     all_answers = data_manager.get_all_records("answer")
-    data_manager.increase_view_number(question_id)
-    for answer in all_answers:
-        if answer.get("question_id") == question_id:
-            answer["submission_time"] = util.change_timestamp_to_date(answer.get("submission_time"))
+    # data_manager.increase_view_number(question_id)
+    # for answer in all_answers:
+    #     if str(answer.get("question_id")) == str(question_id):
+    #         # answer["submission_time"] = util.change_timestamp_to_date(answer.get("submission_time"))
+    #         pass
     return render_template("question_details.html", record=record, answers=all_answers)
 
 

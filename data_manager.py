@@ -30,7 +30,10 @@ def format_dictionary_data():
 
 @connection.connection_handler
 def get_all_records(cursor: RealDictCursor, table: str):
-    cursor.execute(f"SELECT * FROM {table};")
+    cursor.execute(f"""
+                    SELECT *
+                    FROM {table};
+                    """)
     return cursor.fetchall()
 
 
