@@ -26,37 +26,37 @@ def add_question():
         if 'file' in request.files:
             file = request.files['file']
             new_record["image"] = util.save_image(file, app.config['UPLOAD_FOLDER'], "question")
-        data_manager.add_record_to_file(new_record, "question")
+        else:
+            new_record["image"] = ""
+        data_manager.add_record(new_record, "question")
         return redirect("/")
     return render_template("question_form.html", old_record=new_record, is_new=True)
 
 
 @app.route("/question/<question_id>")
 def show_question(question_id):
-    record = data_manager.get_old_record(question_id, "question")
-    all_answers = data_manager.read_all_items_from_file_by_option("answer")
-    answers_for_question_id = []
+    record = data_manager.get_specific_record(question_id, "question")
+    all_answers = data_manager.get_all_records("answer")
     data_manager.increase_view_number(question_id)
     for answer in all_answers:
         if answer.get("question_id") == question_id:
             answer["submission_time"] = util.change_timestamp_to_date(answer.get("submission_time"))
-            answers_for_question_id.append(answer)
-    return render_template("question_details.html", record=record, answers=answers_for_question_id)
+    return render_template("question_details.html", record=record, answers=all_answers)
 
 
 @app.route("/question/<question_id>/delete")
 def delete_question(question_id):
-    all_answers = data_manager.read_all_items_from_file_by_option("answer")
+    all_answers = data_manager.get_all_records("answer")
     for answer in all_answers:
         if answer.get("question_id") == question_id:
-            data_manager.delete_answer_from_file(answer.get("id"))
-    data_manager.delete_question_from_file(question_id)
+            data_manager.delete_record(answer.get("id"), "answer")
+    data_manager.delete_record(question_id, "question")
     return redirect("/")
 
 
 @app.route("/question/<question_id>/edit", methods=["POST", "GET"])
 def edit_question(question_id):
-    old_record = data_manager.get_old_record(question_id, "question")
+    old_record = data_manager.get_specific_record(question_id, "question")
     if request.method == "POST":
         old_record["title"] = request.form["title"]
         old_record["message"] = request.form["description"]
@@ -70,8 +70,8 @@ def edit_question(question_id):
 
 @app.route("/answer/<answer_id>/delete")
 def delete_answer(answer_id):
-    old_record = data_manager.get_old_record(answer_id, "answer")
-    data_manager.delete_answer_from_file(answer_id)
+    old_record = data_manager.get_specific_record(answer_id, "answer")
+    data_manager.delete_record(answer_id, "answer")
     return redirect("/question/" + old_record["question_id"])
 
 
@@ -83,7 +83,9 @@ def add_answer(question_id):
         if 'file' in request.files:
             file = request.files['file']
             new_record["image"] = util.save_image(file, app.config['UPLOAD_FOLDER'], "answer", question_id)
-        data_manager.add_record_to_file(new_record, "answer")
+        else:
+            new_record["image"] = ""
+        data_manager.add_record(new_record, "answer")
         return redirect("/question/" + question_id)
     return render_template("answer_form.html", old_record=new_record)
 
@@ -110,7 +112,7 @@ def question_vote_down(question_id):
 
 @app.route("/answer/<answer_id>/vote_up")
 def answer_vote_up(answer_id):
-    answer = data_manager.get_old_record(answer_id, "answer")
+    answer = data_manager.get_specific_record(answer_id, "answer")
     question_id = answer.get("question_id")
     if request.cookies.get("a" + answer_id) != "voted":
         res = make_response(redirect("/question/" + question_id))
@@ -122,7 +124,7 @@ def answer_vote_up(answer_id):
 
 @app.route("/answer/<answer_id>/vote_down")
 def answer_vote_down(answer_id):
-    answer = data_manager.get_old_record(answer_id, "answer")
+    answer = data_manager.get_specific_record(answer_id, "answer")
     question_id = answer.get("question_id")
     if request.cookies.get("a" + answer_id) != "voted":
         res = make_response(redirect("/question/" + question_id))
