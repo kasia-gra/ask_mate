@@ -20,6 +20,7 @@
         <img src="{{ url_for('static', filename="img/" + record.get("image")) }}" width="400px" height="400px" alt="No available image!" align="left">
         <p>{{ record.get("message") }}</p>
     </div>
+    <p></p><a href="{{ url_for("comment_question", question_id=record.get("id")) }}">Add new comment</a></p>
     {% if answers == [] %}
         <h3>No answers yet</h3>
     {% else %}

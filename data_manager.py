@@ -75,7 +75,13 @@ def add_answer(cursor: RealDictCursor, new_record: dict):
 
 @connection.connection_handler
 def add_comment(cursor: RealDictCursor, new_record: dict):
-    pass
+    query = """
+    INSERT INTO comment
+    (question_id, answer_id, message, submission_time, edited_count)
+    VALUES (%s, %s, %s, %s, %s);
+    """
+    cursor.execute(query, (new_record["question_id"], new_record["answer_id"], \
+                   new_record["message"], new_record["submission_time"], new_record["edited_count"]))
 
 
 def edit_record(new_record, option):

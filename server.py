@@ -133,10 +133,15 @@ def answer_vote_down(answer_id):
     return redirect("/question/" + question_id)
 
 
-@app.route("/question/<question_id>/new-comment", methods=["POST", "GET"])
+@app.route("/question/<int:question_id>/new-comment", methods=["POST", "GET"])
 def comment_question(question_id):
+    new_record = {"question_id": question_id}
     if request.method == "POST":
-        message = request.form["message"]
+        new_record["message"] = request.form["message"]
+        new_record["edited_count"] = 0
+        new_record["submission_time"] = util.get_new_timestamp()
+        new_record["answer_id"] = None
+        data_manager.add_comment(new_record)
         redirect(url_for("show_question"))
     return render_template("comment_form.html", question_id=question_id)
 
