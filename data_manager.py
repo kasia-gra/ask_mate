@@ -18,19 +18,36 @@ DATE_HEADERS = ["submission_time"]
 
 
 @connection.connection_handler
-def get_dict_list_from_csv_file(cursor: RealDictCursor, option: str):
-    cursor.execute(f"""
-                        SELECT *
-                        FROM {option};
-                        """)
+def get_dict_list_from_csv_file(cursor: RealDictCursor, table: str):
+    cursor.execute(f"SELECT * FROM {table};")
     return cursor.fetchall()
 
 
-def save_to_file(all_records, option):
-    with open(get_file_path(option), "w", newline="") as file:
-        data = csv.DictWriter(file, fieldnames=get_headers_by_option(option))
-        for element in all_records:
-            data.writerow(element)
+@connection.connection_handler
+def add_question(cursor: RealDictCursor, new_record: dict):
+    cursor.execute(f"""
+                    INSERT INTO question
+                        (title, message, image, vote_number, view_number, submission_time)
+                    VALUES
+                        (%(title)s, %(message)s, %(img_path)s, 0, 0, %(timestamp)s);
+                    """, {
+                    'title': new_record["title"],
+                    'message': new_record["message"],
+                    'img_path': new_record["image"],
+                    'timestamp': util.get_new_timestamp()})
+
+
+@connection.connection_handler
+def add_answer(cursor: RealDictCursor, new_record: dict):
+    cursor.execute(f"""
+                    INSERT INTO answer
+                        (message, image, vote_number, submission_time)
+                    VALUES
+                        (%(title)s, %(message)s, %(img_path)s, 0, %(timestamp)s);
+                    """, {
+                    'message': new_record["message"],
+                    'img_path': new_record["image"],
+                    'timestamp': util.get_new_timestamp()})
 
 
 def format_dictionary_data():
