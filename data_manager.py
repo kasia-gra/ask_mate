@@ -55,12 +55,13 @@ def add_question(cursor: RealDictCursor, new_record: dict):
         new_path = ""
     cursor.execute(f"""
                     INSERT INTO question
-                        (title, message, image, vote_number, view_number)
+                        (title, message, image, submission_time, vote_number, view_number)
                     VALUES
-                        (%(title)s, %(message)s, %(img_path)s, 0, 0);
+                        (%(title)s, %(message)s, %(img_path)s, %(submission_time)s, 0, 0);
                     """, {
                         'title': new_record["title"],
                         'message': new_record["message"],
+                        'submission_time': new_record["submission_time"],
                         'img_path': new_path
                         })
 
@@ -73,11 +74,12 @@ def add_answer(cursor: RealDictCursor, new_record: dict):
         new_path = ""
     cursor.execute("""
                     INSERT INTO answer
-                        (message, image, vote_number)
+                        (message, image, submission_time, vote_number)
                     VALUES
-                        (%(title)s, %(message)s, %(img_path)s, 0);
+                        (%(message)s, %(img_path)s, %(submission_time)s, 0);
                     """, {
                         'message': new_record["message"],
+                        'submission_time': new_record["submission_time"],
                         'img_path': new_path
                         })
 
@@ -110,12 +112,13 @@ def edit_question(cursor: RealDictCursor, new_record: dict):
                         title = %(title)s,
                         message = %(message)s,
                         image = %(img_path)s,
-                        submission_time = CURRENT_TIMESTAMP
+                        submission_time = %(submission_time)s
                     WHERE id = %(id)s;
                     """, {
                         'title': new_record["title"],
                         'message': new_record["message"],
                         'img_path': new_record["image"],
+                        'submission_time': new_record["submission_time"],
                         'id': int(new_record["id"])})
 
 
@@ -127,11 +130,12 @@ def edit_answer(cursor: RealDictCursor, new_record: dict):
                         title = %(title)s,
                         message = %(message)s,
                         image = %(img_path)s,
-                        submission_time = CURRENT_TIMESTAMP
+                        submission_time = %(submission_time)s
                     WHERE id = %(id)s;
                     """, {
                         'message': new_record["message"],
                         'img_path': new_record["image"],
+                        'submission_time': new_record["submission_time"],
                         'id': int(new_record["id"])})
 
 
@@ -167,7 +171,18 @@ def delete_answer(cursor: RealDictCursor, record_id: int):
 
 @connection.connection_handler
 def delete_comment(cursor: RealDictCursor, record_id: int):
-    pass
+    cursor.execute(f"""
+                    DELETE FROM comment
+                    WHERE id = %(id)s;
+                    """, {'id': record_id})
+
+
+@connection.connection_handler
+def delete_connected_comment(cursor: RealDictCursor, record_id: int):
+    cursor.execute(f"""
+                    DELETE FROM comment
+                    WHERE question_id = %(id)s and answer_id IS NULL OR answer_id = %(id)s and question_id IS NULL;
+                    """, {'id': record_id})
 
 
 @connection.connection_handler
@@ -201,7 +216,6 @@ def increase_view_number(cursor: RealDictCursor, question_id: int):
                 SET view_number = view_number + 1
                 WHERE id = %(id)s;
            """, {'id': question_id})
-
 
 
 @connection.connection_handler
