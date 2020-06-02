@@ -22,6 +22,7 @@ def add_question():
     new_record = {}
     if request.method == "POST":
         new_record["title"] = request.form["title"]
+        new_record["submission_time"] = util.get_new_timestamp()
         new_record["message"] = request.form["description"]
         if 'file' in request.files:
             file = request.files['file']
@@ -59,6 +60,7 @@ def edit_question(question_id):
     old_record = data_manager.get_specific_record(question_id, "question")
     if request.method == "POST":
         old_record["title"] = request.form["title"]
+        old_record["submission_time"] = util.get_new_timestamp()
         old_record["message"] = request.form["description"]
         if 'file' in request.files:
             file = request.files['file']
@@ -77,7 +79,7 @@ def delete_answer(answer_id):
 
 @app.route("/question/<question_id>/new-answer", methods=["POST", "GET"])
 def add_answer(question_id):
-    new_record = {"question_id": str(question_id)}
+    new_record = {"question_id": str(question_id), "submission_time": util.get_new_timestamp()}
     if request.method == "POST":
         new_record["message"] = request.form["description"]
         if 'file' in request.files:
