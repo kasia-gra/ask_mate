@@ -55,12 +55,12 @@
                     {% endif %}
                 {% endfor %}
                     <td>
-                        <a href="{{ url_for("question_vote_up", question_id=question.get("id")|string) }}" methods="POST">
+                        <a href="{{ url_for("question_vote", question_id=question.get("id")|string, vote="up") }}" methods="POST">
                             <img src="{{ url_for('static', filename="icons/like_up.png") }}" width="50px" height="50px" alt="vote_up">
                         </a>
                     </td>
                     <td>
-                        <a href="{{ url_for("question_vote_down", question_id=question.get("id")|string) }}" methods="POST">
+                        <a href="{{ url_for("question_vote", question_id=question.get("id")|string, vote="down") }}" methods="POST">
                             <img src="{{ url_for('static', filename="icons/like_down.png") }}" width="50px" height="50px" alt="vote_down">
                         </a>
                     </td>
