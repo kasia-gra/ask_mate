@@ -8,30 +8,6 @@
     {% endblock %}
 {% endblock %}
 {% block body %}
-    <div class="container_nav_menu">
-        <p>
-            <a href="{{ url_for("questions_list") }}" class="nav_button">Questions List</a>
-        </p>
-        <form>
-            <label for="search_phrase">Search for phrase</label>
-            <input id="search_phrase" name="search_phrase" type="text">
-            <button type="submit">Search</button>
-        </form>
-    </div>
-        <div class="drop_down_container">
-        <form action="{{ url_for('questions_list', sort_by=sort_by) }}", method="post">
-            <select class="drop_down_btn" name="sort_by" id="sort_by">
-                {% set sort_criteria = ["submission_time", "view_number", "vote_number", "title", "message"] %}
-                {% for sort_by_option in sort_criteria %}
-                    {% set sort_order = ["asc", "desc"] %}
-                        {% for order in sort_order %}
-                            <option value="{{ sort_by_option }}-{{ order }}">sort by: {{ sort_by_option }} {% if order=='asc'%} &#8595 {% else %} &#8593{% endif %}</option>
-                        {% endfor %}
-                {% endfor %}
-            </select>
-            <button class="drop_down_btn" type="submit">Sort</button>
-        </form>
-        </div>
     <h1>All questions</h1>
     <table class = content-table>
         {%  set headers = ["submission_time", "view_number", "vote_number", "title", "message", "vote_up", "vote_down"] %}

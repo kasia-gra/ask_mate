@@ -51,10 +51,11 @@ def add_question():
 @app.route("/question/<question_id>")
 def show_question(question_id):
     record = data_manager.get_specific_record(question_id, "question")
+    tags = data_manager.get_tags_for_questions(question_id)
     all_answers_for_question = data_manager.get_answers_for_question(question_id)
     data_manager.increase_view_number(question_id)
     question_comments = data_manager.get_question_comments(question_id)
-    return render_template("question_details.html", record=record, answers=all_answers_for_question, question_comments=question_comments)
+    return render_template("question_details.html", record=record, answers=all_answers_for_question, question_comments=question_comments, tags=tags)
 
 
 @app.route("/question/<question_id>/delete")
@@ -183,6 +184,11 @@ def search_for_questions(search_phrase):
     search_results_questions = data_manager.search_for_phrase_questions(search_phrase)
     search_results_answers = data_manager.search_for_phrase_answers(search_phrase)
     return render_template("search_results.html", all_questions=search_results_questions, answers=search_results_answers)
+
+
+@app.route('/question/<question_id>/tag/<tag_id>/delete')
+def delete_tag(question_id, tag_id):
+    pass
 
 
 if __name__ == "__main__":

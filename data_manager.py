@@ -237,6 +237,18 @@ def increase_edited_number(cursor: RealDictCursor, comment_id: int):
 
 
 @connection.connection_handler
+def get_tags_for_questions(cursor: RealDictCursor, question_id: int):
+    cursor.execute(f"""
+                    SELECT *
+                    FROM question_tag
+                    LEFT JOIN tag
+                    ON question_tag.tag_id= tag.id
+                    WHERE question_id = %(id)s;
+               """, {'id': question_id})
+    return cursor.fetchall()
+
+
+@connection.connection_handler
 def update_vote_number(cursor: RealDictCursor, option: str, record_id: int, vote_direction: str):
     vote_dic = {"up": 1, "down": -1}
     vote = vote_dic[vote_direction]
@@ -253,34 +265,23 @@ def make_vote_for_question(question_id, result):
     return result
 
 
-@connection.connection_handler
-def search_for_phrase_questions(cursor: RealDictCursor, search_phrase: str):
-    cursor.execute(f"""
-                SELECT DISTINCT question.*
-                FROM question
-                FULL OUTER JOIN answer
-                ON question.id = answer.question_id
-                WHERE question.message ILIKE %(phrase)s OR question.title ILIKE %(phrase)s OR answer.message ILIKE %(phrase)s;
-           """, {'phrase': '%' + search_phrase + '%'})
-    return cursor.fetchall()
-
-@connection.connection_handler
-def search_for_phrase_answers(cursor: RealDictCursor, search_phrase: str):
-    cursor.execute(f"""
-                SELECT *
-                FROM answer
-                WHERE answer.message ILIKE %(phrase)s;
-           """, {'phrase': '%' + search_phrase + '%'})
-    return cursor.fetchall()
-
-
-
 # @connection.connection_handler
 # def search_for_phrase(cursor: RealDictCursor, search_phrase: str):
 #     cursor.execute(f"""
-#                 SELECT *
+#                 SELECT question.title, question.message, answer.message,
 #                 FROM question
-#                 WHERE message ILIKE %(phrase)s OR title ILIKE %(phrase)s
+#                 FULL JOIN answer
+#                 ON question.id = answer.question_id
+#                 WHERE question.message ILIKE %(phrase)s OR question.title ILIKE %(phrase)s OR answer.message ILIKE %(phrase)s;
 #            """, {'phrase': '%' + search_phrase + '%'})
 #     return cursor.fetchall()
 
+
+@connection.connection_handler
+def search_for_phrase(cursor: RealDictCursor, search_phrase: str):
+    cursor.execute(f"""
+                SELECT message FROM question WHERE message ILIKE %(phrase)s OR title ILIKE %(phrase)s
+                UNION ALL
+                SELECT message FROM answer WHERE message ILIKE %(phrase)s;
+           """, {'phrase': '%' + search_phrase + '%'})
+    return cursor.fetchall()
