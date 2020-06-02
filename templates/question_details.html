@@ -10,9 +10,10 @@
 {% block body %}
     <div class="container_nav_menu">
         <p>
-        <a href="{{ url_for("add_answer", question_id=record.get("id")) }}" class="nav_button">Add answer</a>
-        <a href="{{ url_for("edit_question", question_id=record.get("id")) }}" class="nav_button">Edit question</a>
-        <a href="{{ url_for("delete_question", question_id=record.get("id")) }}" class="nav_button">Delete question</a>
+            <a href="{{ url_for("add_answer", question_id=record.get("id")) }}" class="nav_button">Add answer</a>
+            <a href="{{ url_for("edit_question", question_id=record.get("id")) }}" class="nav_button">Edit question</a>
+            <a href="{{ url_for("delete_question", question_id=record.get("id")) }}" class="nav_button">Delete question</a>
+            <a href="{{ url_for("add_tag", question_id=record.get("id")) }}" class="nav_button">Add tag</a>
         </p>
     </div>
     <div class="question_container">

@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, make_response, url_for
 import data_manager, util
-import jinja2
+
 
 app = Flask(__name__)
 app.config["UPLOAD_FOLDER"] = data_manager.UPLOAD_FOLDER
@@ -22,16 +22,30 @@ def homepage():
 
 @app.route("/list", methods=['GET', 'POST'])
 def questions_list():
-    all_questions = data_manager.get_all_records("question")
-    if request.method == 'POST':
-        sort_by = request.form.get("sort_by")
+    sort_by = request.args.get('sort_by')
+    if sort_by:
+        criteria_and_direction = sort_by.split("-")
+        all_questions = data_manager.get_sorted_questions(criteria_and_direction)
     else:
-        sort_by = "submission_time-DESC"
-    all_questions = util.sort_dictionary(all_questions, sort_by)
+        all_questions = data_manager.get_all_records("question")
     search_phrase = request.args.get('search_phrase')
     if search_phrase:
         return search_for_questions(search_phrase)
     return render_template("question_list.html", all_questions=all_questions, sort_by=sort_by, search_phrase=search_phrase)
+
+
+# @app.route("/list", methods=['GET', 'POST'])
+# def questions_list():
+#     all_questions = data_manager.get_all_records("question")
+#     if request.method == 'POST':
+#         sort_by = request.form.get("sort_by")
+#     else:
+#         sort_by = "submission_time-DESC"
+#     all_questions = util.sort_dictionary(all_questions, sort_by)
+#     search_phrase = request.args.get('search_phrase')
+#     if search_phrase:
+#         return search_for_questions(search_phrase)
+#     return render_template("question_list.html", all_questions=all_questions, sort_by=sort_by, search_phrase=search_phrase)
 
 
 @app.route("/question", methods=["POST", "GET"])
@@ -74,10 +88,11 @@ def show_question(question_id):
 def delete_question(question_id):
     all_answers = data_manager.get_all_records("answer")
     for answer in all_answers:
-        if answer.get("question_id") == question_id:
+        if str(answer.get("question_id")) == str(question_id):
             data_manager.delete_record(answer.get("id"), "answer")
-            data_manager.delete_connected_comment(answer.get("id"))
-    data_manager.delete_connected_comment(question_id)
+            data_manager.delete_connected_comment(-1, answer.get("id"))
+    data_manager.delete_connected_comment(question_id, -1)
+    data_manager.delete_connected_tags(question_id)
     data_manager.delete_record(question_id, "question")
     return redirect("/list")
 
@@ -207,9 +222,19 @@ def search_for_questions(search_phrase):
     return render_template("search_results.html", all_questions=search_results_questions, answers=search_results_answers, search_phrase=search_phrase)
 
 
-@app.route('/question/<question_id>/tag/<tag_id>/delete')
+@app.route('/question/<question_id>/new-tag')
+def add_tag(question_id):
+    tags_list = data_manager.get_available_tags()
+    new_tag = request.args.get("new_tag")
+    if new_tag:
+        return str(new_tag)
+    return render_template("add_tag.html", tags_list= tags_list)
+
+
+@app.route("/question/<question_id>/tag/<tag_id>/delete")
 def delete_tag(question_id, tag_id):
-    pass
+    data_manager.delete_tag(question_id, tag_id)
+    return redirect(url_for("show_question", question_id=question_id))
 
 
 if __name__ == "__main__":

@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% block title %}Answer Form{% endblock %}
+{% block header %}
+{% endblock %}
+{% block nav %}
+    {{ super() }}
+{% endblock %}
+{% block body %}
+    <br><br><br><br><h3>Select available tag...</h3>
+    <form>
+        <select name="new_tag" id="new_tag">
+            {% for available_tag in tags_list %}
+            <option value="{{ available_tag.name }}">{{ available_tag.name }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Submit</button>
+    </form>
+    <h3>...or add new tag</h3>
+    <form>
+        <label for="new_tag">new tag</label>
+        <input id="new_tag" name="new_tag" type="text">
+        <button type="submit">Submit</button>
+    </form>
+{% endblock %}
+{% block footer %}{{ super() }}{% endblock %}
