@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, make_response, url_for
 import data_manager, util
-import jinja2
+
 
 app = Flask(__name__)
 app.config["UPLOAD_FOLDER"] = data_manager.UPLOAD_FOLDER
@@ -196,6 +196,14 @@ def search_for_questions(search_phrase):
     search_results_answers = data_manager.search_for_phrase_answers(search_phrase)
     return render_template("search_results.html", all_questions=search_results_questions, answers=search_results_answers, search_phrase=search_phrase)
 
+
+@app.route('/question/<question_id>/new-tag')
+def add_tag(question_id):
+    tags_list = data_manager.get_available_tags()
+    new_tag = request.args.get("new_tag")
+    if new_tag:
+        return str(new_tag)
+    return render_template("add_tag.html", tags_list= tags_list)
 
 @app.route('/question/<question_id>/tag/<tag_id>/delete')
 def delete_tag(question_id, tag_id):

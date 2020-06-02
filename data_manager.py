@@ -297,3 +297,11 @@ def search_for_phrase_answers(cursor: RealDictCursor, search_phrase: str):
                 WHERE answer.message ILIKE %(phrase)s;
            """, {'phrase': '%' + search_phrase + '%'})
     return cursor.fetchall()
+
+@connection.connection_handler
+def get_available_tags(cursor: RealDictCursor):
+    cursor.execute(f"""
+                SELECT name
+                FROM tag
+           """)
+    return cursor.fetchall()
