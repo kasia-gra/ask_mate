@@ -278,10 +278,21 @@ def make_vote_for_question(question_id, result):
 
 
 @connection.connection_handler
-def search_for_phrase(cursor: RealDictCursor, search_phrase: str):
+def search_for_phrase_questions(cursor: RealDictCursor, search_phrase: str):
     cursor.execute(f"""
-                SELECT message FROM question WHERE message ILIKE %(phrase)s OR title ILIKE %(phrase)s
-                UNION ALL
-                SELECT message FROM answer WHERE message ILIKE %(phrase)s;
+                SELECT DISTINCT question.*
+                FROM question
+                FULL OUTER JOIN answer
+                ON question.id = answer.question_id
+                WHERE question.message ILIKE %(phrase)s OR question.title ILIKE %(phrase)s OR answer.message ILIKE %(phrase)s;
+           """, {'phrase': '%' + search_phrase + '%'})
+    return cursor.fetchall()
+
+@connection.connection_handler
+def search_for_phrase_answers(cursor: RealDictCursor, search_phrase: str):
+    cursor.execute(f"""
+                SELECT *
+                FROM answer
+                WHERE answer.message ILIKE %(phrase)s;
            """, {'phrase': '%' + search_phrase + '%'})
     return cursor.fetchall()
