@@ -70,17 +70,15 @@ def show_question(question_id):
     record = data_manager.get_specific_record(question_id, "question")
     tags = data_manager.get_tags_for_questions(question_id)
     all_answers_for_question = data_manager.get_answers_for_question(question_id)
-    question_comments = []
-    answers_comments = []
-    answers_id_list = []
-    comment_id_list = []
+    question_comments, answers_comments, answers_id_list, comment_id_list = [], [], [], []
     for answer in all_answers_for_question:
         answers_id_list.append(answer.get("id"))
     data_manager.increase_view_number(question_id)
     question_comments = data_manager.get_question_comments(question_id)
-    answers_comments = data_manager.get_answers_comments(answers_id_list)
-    for comment in answers_comments:
-        comment_id_list.append(comment.get("answer_id"))
+    if answers_id_list:
+        answers_comments = data_manager.get_answers_comments(answers_id_list)
+        for comment in answers_comments:
+            comment_id_list.append(comment.get("answer_id"))
     return render_template("question_details.html", record=record, answers=all_answers_for_question, question_comments=question_comments, tags=tags, answers_comments=answers_comments, comment_id_list=comment_id_list)
 
 
