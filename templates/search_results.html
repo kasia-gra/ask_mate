@@ -9,7 +9,7 @@
     <h1>SEARCH RESULTS</h1>
 
     <table class = content-table>
-        {%  set headers = ["submission_time", "view_number", "vote_number", "title", "message", "vote_up", "vote_down", "answer"] %}
+        {%  set headers = ["submission_time", "view_number", "vote_number", "title", "message", "vote_up", "vote_down"] %}
         <thead>
         <tr>{% for table_header in headers %}
             <th>{{ table_header.capitalize().replace("_", " ") }}</th>
@@ -21,24 +21,15 @@
             {% for question in all_questions %}
                 <tr>{% for data_header, question_detail in question.items() %}
                     {% if data_header in headers %}
-                    <td>
+                        <td>
                         {% if data_header == "title" %}
                             <a href="{{ url_for("show_question", question_id=question.get("id")|string) }}">{{ question_detail }}</a>
                         {% else %}
                             {{ question_detail }}
                         {% endif %}
-                    </td>
+                        </td>
                     {% endif %}
-
-                    {% if data_header == "answer" %}
-                    {% for answer in answers %}
-                        {% if question["id"] == answer["question_id"] %}
-                            <td>{{ answer["message"] }}</td>
-                        {% endif %}
                     {% endfor %}
-                    {% endif %}
-
-                {% endfor %}
                     <td>
                         <a href="{{ url_for("question_vote_up", question_id=question.get("id")|string) }}" methods="POST">
                             <img src="{{ url_for('static', filename="icons/like_up.png") }}" width="50px" height="50px" alt="vote_up">
@@ -49,6 +40,22 @@
                             <img src="{{ url_for('static', filename="icons/like_down.png") }}" width="50px" height="50px" alt="vote_down">
                         </a>
                     </td>
+                    {% for answer in answers %}
+                            {% if answer["question_id"] == question["id"] %}
+                                </tr>
+                                    <tr>
+                                        {%  set headers = ["submission_time", "view_number", "vote_number", "title", "message", "vote_up", "vote_down"] %}
+                                        {% for header in headers %}
+                                            {% if header == "title" %}
+                                            <td class="answer_to_question">Answer to -> {{ question[header] }}</td>
+                                            {% else %}
+                                            <td class="answer_to_question">{{ answer[header] }}</td>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </tr>
+                                <tr>
+                            {% endif %}
+                    {% endfor %}
                 </tr>
             {% endfor %}
         </tbody>
