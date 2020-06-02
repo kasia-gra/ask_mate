@@ -7,5 +7,26 @@
 {% endblock %}
 {% block body %}
     <h1>SEARCH RESULTS</h1>
+
+        <table class = content-table>
+        {%  set headers = ["qestion title", "question boody", "answer"] %}
+        <thead>
+        <tr>{% for table_header in headers %}
+            <th>{{ table_header }}</th>
+            {% endfor %}
+        </tr>
+        </thead>
+        <tbody>
+            {% for result in search_results %}
+                <tr>{% for data_header, data in result.items() %}
+                    <td>
+                        {{ data }}
+                    </td>
+            {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
 {% endblock %}
 {% block footer %}{{ super() }}{% endblock %}
