@@ -43,6 +43,8 @@ def add_question():
         if 'file' in request.files:
             file = request.files['file']
             new_record["image"] = util.save_image(file, app.config['UPLOAD_FOLDER'], "question")
+        if not new_record["image"]:
+            new_record["image"] = ""
         data_manager.add_record(new_record, "question")
         return redirect("/list")
     return render_template("question_form.html", old_record=new_record, is_new=True)
@@ -80,6 +82,8 @@ def edit_question(question_id):
         if 'file' in request.files:
             file = request.files['file']
             old_record["image"] = util.save_image(file, app.config['UPLOAD_FOLDER'], "question")
+        if not old_record["image"]:
+            old_record["image"] = ""
         data_manager.edit_record(old_record, "question")
         return redirect("/question/" + str(question_id))
     return render_template("question_form.html", old_record=old_record, is_new=False)
@@ -101,7 +105,7 @@ def add_answer(question_id):
         if 'file' in request.files:
             file = request.files['file']
             new_record["image"] = util.save_image(file, app.config['UPLOAD_FOLDER'], "answer", str(question_id))
-        else:
+        if not new_record["image"]:
             new_record["image"] = ""
         data_manager.add_record(new_record, "answer")
         return redirect("/question/" + str(question_id))
@@ -116,7 +120,9 @@ def edit_answer(answer_id):
         old_record["message"] = request.form["description"]
         if 'file' in request.files:
             file = request.files['file']
-            old_record["image"] = util.save_image(file, app.config['UPLOAD_FOLDER'], "answer")
+            old_record["image"] = util.save_image(file, app.config['UPLOAD_FOLDER'], "answer", str(old_record["question_id"]))
+        if not old_record["image"]:
+            old_record["image"] = ""
         data_manager.edit_record(old_record, "answer")
         return redirect("/question/" + str(old_record["question_id"]))
     return render_template("answer_form.html", old_record=old_record, is_new=False)
