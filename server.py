@@ -79,10 +79,11 @@ def show_question(question_id):
 def delete_question(question_id):
     all_answers = data_manager.get_all_records("answer")
     for answer in all_answers:
-        if answer.get("question_id") == question_id:
+        if str(answer.get("question_id")) == str(question_id):
             data_manager.delete_record(answer.get("id"), "answer")
-            data_manager.delete_connected_comment(answer.get("id"))
-    data_manager.delete_connected_comment(question_id)
+            data_manager.delete_connected_comment(-1, answer.get("id"))
+    data_manager.delete_connected_comment(question_id, -1)
+    data_manager.delete_connected_tags(question_id)
     data_manager.delete_record(question_id, "question")
     return redirect("/list")
 
@@ -205,9 +206,11 @@ def add_tag(question_id):
         return str(new_tag)
     return render_template("add_tag.html", tags_list= tags_list)
 
-@app.route('/question/<question_id>/tag/<tag_id>/delete')
+
+@app.route("/question/<question_id>/tag/<tag_id>/delete")
 def delete_tag(question_id, tag_id):
-    pass
+    data_manager.delete_tag(question_id, tag_id)
+    return redirect(url_for("show_question", question_id=question_id))
 
 
 if __name__ == "__main__":

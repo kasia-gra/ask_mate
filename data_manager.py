@@ -188,11 +188,27 @@ def delete_comment(cursor: RealDictCursor, record_id: int):
 
 
 @connection.connection_handler
-def delete_connected_comment(cursor: RealDictCursor, record_id: int):
+def delete_connected_comment(cursor: RealDictCursor, question_id: int = -1, answer_id: int = -1):
     cursor.execute(f"""
                     DELETE FROM comment
-                    WHERE question_id = %(id)s and answer_id IS NULL OR answer_id = %(id)s and question_id IS NULL;
-                    """, {'id': record_id})
+                    WHERE question_id = %(qid)s AND answer_id IS NULL OR answer_id = %(aid)s AND question_id IS NULL;
+                    """, {'qid': question_id, 'aid': answer_id})
+
+
+@connection.connection_handler
+def delete_tag(cursor: RealDictCursor, question_id: int, tag_id: int):
+    cursor.execute(f"""
+                    DELETE FROM question_tag
+                    WHERE question_id = %(question_id)s AND tag_id = %(tag_id)s;
+                    """, {'question_id': question_id, 'tag_id': tag_id})
+
+
+@connection.connection_handler
+def delete_connected_tags(cursor: RealDictCursor, question_id: int):
+    cursor.execute(f"""
+                        DELETE FROM question_tag
+                        WHERE question_id = %(question_id)s;
+                        """, {'question_id': question_id})
 
 
 @connection.connection_handler
