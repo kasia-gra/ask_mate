@@ -87,11 +87,11 @@ def add_answer(cursor: RealDictCursor, new_record: dict):
 def add_comment(cursor: RealDictCursor, new_record: dict):
     query = """
     INSERT INTO comment
-    (question_id, answer_id, message, submission_time, edited_count)
+    (question_id, answer_id, message, submission_time, edited_number)
     VALUES (%s, %s, %s, %s, %s);
     """
     cursor.execute(query, (new_record["question_id"], new_record["answer_id"],
-                   new_record["message"], new_record["submission_time"], new_record["edited_count"]))
+                   new_record["message"], new_record["submission_time"], new_record["edited_number"]))
 
 
 def edit_record(new_record, option):
