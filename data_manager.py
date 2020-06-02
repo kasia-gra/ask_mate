@@ -40,6 +40,7 @@ def get_five_records(cursor: RealDictCursor, table: str):
     cursor.execute(f"""
                     SELECT *
                     FROM {table}
+                    ORDER BY submission_time DESC
                     LIMIT 5;
                     """)
     return cursor.fetchall()
