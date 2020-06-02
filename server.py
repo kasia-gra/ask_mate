@@ -229,7 +229,7 @@ def add_tag(question_id):
             data_manager.add_tag_to_db(new_tag)
         tag_id = data_manager.get_tag_id(new_tag).get("id")
         data_manager.assign_tag_to_question(question_id, tag_id)
-    return render_template("add_tag.html", tags_list= tags_list)
+    return render_template("add_tag.html", tags_list=tags_list)
 
 
 @app.route("/question/<question_id>/tag/<tag_id>/delete")

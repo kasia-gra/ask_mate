@@ -324,6 +324,13 @@ def search_for_phrase_answers(cursor: RealDictCursor, search_phrase: str):
            """, {'phrase': '%' + search_phrase + '%'})
     return cursor.fetchall()
 
+@connection.connection_handler
+def get_available_tags(cursor: RealDictCursor):
+    cursor.execute(f"""
+                SELECT *
+                FROM tag
+           """)
+    return cursor.fetchall()
 
 @connection.connection_handler
 def add_tag_to_db(cursor: RealDictCursor, new_tag: str):
