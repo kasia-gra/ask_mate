@@ -29,7 +29,7 @@ def choose_sort_method(elements):
     if request.method == 'POST':
         sort_by = request.form.get("sort_by")
     else:
-        sort_by = "submission_time-asc"
+        sort_by = "submission_time-desc"
     return util.sort_dictionary(elements, sort_by), sort_by
 
 
