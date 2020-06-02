@@ -140,7 +140,7 @@ def comment_question(question_id):
     new_record = {"question_id": question_id}
     if request.method == "POST":
         new_record["message"] = request.form["message"]
-        new_record["edited_count"] = 0
+        new_record["edited_number"] = 0
         new_record["submission_time"] = util.get_new_timestamp()
         new_record["answer_id"] = None
         data_manager.add_comment(new_record)

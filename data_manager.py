@@ -176,7 +176,7 @@ def delete_connected_comment(cursor: RealDictCursor, record_id: int):
 @connection.connection_handler
 def get_question_comments(cursor: RealDictCursor, question_id: int):
     query = """
-    SELECT submission_time, message, edited_count from comment
+    SELECT submission_time, message, edited_number from comment
     WHERE question_id = %s
     """
     cursor.execute(query, (question_id,))
