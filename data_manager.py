@@ -27,6 +27,16 @@ def get_all_records(cursor: RealDictCursor, table: str):
 
 
 @connection.connection_handler
+def get_five_records(cursor: RealDictCursor, table: str):
+    cursor.execute(f"""
+                    SELECT *
+                    FROM {table}
+                    LIMIT 5;
+                    """)
+    return cursor.fetchall()
+
+
+@connection.connection_handler
 def get_answers_for_question(cursor: RealDictCursor, question_id: int):
     cursor.execute(f"""
                     SELECT *
@@ -87,11 +97,11 @@ def add_answer(cursor: RealDictCursor, new_record: dict):
 def add_comment(cursor: RealDictCursor, new_record: dict):
     query = """
     INSERT INTO comment
-    (question_id, answer_id, message, submission_time, edited_count)
+    (question_id, answer_id, message, submission_time, edited_number)
     VALUES (%s, %s, %s, %s, %s);
     """
     cursor.execute(query, (new_record["question_id"], new_record["answer_id"],
-                   new_record["message"], new_record["submission_time"], new_record["edited_count"]))
+                   new_record["message"], new_record["submission_time"], new_record["edited_number"]))
 
 
 def edit_record(new_record, option):
@@ -215,6 +225,15 @@ def increase_view_number(cursor: RealDictCursor, question_id: int):
                 SET view_number = view_number + 1
                 WHERE id = %(id)s;
            """, {'id': question_id})
+
+
+@connection.connection_handler
+def increase_edited_number(cursor: RealDictCursor, comment_id: int):
+    cursor.execute(f"""
+                UPDATE comment
+                SET edited_number = edited_number + 1
+                WHERE id = %(id)s;
+           """, {'id': comment_id})
 
 
 @connection.connection_handler
