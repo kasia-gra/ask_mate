@@ -6,18 +6,31 @@ app.config["UPLOAD_FOLDER"] = data_manager.UPLOAD_FOLDER
 
 
 @app.route("/")
+def homepage():
+    five_questions = data_manager.get_five_records("question")
+    five_questions, sort_by = choose_sort_method(five_questions)
+    search_phrase = request.args.get('search_phrase')
+    if search_phrase:
+        return search_for_questions(search_phrase)
+    return render_template("index.html", all_questions=five_questions, sort_by=sort_by, search_phrase=search_phrase)
+
+
 @app.route("/list", methods=['GET', 'POST'])
 def questions_list():
     all_questions = data_manager.get_all_records("question")
-    if request.method == 'POST':
-        sort_by = request.form.get("sort_by")
-    else:
-        sort_by = "submission_time-asc"
-    all_questions = util.sort_dictionary(all_questions, sort_by)
+    all_questions, sort_by = choose_sort_method(all_questions)
     search_phrase = request.args.get('search_phrase')
     if search_phrase:
         return search_for_questions(search_phrase)
     return render_template("question_list.html", all_questions=all_questions, sort_by=sort_by, search_phrase=search_phrase)
+
+
+def choose_sort_method(elements):
+    if request.method == 'POST':
+        sort_by = request.form.get("sort_by")
+    else:
+        sort_by = "submission_time-asc"
+    return util.sort_dictionary(elements, sort_by), sort_by
 
 
 @app.route("/question", methods=["POST", "GET"])

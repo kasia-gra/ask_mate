@@ -27,6 +27,16 @@ def get_all_records(cursor: RealDictCursor, table: str):
 
 
 @connection.connection_handler
+def get_five_records(cursor: RealDictCursor, table: str):
+    cursor.execute(f"""
+                    SELECT *
+                    FROM {table}
+                    LIMIT 5;
+                    """)
+    return cursor.fetchall()
+
+
+@connection.connection_handler
 def get_answers_for_question(cursor: RealDictCursor, question_id: int):
     cursor.execute(f"""
                     SELECT *
