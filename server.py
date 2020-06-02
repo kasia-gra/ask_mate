@@ -179,8 +179,9 @@ def comment_question(question_id):
 
 @app.route('/search_phrase')
 def search_for_questions(search_phrase):
-    search_results = data_manager.search_for_phrase(search_phrase)
-    return render_template("search_results.html", search_results=search_results)
+    search_results_questions = data_manager.search_for_phrase_questions(search_phrase)
+    search_results_answers = data_manager.search_for_phrase_answers(search_phrase)
+    return render_template("search_results.html", all_questions=search_results_questions, answers=search_results_answers)
 
 if __name__ == "__main__":
     app.run(
