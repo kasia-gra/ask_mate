@@ -113,6 +113,17 @@ h3 {
 
 }
 
+
+.nav_icon{
+    margin-left: 10px;
+	background-color:transparent;
+	border-radius:8px;
+	display:inline-block;
+	cursor:pointer;
+    float: left
+}
+
+
 .drop_down_container{
     margin-top: 100px;
     margin-right: 15%;
