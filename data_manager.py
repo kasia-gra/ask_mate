@@ -31,9 +31,7 @@ def get_answers_for_question(cursor: RealDictCursor, question_id: int):
     cursor.execute(f"""
                     SELECT *
                     FROM answer
-                    INNER JOIN question
-                    ON answer.question_id = question.id
-                    WHERE question.id = %(q_id)s;
+                    WHERE question_id = %(q_id)s;
                     """, {'q_id': question_id})
     return cursor.fetchall()
 
