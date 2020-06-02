@@ -48,9 +48,16 @@ def show_question(question_id):
 @app.route("/question/<question_id>/delete")
 def delete_question(question_id):
     all_answers = data_manager.get_all_records("answer")
+    all_comments = data_manager.get_all_records("comment")
     for answer in all_answers:
         if answer.get("question_id") == question_id:
             data_manager.delete_record(answer.get("id"), "answer")
+            for comment in all_comments:
+                if comment.get("answer_id") == answer.get("id"):
+                    data_manager.delete_record(comment.get("id"), "comment")
+    for comment in all_comments:
+        if comment.get("answer_id") == question_id:
+            data_manager.delete_record(comment.get("id"), "comment")
     data_manager.delete_record(question_id, "question")
     return redirect("/")
 

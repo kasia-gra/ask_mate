@@ -159,7 +159,10 @@ def delete_answer(cursor: RealDictCursor, record_id: int):
 
 @connection.connection_handler
 def delete_comment(cursor: RealDictCursor, record_id: int):
-    pass
+    cursor.execute(f"""
+                    DELETE FROM comment
+                    WHERE id = %(id)s;
+                    """, {'id': record_id})
 
 
 @connection.connection_handler
