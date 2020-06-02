@@ -21,7 +21,9 @@
         <p>{{ record.get("message") }}</p>
         <p>
             {% for tag in tags %}
-                #{{ tag.get("name") }}
+                <p>
+                    #{{ tag.get("name") }} <a href="/question/{{ tag.question_id }}/tag/{{ tag.tag_id }}/delete">X</a>
+                </p>
             {% endfor %}
         </p>
     </div>
