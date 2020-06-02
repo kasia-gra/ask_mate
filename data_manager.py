@@ -256,7 +256,7 @@ def make_vote_for_question(question_id, result):
 @connection.connection_handler
 def search_for_phrase_questions(cursor: RealDictCursor, search_phrase: str):
     cursor.execute(f"""
-                SELECT question.*
+                SELECT DISTINCT question.*
                 FROM question
                 FULL OUTER JOIN answer
                 ON question.id = answer.question_id
