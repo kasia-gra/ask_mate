@@ -103,7 +103,21 @@ def add_answer(question_id):
             new_record["image"] = ""
         data_manager.add_record(new_record, "answer")
         return redirect("/question/" + str(question_id))
-    return render_template("answer_form.html", old_record=new_record)
+    return render_template("answer_form.html", old_record=new_record, is_new=True)
+
+
+@app.route("/answer/<answer_id>/edit", methods=["POST", "GET"])
+def edit_answer(answer_id):
+    old_record = data_manager.get_specific_record(answer_id, "answer")
+    if request.method == "POST":
+        old_record["submission_time"] = util.get_new_timestamp()
+        old_record["message"] = request.form["description"]
+        if 'file' in request.files:
+            file = request.files['file']
+            old_record["image"] = util.save_image(file, app.config['UPLOAD_FOLDER'], "answer")
+        data_manager.edit_record(old_record, "answer")
+        return redirect("/question/" + str(old_record["question_id"]))
+    return render_template("answer_form.html", old_record=old_record, is_new=False)
 
 
 @app.route("/question/<question_id>/vote_up")
