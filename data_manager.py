@@ -69,10 +69,6 @@ def add_record(new_record, option):
 
 @connection.connection_handler
 def add_question(cursor: RealDictCursor, new_record: dict):
-    if new_record["image"]:
-        new_path = new_record["image"]
-    else:
-        new_path = ""
     cursor.execute(f"""
                     INSERT INTO question
                         (title, message, image, submission_time, vote_number, view_number)
@@ -82,16 +78,12 @@ def add_question(cursor: RealDictCursor, new_record: dict):
                         'title': new_record["title"],
                         'message': new_record["message"],
                         'submission_time': new_record["submission_time"],
-                        'img_path': new_path
+                        'img_path': new_record["image"]
                         })
 
 
 @connection.connection_handler
 def add_answer(cursor: RealDictCursor, new_record: dict):
-    if new_record["image"]:
-        new_path = new_record["image"]
-    else:
-        new_path = ""
     cursor.execute("""
                     INSERT INTO answer
                         (question_id, message, image, submission_time, vote_number)
@@ -101,7 +93,7 @@ def add_answer(cursor: RealDictCursor, new_record: dict):
                         'question_id': new_record['question_id'],
                         'message': new_record["message"],
                         'submission_time': new_record["submission_time"],
-                        'img_path': new_path
+                        'img_path': new_record["image"]
                         })
 
 
@@ -148,7 +140,6 @@ def edit_answer(cursor: RealDictCursor, new_record: dict):
     cursor.execute(f"""
                     UPDATE answer
                     SET
-                        title = %(title)s,
                         message = %(message)s,
                         image = %(img_path)s,
                         submission_time = %(submission_time)s

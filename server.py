@@ -44,8 +44,10 @@ def add_question():
         if 'file' in request.files:
             file = request.files['file']
             new_record["image"] = util.save_image(file, app.config['UPLOAD_FOLDER'], "question")
+        if not new_record["image"]:
+            new_record["image"] = ""
         data_manager.add_record(new_record, "question")
-        return redirect("/")
+        return redirect("/list")
     return render_template("question_form.html", old_record=new_record, is_new=True)
 
 
@@ -68,7 +70,7 @@ def delete_question(question_id):
             data_manager.delete_connected_comment(answer.get("id"))
     data_manager.delete_connected_comment(question_id)
     data_manager.delete_record(question_id, "question")
-    return redirect("/")
+    return redirect("/list")
 
 
 @app.route("/question/<question_id>/edit", methods=["POST", "GET"])
@@ -81,6 +83,8 @@ def edit_question(question_id):
         if 'file' in request.files:
             file = request.files['file']
             old_record["image"] = util.save_image(file, app.config['UPLOAD_FOLDER'], "question")
+        if not old_record["image"]:
+            old_record["image"] = ""
         data_manager.edit_record(old_record, "question")
         return redirect("/question/" + str(question_id))
     return render_template("question_form.html", old_record=old_record, is_new=False)
@@ -102,7 +106,7 @@ def add_answer(question_id):
         if 'file' in request.files:
             file = request.files['file']
             new_record["image"] = util.save_image(file, app.config['UPLOAD_FOLDER'], "answer", str(question_id))
-        else:
+        if not new_record["image"]:
             new_record["image"] = ""
         data_manager.add_record(new_record, "answer")
         return redirect("/question/" + str(question_id))
@@ -117,30 +121,22 @@ def edit_answer(answer_id):
         old_record["message"] = request.form["description"]
         if 'file' in request.files:
             file = request.files['file']
-            old_record["image"] = util.save_image(file, app.config['UPLOAD_FOLDER'], "answer")
+            old_record["image"] = util.save_image(file, app.config['UPLOAD_FOLDER'], "answer", str(old_record["question_id"]))
+        if not old_record["image"]:
+            old_record["image"] = ""
         data_manager.edit_record(old_record, "answer")
         return redirect("/question/" + str(old_record["question_id"]))
     return render_template("answer_form.html", old_record=old_record, is_new=False)
 
 
-@app.route("/question/<question_id>/vote_up")
-def question_vote_up(question_id):
+@app.route("/question/<question_id>/<vote>")
+def question_vote(question_id, vote):
     if request.cookies.get("q" + question_id) != "voted":
         res = make_response(redirect("/"))
         res.set_cookie("q" + question_id, "voted")
-        data_manager.update_vote_number("question", str(question_id), "up")
+        data_manager.update_vote_number("question", str(question_id), vote)
         return res
-    return redirect("/")
-
-
-@app.route("/question/<question_id>/vote_down")
-def question_vote_down(question_id):
-    if request.cookies.get("q" + question_id) != "voted":
-        res = make_response(redirect("/"))
-        res.set_cookie("q" + question_id, "voted")
-        data_manager.update_vote_number("question", str(question_id), "down")
-        return res
-    return redirect("/")
+    return redirect("/list")
 
 
 @app.route("/answer/<answer_id>/vote_up")
