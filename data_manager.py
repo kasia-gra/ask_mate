@@ -72,10 +72,11 @@ def add_answer(cursor: RealDictCursor, new_record: dict):
         new_path = ""
     cursor.execute("""
                     INSERT INTO answer
-                        (message, image, submission_time, vote_number)
+                        (question_id, message, image, submission_time, vote_number)
                     VALUES
-                        (%(message)s, %(img_path)s, %(submission_time)s, 0);
+                        (%(question_id)s, %(message)s, %(img_path)s, %(submission_time)s, 0);
                     """, {
+                        'question_id': new_record['question_id'],
                         'message': new_record["message"],
                         'submission_time': new_record["submission_time"],
                         'img_path': new_path
