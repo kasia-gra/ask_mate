@@ -14,7 +14,10 @@ def questions_list():
     else:
         sort_by = "submission_time-asc"
     all_questions = util.sort_dictionary(all_questions, sort_by)
-    return render_template("question_list.html", all_questions=all_questions, sort_by=sort_by)
+    search_phrase = request.args.get('search_phrase')
+    if search_phrase:
+        return search_for_questions(search_phrase)
+    return render_template("question_list.html", all_questions=all_questions, sort_by=sort_by, search_phrase=search_phrase)
 
 
 @app.route("/question", methods=["POST", "GET"])
@@ -32,13 +35,25 @@ def add_question():
     return render_template("question_form.html", old_record=new_record, is_new=True)
 
 
+# @app.route("/question/<question_id>")
+# def show_question(question_id):
+#     record = data_manager.get_specific_record(question_id, "question")
+#     all_answers = data_manager.get_all_records("answer")
+#     data_manager.increase_view_number(question_id)
+#     for answer in all_answers:
+#         if str(answer.get("question_id")) == str(question_id):
+#             # answer["submission_time"] = util.change_timestamp_to_date(answer.get("submission_time"))
+#             pass
+#     question_comments = data_manager.get_question_comments(question_id)
+#     return render_template("question_details.html", record=record, answers=all_answers, question_comments=question_comments)
+
 @app.route("/question/<question_id>")
 def show_question(question_id):
     record = data_manager.get_specific_record(question_id, "question")
-    all_answers = data_manager.get_all_records("answer")
+    all_answers_for_question = data_manager.get_answers_for_question(question_id)
     data_manager.increase_view_number(question_id)
     question_comments = data_manager.get_question_comments(question_id)
-    return render_template("question_details.html", record=record, answers=all_answers, question_comments=question_comments)
+    return render_template("question_details.html", record=record, answers=all_answers_for_question, question_comments=question_comments)
 
 
 @app.route("/question/<question_id>/delete")
@@ -147,6 +162,11 @@ def comment_question(question_id):
         return redirect(url_for("show_question", question_id=str(question_id)))
     return render_template("comment_form.html", question_id=str(question_id))
 
+
+@app.route('/search_phrase')
+def search_for_questions(search_phrase):
+    search_results = data_manager.search_for_phrase(search_phrase)
+    return render_template("search_results.html", search_results=search_results)
 
 if __name__ == "__main__":
     app.run(
