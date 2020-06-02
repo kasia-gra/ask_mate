@@ -26,7 +26,7 @@
     {% else %}
         <h4>Comments:</h4>
         <table class = content-table>
-            {% set question_comments_headers = ["submission_time", "message", "edited_count"] %}
+            {% set question_comments_headers = ["submission_time", "message", "edited_number"] %}
             <thead>
                 <tr>{% for question_comments_header in question_comments_headers %}
                     <th>{{ question_comments_header.capitalize().replace("_", " ") }}</th>

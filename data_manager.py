@@ -26,6 +26,16 @@ def get_all_records(cursor: RealDictCursor, table: str):
     return cursor.fetchall()
 
 
+@connection.connection_handler
+def get_answers_for_question(cursor: RealDictCursor, question_id: int):
+    cursor.execute(f"""
+                    SELECT *
+                    FROM answer
+                    WHERE question_id = %(q_id)s;
+                    """, {'q_id': question_id})
+    return cursor.fetchall()
+
+
 def add_record(new_record, option):
     if option == "question":
         add_question(new_record)
@@ -176,7 +186,7 @@ def delete_connected_comment(cursor: RealDictCursor, record_id: int):
 @connection.connection_handler
 def get_question_comments(cursor: RealDictCursor, question_id: int):
     query = """
-    SELECT submission_time, message, edited_count from comment
+    SELECT submission_time, message, edited_number from comment
     WHERE question_id = %s
     """
     cursor.execute(query, (question_id,))
@@ -221,3 +231,26 @@ def make_vote_for_question(question_id, result):
     result.set_cookie("q" + question_id, "voted")
     update_vote_number("question", question_id, "down")
     return result
+
+
+# @connection.connection_handler
+# def search_for_phrase(cursor: RealDictCursor, search_phrase: str):
+#     cursor.execute(f"""
+#                 SELECT question.title, question.message, answer.message,
+#                 FROM question
+#                 FULL JOIN answer
+#                 ON question.id = answer.question_id
+#                 WHERE question.message ILIKE %(phrase)s OR question.title ILIKE %(phrase)s OR answer.message ILIKE %(phrase)s;
+#            """, {'phrase': '%' + search_phrase + '%'})
+#     return cursor.fetchall()
+
+
+
+@connection.connection_handler
+def search_for_phrase(cursor: RealDictCursor, search_phrase: str):
+    cursor.execute(f"""
+                SELECT message FROM question WHERE message ILIKE %(phrase)s OR title ILIKE %(phrase)s
+                UNION ALL
+                SELECT message FROM answer WHERE message ILIKE %(phrase)s;
+           """, {'phrase': '%' + search_phrase + '%'})
+    return cursor.fetchall()
