@@ -27,6 +27,18 @@ def get_all_records(cursor: RealDictCursor, table: str):
 
 
 @connection.connection_handler
+def get_sorted_questions(cursor: RealDictCursor, sort_by: str):
+    criteria_and_order_list = sort_by.split("-")
+    criteria = criteria_and_order_list[0]
+    direction = criteria_and_order_list[1]
+    cursor.execute(f"""
+                    SELECT *
+                    FROM question
+                    ORDER BY %(criteria)s %(direction)s
+                    """, {'criteria': criteria, 'direction': direction})
+    return cursor.fetchall()
+
+@connection.connection_handler
 def get_five_records(cursor: RealDictCursor, table: str):
     cursor.execute(f"""
                     SELECT *

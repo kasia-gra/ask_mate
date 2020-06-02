@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, make_response, url_for
 import data_manager, util
+import jinja2
 
 app = Flask(__name__)
 app.config["UPLOAD_FOLDER"] = data_manager.UPLOAD_FOLDER
@@ -10,9 +11,9 @@ def homepage():
     five_questions = data_manager.get_five_records("question")
     if request.method == 'POST':
         sort_by = request.form.get("sort_by")
+        five_questions = data_manager.get_sorted_questions(sort_by)
     else:
-        sort_by = "submission_time-desc"
-    five_questions = util.sort_dictionary(five_questions, sort_by)
+        sort_by = "submission_time-DESC"
     search_phrase = request.args.get('search_phrase')
     if search_phrase:
         return search_for_questions(search_phrase)
@@ -25,7 +26,7 @@ def questions_list():
     if request.method == 'POST':
         sort_by = request.form.get("sort_by")
     else:
-        sort_by = "submission_time-desc"
+        sort_by = "submission_time-DESC"
     all_questions = util.sort_dictionary(all_questions, sort_by)
     search_phrase = request.args.get('search_phrase')
     if search_phrase:
@@ -183,7 +184,7 @@ def comment_question(question_id):
 def search_for_questions(search_phrase):
     search_results_questions = data_manager.search_for_phrase_questions(search_phrase)
     search_results_answers = data_manager.search_for_phrase_answers(search_phrase)
-    return render_template("search_results.html", all_questions=search_results_questions, answers=search_results_answers)
+    return render_template("search_results.html", all_questions=search_results_questions, answers=search_results_answers, search_phrase=search_phrase)
 
 
 @app.route('/question/<question_id>/tag/<tag_id>/delete')
