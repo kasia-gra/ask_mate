@@ -30,7 +30,7 @@
     <p>
         <a href="{{ url_for("comment_question", question_id=record.get("id")) }}">Add new comment</a>
     </p>
-    {% if comments == [] %}
+    {% if question_comments == [] %}
         <h3>No comments yet</h3>
     {% else %}
         <h3>Comments:</h3>
@@ -58,7 +58,7 @@
     {% else %}
         <h3>Answers:</h3>
         <table class = content-table>
-            {%  set headers = ["submission_time", "vote_number", "message", "image", "edit_answer", "delete_answer", "vote_up", "vote_down"] %}
+            {%  set headers = ["submission_time", "vote_number", "message", "image", "edit_answer", "delete_answer", "vote_up", "vote_down", "add_comment"] %}
             <thead>
                 <tr>{% for table_header in headers %}
                         <th>{{ table_header.capitalize().replace("_", " ") }}</th>
@@ -100,7 +100,30 @@
                                 <img src="{{ url_for('static', filename="icons/like_down.png") }}" width="50px" height="50px" alt="vote_down">
                             </a>
                         </td>
+                        <td>
+                            <a href="{{ url_for("comment_answer", answer_id=answer.get("id")|string) }}">Add comment</a>
+                        </td>
                     </tr>
+                    {% if answer.get("id") in comment_id_list %}
+                        <tr>
+                        <td colspan="9">
+                        {% set answer_comments_headers = ["submission_time", "message", "edited_number"] %}
+                        <ul>
+                        {% for answer_comment in answers_comments %}
+                            {% if answer_comment.get("answer_id") == answer.get("id") %}
+                                <li>
+                                {% for answer_comments_key, answer_comment_detail in answer_comment.items() %}
+                                    {% if answer_comments_key in answer_comments_headers %}
+                                        {{ answer_comment_detail }}
+                                    {% endif %}
+                                {% endfor %}
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                        </ul>
+                        </td>
+                        </tr>
+                    {% endif %}
                 {% endfor %}
             </tbody>
         </table>

@@ -56,9 +56,18 @@ def show_question(question_id):
     record = data_manager.get_specific_record(question_id, "question")
     tags = data_manager.get_tags_for_questions(question_id)
     all_answers_for_question = data_manager.get_answers_for_question(question_id)
+    question_comments = []
+    answers_comments = []
+    answers_id_list = []
+    comment_id_list = []
+    for answer in all_answers_for_question:
+        answers_id_list.append(answer.get("id"))
     data_manager.increase_view_number(question_id)
     question_comments = data_manager.get_question_comments(question_id)
-    return render_template("question_details.html", record=record, answers=all_answers_for_question, question_comments=question_comments, tags=tags)
+    answers_comments = data_manager.get_answers_comments(answers_id_list)
+    for comment in answers_comments:
+        comment_id_list.append(comment.get("answer_id"))
+    return render_template("question_details.html", record=record, answers=all_answers_for_question, question_comments=question_comments, tags=tags, answers_comments=answers_comments, comment_id_list=comment_id_list)
 
 
 @app.route("/question/<question_id>/delete")
@@ -161,6 +170,21 @@ def answer_vote_down(answer_id):
         data_manager.update_vote_number("answer", str(answer_id), "down")
         return res
     return redirect("/question/" + str(question_id))
+
+
+@app.route("/answer/<int:answer_id>/new-comment", methods=["POST", "GET"])
+def comment_answer(answer_id):
+    answer = data_manager.get_specific_record(answer_id, "answer")
+    question_id = answer["question_id"]
+    new_record = {"answer_id": answer_id}
+    if request.method == "POST":
+        new_record["message"] = request.form["message"]
+        new_record["edited_number"] = 0
+        new_record["submission_time"] = util.get_new_timestamp()
+        new_record["question_id"] = None
+        data_manager.add_comment(new_record)
+        return redirect(url_for("show_question", question_id=str(question_id)))
+    return render_template("comment_form.html", answer_id=answer_id, question_id=question_id)
 
 
 @app.route("/question/<int:question_id>/new-comment", methods=["POST", "GET"])

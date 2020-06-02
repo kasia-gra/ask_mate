@@ -93,6 +93,20 @@ h3 {
     background-color: rgba(111, 137, 121, 0.4);
 }
 
+
+.content-table-answer-comment {
+    width:70%;
+    margin-left:30%;
+    margin-right:15%;
+    border-collapse: collapse;
+    font-size: 0.9em;
+    min-width: 400px;
+    border-radius: 5px 5px 0 0;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+
 .fixed-menu {
     position: fixed;
     background-color: #57BC90;

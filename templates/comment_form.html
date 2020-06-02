@@ -7,7 +7,7 @@
 {% endblock %}
 {% block body %}
     <h1>Add new comment</h1>
-    <form id=comment_form action="/question/{{ question_id|string }}/new-comment" method="POST">
+    <form id=comment_form action="/{{ "answer/" + answer_id|string if answer_id else "question/" + question_id|string }}/new-comment" method="POST">
         <label for="description">Comment message:</label><br/>
         <textarea id="description" name="message" rows="10" cols="100"></textarea><br/>
         <button type="submit">Add new comment</button>

@@ -208,6 +208,17 @@ def get_question_comments(cursor: RealDictCursor, question_id: int):
 
 
 @connection.connection_handler
+def get_answers_comments(cursor: RealDictCursor, answers_id_list: list):
+    answers_id = ", ".join(str(id) for id in answers_id_list)
+    query = f"""
+    SELECT answer_id, submission_time, message, edited_number from comment
+    WHERE answer_id IN ({answers_id})
+    """
+    cursor.execute(query)
+    return cursor.fetchall()
+
+
+@connection.connection_handler
 def get_specific_record(cursor: RealDictCursor, record_id: int, option: str):
     cursor.execute(f"SELECT * FROM {option} WHERE id = {record_id};")
     return cursor.fetchone()
