@@ -22,7 +22,7 @@
         <p>
             {% for tag in tags %}
                 <p>
-                    #{{ tag.get("name") }} <a href="/question/{{ tag.question_id }}/tag/{{ tag.tag_id }}/delete">X</a>
+                    #{{ tag.get("name") }} <a href="{{ url_for("delete_tag", question_id=tag.question_id, tag_id=tag.tag_id) }}">X</a>
                 </p>
             {% endfor %}
         </p>

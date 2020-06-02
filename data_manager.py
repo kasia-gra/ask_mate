@@ -277,7 +277,6 @@ def make_vote_for_question(question_id, result):
 #     return cursor.fetchall()
 
 
-
 @connection.connection_handler
 def search_for_phrase(cursor: RealDictCursor, search_phrase: str):
     cursor.execute(f"""

@@ -185,6 +185,11 @@ def search_for_questions(search_phrase):
     return render_template("search_results.html", search_results=search_results)
 
 
+@app.route('/question/<question_id>/tag/<tag_id>/delete')
+def delete_tag(question_id, tag_id):
+    pass
+
+
 if __name__ == "__main__":
     app.run(
         host='127.0.0.1',
