@@ -228,6 +228,15 @@ def increase_view_number(cursor: RealDictCursor, question_id: int):
 
 
 @connection.connection_handler
+def increase_edited_number(cursor: RealDictCursor, comment_id: int):
+    cursor.execute(f"""
+                UPDATE comment
+                SET edited_number = edited_number + 1
+                WHERE id = %(id)s;
+           """, {'id': comment_id})
+
+
+@connection.connection_handler
 def update_vote_number(cursor: RealDictCursor, option: str, record_id: int, vote_direction: str):
     vote_dic = {"up": 1, "down": -1}
     vote = vote_dic[vote_direction]
