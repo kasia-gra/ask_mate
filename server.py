@@ -238,6 +238,19 @@ def delete_tag(question_id, tag_id):
     return redirect(url_for("show_question", question_id=question_id))
 
 
+@app.route("/comments/<int:comment_id>/delete")
+def delete_comment(comment_id):
+    comment = data_manager.get_specific_record(comment_id, "comment")
+    if comment.get("question_id"):
+        question_id = comment.get("question_id")
+    else:
+        answer_id = comment.get("answer_id")
+        answer = data_manager.get_specific_record(answer_id, "answer")
+        question_id = answer.get("question_id")
+    data_manager.delete_comment(comment_id)
+    return redirect(url_for("show_question", question_id=question_id))
+
+
 if __name__ == "__main__":
     app.run(
         host='127.0.0.1',
