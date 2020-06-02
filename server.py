@@ -51,10 +51,11 @@ def add_question():
 @app.route("/question/<question_id>")
 def show_question(question_id):
     record = data_manager.get_specific_record(question_id, "question")
+    tags = data_manager.get_tags_for_questions(question_id)
     all_answers_for_question = data_manager.get_answers_for_question(question_id)
     data_manager.increase_view_number(question_id)
     question_comments = data_manager.get_question_comments(question_id)
-    return render_template("question_details.html", record=record, answers=all_answers_for_question, question_comments=question_comments)
+    return render_template("question_details.html", record=record, answers=all_answers_for_question, question_comments=question_comments, tags=tags)
 
 
 @app.route("/question/<question_id>/delete")

@@ -237,6 +237,18 @@ def increase_edited_number(cursor: RealDictCursor, comment_id: int):
 
 
 @connection.connection_handler
+def get_tags_for_questions(cursor: RealDictCursor, question_id: int):
+    cursor.execute(f"""
+                    SELECT *
+                    FROM question_tag
+                    LEFT JOIN tag
+                    ON question_tag.tag_id= tag.id
+                    WHERE question_id = %(id)s;
+               """, {'id': question_id})
+    return cursor.fetchall()
+
+
+@connection.connection_handler
 def update_vote_number(cursor: RealDictCursor, option: str, record_id: int, vote_direction: str):
     vote_dic = {"up": 1, "down": -1}
     vote = vote_dic[vote_direction]

@@ -19,12 +19,19 @@
         <h2>{{ record.get("title") }}</h2>
         <img src="{{ url_for('static', filename="img/" + record.get("image")|string) }}" width="400px" height="400px" alt="No available image!" align="left">
         <p>{{ record.get("message") }}</p>
+        <p>
+            {% for tag in tags %}
+                #{{ tag.get("name") }}
+            {% endfor %}
+        </p>
     </div>
-    </p><a href="{{ url_for("comment_question", question_id=record.get("id")) }}">Add new comment</a>
+    <p>
+        <a href="{{ url_for("comment_question", question_id=record.get("id")) }}">Add new comment</a>
+    </p>
     {% if comments == [] %}
-        <h4>No comments yet</h4>
+        <h3>No comments yet</h3>
     {% else %}
-        <h4>Comments:</h4>
+        <h3>Comments:</h3>
         <table class = content-table>
             {% set question_comments_headers = ["submission_time", "message", "edited_number"] %}
             <thead>
