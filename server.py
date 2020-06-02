@@ -225,7 +225,10 @@ def add_tag(question_id):
     tags_list = data_manager.get_available_tags()
     new_tag = request.args.get("new_tag")
     if new_tag:
-        return str(new_tag)
+        if data_manager.check_if_tag_already_available(new_tag, tags_list):
+            data_manager.add_tag_to_db(new_tag)
+        tag_id = data_manager.get_tag_id(new_tag).get("id")
+        data_manager.assign_tag_to_question(question_id, tag_id)
     return render_template("add_tag.html", tags_list= tags_list)
 
 

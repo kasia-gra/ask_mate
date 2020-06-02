@@ -121,7 +121,7 @@ INSERT INTO tag VALUES (3, 'css');
 INSERT INTO tag VALUES (4, 'food');
 INSERT INTO tag VALUES (5, 'household');
 INSERT INTO tag VALUES (6, 'church');
-SELECT pg_catalog.setval('tag_id_seq', 3, true);
+SELECT pg_catalog.setval('tag_id_seq', 8, true);
 
 INSERT INTO question_tag VALUES (0, 1);
 INSERT INTO question_tag VALUES (1, 3);
