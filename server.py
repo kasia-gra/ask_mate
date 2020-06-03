@@ -4,6 +4,7 @@ from question_handler import question
 from answer_handler import answer
 from comment_handler import comment
 from vote_handler import vote
+from tag_handler import tag
 
 
 app = Flask(__name__)
@@ -12,6 +13,7 @@ app.register_blueprint(question)
 app.register_blueprint(answer)
 app.register_blueprint(comment)
 app.register_blueprint(vote)
+app.register_blueprint(tag)
 
 
 @app.route("/")
@@ -72,26 +74,6 @@ def search_for_questions(search_phrase):
     search_results_questions = data_manager.search_for_phrase_questions(search_phrase)
     search_results_answers = data_manager.search_for_phrase_answers(search_phrase)
     return render_template("search_results.html", all_questions=search_results_questions, answers=search_results_answers, search_phrase=search_phrase)
-
-
-@app.route('/question/<question_id>/new-tag')
-def add_tag(question_id):
-    tags_list = data_manager.get_available_tags()
-    new_tag = request.args.get("new_tag")
-    if new_tag:
-        if not data_manager.check_if_tag_already_available(new_tag, tags_list):
-            data_manager.add_tag_to_db(new_tag)
-        tag_id = data_manager.get_tag_id(new_tag).get("id")
-        if not data_manager.is_tag_already_assigned(question_id, tag_id):
-            data_manager.assign_tag_to_question(question_id, tag_id)
-        return redirect(f"/question/{question_id}")
-    return render_template("add_tag.html", tags_list=tags_list)
-
-
-@app.route("/question/<question_id>/tag/<tag_id>/delete")
-def delete_tag(question_id, tag_id):
-    data_manager.delete_tag(question_id, tag_id)
-    return redirect(url_for("show_question", question_id=question_id))
 
 
 if __name__ == "__main__":

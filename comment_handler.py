@@ -1,6 +1,7 @@
-from flask import render_template, request, redirect, make_response, url_for, Blueprint
+from flask import render_template, request, redirect, url_for, Blueprint
 import data_manager
 import util
+
 comment = Blueprint('comment', __name__, template_folder='templates')
 
 

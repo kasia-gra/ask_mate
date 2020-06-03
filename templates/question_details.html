@@ -13,7 +13,7 @@
             <a href="{{ url_for("answer.add_answer", question_id=record.get("id")) }}" class="nav_button">Add answer</a>
             <a href="{{ url_for("question.edit_question", question_id=record.get("id")) }}" class="nav_button">Edit question</a>
             <a href="{{ url_for("question.delete_question", question_id=record.get("id")) }}" class="nav_button">Delete question</a>
-            <a href="{{ url_for("add_tag", question_id=record.get("id")) }}" class="nav_button">Add tag</a>
+            <a href="{{ url_for("tag.add_tag", question_id=record.get("id")) }}" class="nav_button">Add tag</a>
         </p>
     </div>
     <div class="question_container">
@@ -23,7 +23,7 @@
         <p>
             {% for tag in tags %}
                 <p>
-                    #{{ tag.get("name") }} <a href="{{ url_for("delete_tag", question_id=tag.question_id, tag_id=tag.tag_id) }}">X</a>
+                    #{{ tag.get("name") }} <a href="{{ url_for("tag.delete_tag", question_id=tag.question_id, tag_id=tag.tag_id) }}">X</a>
                 </p>
             {% endfor %}
         </p>

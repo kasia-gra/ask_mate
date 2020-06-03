@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, make_response, url_for, Blueprint
+from flask import request, redirect, make_response, Blueprint
 import data_manager
 vote = Blueprint('vote', __name__, template_folder='templates')
 
