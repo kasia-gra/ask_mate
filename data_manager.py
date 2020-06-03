@@ -1,15 +1,8 @@
-from datetime import datetime
 import os
-import util
-import csv
-
-from psycopg2 import sql
 from psycopg2.extras import RealDictCursor
 import connection
 
 dir_path = os.path.dirname(__file__)
-ANSWER_FILE_PATH = os.path.join(dir_path, "sample_data/answer.csv")
-QUESTION_FILE_PATH = os.path.join(dir_path, "sample_data/question.csv")
 QUESTION_HEADERS = ["id", "submission_time", "view_number", "vote_number", "title", "message", "image"]
 ANSWER_HEADERS = ["id", "submission_time", "vote_number", "question_id", "message", "image"]
 UPLOAD_FOLDER = os.path.join(dir_path, "static/img/")
@@ -34,6 +27,7 @@ def get_sorted_questions(cursor: RealDictCursor, criteria_and_direction):
                     ORDER BY {criteria_and_direction[0]} {criteria_and_direction[1]};
                     """)
     return cursor.fetchall()
+
 
 @connection.connection_handler
 def get_five_records(cursor: RealDictCursor, table: str):
@@ -247,10 +241,6 @@ def get_headers_by_option(option="question"):
     return ANSWER_HEADERS if option == "answer" else QUESTION_HEADERS
 
 
-def get_file_path(option="answer"):
-    return ANSWER_FILE_PATH if option == "answer" else QUESTION_FILE_PATH
-
-
 @connection.connection_handler
 def increase_view_number(cursor: RealDictCursor, question_id: int):
     cursor.execute(f"""
@@ -298,18 +288,6 @@ def make_vote_for_question(question_id, result):
     return result
 
 
-# @connection.connection_handler
-# def search_for_phrase(cursor: RealDictCursor, search_phrase: str):
-#     cursor.execute(f"""
-#                 SELECT question.title, question.message, answer.message,
-#                 FROM question
-#                 FULL JOIN answer
-#                 ON question.id = answer.question_id
-#                 WHERE question.message ILIKE %(phrase)s OR question.title ILIKE %(phrase)s OR answer.message ILIKE %(phrase)s;
-#            """, {'phrase': '%' + search_phrase + '%'})
-#     return cursor.fetchall()
-
-
 @connection.connection_handler
 def search_for_phrase_questions(cursor: RealDictCursor, search_phrase: str):
     cursor.execute(f"""
@@ -321,6 +299,7 @@ def search_for_phrase_questions(cursor: RealDictCursor, search_phrase: str):
            """, {'phrase': '%' + search_phrase + '%'})
     return cursor.fetchall()
 
+
 @connection.connection_handler
 def search_for_phrase_answers(cursor: RealDictCursor, search_phrase: str):
     cursor.execute(f"""
@@ -330,6 +309,7 @@ def search_for_phrase_answers(cursor: RealDictCursor, search_phrase: str):
            """, {'phrase': '%' + search_phrase + '%'})
     return cursor.fetchall()
 
+
 @connection.connection_handler
 def get_available_tags(cursor: RealDictCursor):
     cursor.execute(f"""
@@ -337,6 +317,7 @@ def get_available_tags(cursor: RealDictCursor):
                 FROM tag
            """)
     return cursor.fetchall()
+
 
 @connection.connection_handler
 def add_tag_to_db(cursor: RealDictCursor, new_tag: str):
@@ -371,4 +352,3 @@ def assign_tag_to_question(cursor: RealDictCursor, question_id: int, tag_id: int
                 INSERT INTO question_tag 
                 VALUES (%s, %s);
            """, (question_id, tag_id))
-
