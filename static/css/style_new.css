@@ -20,7 +20,7 @@ a:hover {
     background-color: #24262A;
     justify-content: space-between;
     color: white;
-    padding-top: 2em;
+    padding-top: 5em;
     padding-left: 10%;
     padding-right: 10%;
 }
@@ -49,6 +49,7 @@ a:hover {
     align-content: center;
     align-self: flex-end;
     justify-self: right;
+    justify-content: flex-end;
 }
 
 .table-search-form > input {
@@ -342,4 +343,128 @@ a:hover {
 .view-number-value {
     text-decoration-style: solid;
     font-size: 1.5em;
+}
+
+
+
+
+/* navigation styles */
+
+:root {
+    --main_bgd: rgb(72, 54, 73);
+    --logo_bgd: rgb(42, 187, 2);
+    --nav_bgd: rgb(2, 0, 0);
+    --hover_bgd: rgb(251, 242, 242);
+  }
+
+*,*::before, *::after {
+    box-sizing: border-box;
+}
+
+header {
+    background-color: var(--logo_bgd);
+    text-align: center;
+    position: fixed;
+    margin: 0;
+    width: 100%;
+    z-index: 999;
+}
+
+.search {
+    color: blanchedalmond;
+}
+
+/* setting position to absolute so it is relative -header already set to fixed */
+nav {
+    position: absolute;
+    text-align: left;
+/* move 100% from header that is fixed */
+    top: 100%;
+    left: 0;
+    background-color: var(--nav_bgd);
+    width: 100%;
+    transform: scale(1,0);
+    transform-origin: top;
+    transition: 400ms ease-in-out;
+}
+
+nav ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+nav li {
+    margin-bottom: 1em;
+    margin-left: 1em;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    /* to make letter fade in the menu */
+    opacity: 0;
+    transition: opacity 150ms ease-in-out;
+}
+
+nav a:hover{
+    color:rgb(32, 32, 66);
+    background-color: whitesmoke;
+}
+
+
+/* create checkbox for displaying & hiding nav, transform is needed so we do not use display none -
+similar transform is needed in nav */
+.nav_toggle:checked ~ nav {
+    transform: scale(1,1);
+}
+
+
+.nav_toggle{
+    display: none;
+}
+
+
+.nav_toggle_label{
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin-left: 1em;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.nav_toggle_label span,
+.nav_toggle_label span::before,
+.nav_toggle_label span::after {
+    display: block;
+    background: whitesmoke;
+    height: 2px;
+    width: 2em;
+    border-radius: 2px;
+    position: relative;
+}
+
+.nav_toggle_label span::before,
+.nav_toggle_label span::after {
+    content: '';
+    position: absolute;
+}
+
+.nav_toggle_label span::before {
+    bottom: 7px;
+}
+
+.nav_toggle_label span::after {
+    top: 7px;
+}
+
+/* to make letters in the menu fade */
+
+.nav_toggle:checked ~ nav a {
+    opacity: 1;
+    transition: opacity 250ms ease-in-out 250ms;
 }
