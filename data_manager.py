@@ -346,6 +346,16 @@ def check_if_tag_already_available(new_tag, tags_list):
     return tag_in_db
 
 
+def is_tag_already_assigned(question_id, tag_id):
+    tag_assigned = False
+    question_tags = get_tags_for_questions(question_id)
+    for dictionary in question_tags:
+        if dictionary["tag_id"] == tag_id:
+            tag_assigned = True
+            break
+    return tag_assigned
+
+
 @connection.connection_handler
 def assign_tag_to_question(cursor: RealDictCursor, question_id: int, tag_id: int):
     cursor.execute(f"""
