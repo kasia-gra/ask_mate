@@ -38,14 +38,7 @@ def questions_list():
 def add_question():
     new_record = {}
     if request.method == "POST":
-        new_record["title"] = request.form["title"]
-        new_record["submission_time"] = util.get_new_timestamp()
-        new_record["message"] = request.form["description"]
-        if 'file' in request.files:
-            file = request.files['file']
-            new_record["image"] = util.save_image(file, app.config['UPLOAD_FOLDER'], "question")
-        if not new_record["image"]:
-            new_record["image"] = ""
+        new_record = get_question_data(new_record)
         data_manager.add_record(new_record, "question")
         return redirect("/list")
     return render_template("question_form.html", old_record=new_record, is_new=True)
@@ -85,17 +78,22 @@ def delete_question(question_id):
 def edit_question(question_id):
     old_record = data_manager.get_specific_record(question_id, "question")
     if request.method == "POST":
-        old_record["title"] = request.form["title"]
-        old_record["submission_time"] = util.get_new_timestamp()
-        old_record["message"] = request.form["description"]
-        if 'file' in request.files:
-            file = request.files['file']
-            old_record["image"] = util.save_image(file, app.config['UPLOAD_FOLDER'], "question")
-        if not old_record["image"]:
-            old_record["image"] = ""
+        old_record = get_question_data(old_record)
         data_manager.edit_record(old_record, "question")
         return redirect("/question/" + str(question_id))
     return render_template("question_form.html", old_record=old_record, is_new=False)
+
+
+def get_question_data(record):
+    record["title"] = request.form["title"]
+    record["submission_time"] = util.get_new_timestamp()
+    record["message"] = request.form["description"]
+    if 'file' in request.files:
+        file = request.files['file']
+        record["image"] = util.save_image(file, app.config['UPLOAD_FOLDER'], "question")
+    if not record["image"]:
+        record["image"] = ""
+    return record
 
 
 @app.route("/answer/<answer_id>/delete")
