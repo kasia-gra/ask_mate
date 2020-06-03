@@ -11,20 +11,81 @@ a:hover {
 
 .body {
     background-color: whitesmoke;
+    margin: 0px 0px 0px 0px;
+}
+
+.table-header-and-title {
+    display: flex;
+    flex-direction: row;
+    background-color: #24262A;
+    justify-content: space-between;
+    color: white;
+    padding-top: 2em;
+    padding-left: 10%;
+    padding-right: 10%;
+}
+
+
+.table-title {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+}
+
+
+.table-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+}
+
+.table-search-form {
+    top: 0;
+    padding: 0.8em;
+    font-size: 1em;
+    display: flex;
+    align-content: center;
+    align-self: flex-end;
+    justify-self: right;
+}
+
+.table-search-form > input {
+    border-radius: 0.6em;
+    border: black solid 0.1em;
+    padding: 0.8em;
+    font-size: 1em;
+}
+
+.table-search-form > button {
+    border-radius: 0.6em;
+    border: black solid 0.1em;
+    padding: 0.8em;
+    font-size: 1em;
 }
 
 .navigation-menu {
-    border-radius: 1em;
-    border: black solid 0.1em;
-    background-color: #BDB592;
+    padding-right: 10%;
+    padding-left: 10%;
+    padding-top: 1em;
+    padding-bottom: 2em;
+    background-color: #46D21B;
     position: static;
     top: 0;
     display: flex;
     flex-direction: row;
-    margin-right: 10%;
-    margin-left: 10%;
-    padding: 0.2em;
-    margin-bottom: 2em;
+    align-content: flex-start;
+    justify-content: space-between;
+}
+
+.icons-menu {
+    position: static;
+    top: 0;
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: center;
 }
 
 .container {
@@ -39,8 +100,67 @@ a:hover {
 
 .button-panel {
     display: flex;
-    margin-right: 10%;
-    margin-left: 10%;
+    padding-left: 10%;
+    padding-right: 10%;
+    padding-bottom: 1.5em;
+    padding-top: 1.5em;
+    background-color: whitesmoke;
+}
+
+.nav_button {
+    background-color: #46D21B;
+    color: white;
+    font-size: larger;
+    font-weight: bold;
+}
+
+.nav_button:hover {
+    background-color: #46D21B;
+    color: whitesmoke;
+    font-size: larger;
+    font-weight: bold;
+}
+
+.home-button {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.button-nav-home {
+    display: flex;
+    flex-direction: column;
+    padding-right: 0.4em;
+    padding-top: 0.4em;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+}
+
+
+.button-nav-home:hover {
+    color: black;
+}
+
+.table-sorting-form {
+    display: flex;
+    flex-direction: row;
+}
+
+
+.drop_down_btn {
+    border-radius: 0.6em;
+    border: black solid 0.1em;
+    padding: 0.8em;
+    font-size: 1em;
+}
+
+.drop_down_btn > button {
+    width: 5em;
+}
+
+.drop_down_btn > select {
+    width: 15em;
 }
 
 
@@ -48,28 +168,7 @@ a:hover {
     border-radius: 1em;
     border: black solid 0.1em;
     display: flex;
-    margin-right: 10%;
-    margin-left: 10%;
     padding: 0.8em;
-}
-
-
-.table {
-}
-
-
-.table-title {
-    justify-content: center;
-    display: flex;
-}
-
-
-.table-header {
-    display: flex;
-    justify-content: space-between;
-    margin-left: 10%;
-    margin-right: 10%;
-    margin-bottom: 2em;
 }
 
 
@@ -101,6 +200,7 @@ a:hover {
 
 .table-record-actions-panel {
     background-color: #46D21B;
+    color: white;
     width: 15%;
     display: flex;
     flex-direction: column;

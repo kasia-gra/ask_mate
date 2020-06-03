@@ -9,13 +9,35 @@
 {% block header %}{% endblock %}
 {% block nav %}
     <div class="navigation-menu">
-        <div class="home-button">
-            <a href="{{ url_for("homepage") }}">
-                <img src="{{ url_for('static', filename="icons/home.png") }}" width="50px" height="50px" alt="HOME">
-            </a>
+        <div class="icons-menu">
+            <div class="home-button">
+                <a href="{{ url_for("homepage") }}" class="button-nav-home">
+                    <div>
+                        <img src="{{ url_for('static', filename="icons/home.png") }}" width="50px" height="50px"
+                             alt="HOME">
+                    </div>
+                    <div>
+                        HOME
+                    </div>
+                </a>
+            </div>
+            <div class="home-button">
+                <a href="{{ url_for("questions_list") }}" class="button-nav-home">
+                    <div>
+                        <img src="{{ url_for('static', filename="icons/list.png") }}" width="50px" height="50px"
+                             alt="QUESTIONS_LIST">
+                    </div>
+                    <div>
+                        QUESTIONS
+                    </div>
+                </a>
+            </div>
         </div>
-        <div class="question-list-button">
-            <a href="{{ url_for("questions_list") }}" class="nav_button">Questions List</a>
+        <div class="table-search-form">
+            <form>
+                <input class="drop_down_btn" id="search_phrase" name="search_phrase" type="text">
+                <button class="drop_down_btn" type="submit">Search</button>
+            </form>
         </div>
     </div>
     {% block nav_extension %}

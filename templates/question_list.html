@@ -9,36 +9,31 @@
 {% endblock %}
 {% block body %}
     <div class="container">
-        <div class="button-panel">
-            <a href="{{ url_for("question.add_question") }}" class="nav_button">Ask new question</a>
-        </div>
         <div class="table">
-            <div class="table-title">
-                <h1>All questions</h1>
-            </div>
-            <div class="table-header">
-                <div class="table-sorting-form">
-                    <form action="{{ url_for('questions_list', sort_by=sort_by) }}">
-                        <select class="drop_down_btn" name="sort_by" id="sort_by">
-                            {% set sort_criteria = ["submission_time", "view_number", "vote_number", "title", "message"] %}
-                            {% for sort_by_option in sort_criteria %}
-                                {% set sort_order = ['ASC', 'DESC'] %}
-                                {% for order in sort_order %}
-                                    <option value="{{ sort_by_option }}-{{ order }}">sort by: {{ sort_by_option }}
-                                        {% if order=='ASC' %} &#8595 {% else %} &#8593{% endif %}</option>
+            <div class="table-header-and-title">
+                <div class="table-title">
+                    <h1>All questions</h1>
+                </div>
+                <div class="table-header">
+                    <div class="table-sorting-form">
+                        <form action="{{ url_for('questions_list', sort_by=sort_by) }}">
+                            <select class="drop_down_btn" name="sort_by" id="sort_by">
+                                {% set sort_criteria = ["submission_time", "view_number", "vote_number", "title", "message"] %}
+                                {% for sort_by_option in sort_criteria %}
+                                    {% set sort_order = ['ASC', 'DESC'] %}
+                                    {% for order in sort_order %}
+                                        <option value="{{ sort_by_option }}-{{ order }}">sort by: {{ sort_by_option }}
+                                            {% if order=='ASC' %} &#8595 {% else %} &#8593{% endif %}</option>
+                                    {% endfor %}
                                 {% endfor %}
-                            {% endfor %}
-                        </select>
-                        <button class="drop_down_btn" type="submit">Sort</button>
-                    </form>
+                            </select>
+                            <button class="drop_down_btn" type="submit">Sort</button>
+                        </form>
+                    </div>
                 </div>
-                <div class="table-search-form">
-                    <form>
-                        <label for="search_phrase">Search for phrase</label>
-                        <input id="search_phrase" name="search_phrase" type="text">
-                        <button type="submit">Search</button>
-                    </form>
-                </div>
+            </div>
+            <div class="button-panel">
+                <a href="{{ url_for("question.add_question") }}" class="nav_button">Ask new question</a>
             </div>
             {% for question in all_questions %}
                 <div class="table-content">
@@ -55,19 +50,19 @@
                             <div class="view-vote-numbers">
                                 <div class="view-number">
                                     <div class="view-number-value">
-                                    {{ question.get("view_number") }}
-                                </div>
-                                <div class="view-number-text">
-                                    Views
-                                </div>
+                                        {{ question.get("view_number") }}
+                                    </div>
+                                    <div class="view-number-text">
+                                        Views
+                                    </div>
                                 </div>
                                 <div class="vote-number">
                                     <div class="vote-number-value">
-                                    {{ question.get("vote_number") }}
-                                </div>
-                                <div class="vote-number-text">
-                                    Votes
-                                </div>
+                                        {{ question.get("vote_number") }}
+                                    </div>
+                                    <div class="vote-number-text">
+                                        Votes
+                                    </div>
                                 </div>
                             </div>
                         </div>
