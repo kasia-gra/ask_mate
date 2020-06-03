@@ -87,6 +87,12 @@ a {
     margin-bottom: 0.6em;
 }
 
+
+.question-title:hover > a {
+    color: chocolate;
+}
+
+
 .question-message {
     font-size: 1em;
     color: black;
