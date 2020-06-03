@@ -11,6 +11,8 @@ a:hover {
 
 .body {
     background-color: whitesmoke;
+    font-family: sans-serif;
+    font-size: medium;
 }
 
 .navigation-menu {
@@ -80,12 +82,23 @@ a:hover {
 .table-search-form {
 }
 
-
 .table-content {
     display: flex;
     justify-content: center;
     align-content: center;
     margin-bottom: 1em;
+}
+
+.indented_table-details-and-description {
+    background-color: ghostwhite;
+    width: 60%;
+    display: flex;
+    flex-direction: row;
+    margin: 0.2em;
+    margin-left: 5%;
+    padding: 0.6em;
+    border-radius: 0.6em;
+    border: none;
 }
 
 .table-record-details {
@@ -97,7 +110,6 @@ a:hover {
     padding: 0.6em;
     justify-content: center;
 }
-
 
 .table-record-actions-panel {
     background-color: #46D21B;
@@ -143,6 +155,12 @@ a:hover {
 }
 
 .question-message {
+    font-size: 1em;
+    color: black;
+    font-style: normal;
+}
+
+.answer_to_question {
     font-size: 1em;
     color: black;
     font-style: normal;
