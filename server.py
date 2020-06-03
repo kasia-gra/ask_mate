@@ -8,7 +8,6 @@ from tag_handler import tag
 
 
 app = Flask(__name__)
-app.config["UPLOAD_FOLDER"] = data_manager.UPLOAD_FOLDER
 app.register_blueprint(question)
 app.register_blueprint(answer)
 app.register_blueprint(comment)

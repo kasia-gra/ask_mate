@@ -43,7 +43,7 @@ def get_question_data(record):
     record["message"] = request.form["description"]
     if 'file' in request.files:
         file = request.files['file']
-        record["image"] = util.save_image(file, app.config['UPLOAD_FOLDER'], "question")
+        record["image"] = util.save_image(file, data_manager.UPLOAD_FOLDER, "question")
     if not record["image"]:
         record["image"] = ""
     return record
