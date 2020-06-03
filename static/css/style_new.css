@@ -1,0 +1,123 @@
+a {
+    text-decoration: none;
+    font-style: normal;
+    color: maroon;
+}
+
+
+.container {
+    align-content: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.button-panel {
+}
+
+
+.table {
+}
+
+
+.table-title {
+    justify-content: center;
+    display: flex;
+}
+
+
+.table-header {
+    display: flex;
+    justify-content: space-between;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-bottom: 2em;
+}
+
+
+.table-sorting-form {
+}
+
+
+.table-search-form {
+}
+
+
+.table-content {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+.table-record-details {
+    align-items: center;
+    align-content: center;
+    display: flex;
+    flex-direction: column;
+    width: 15%;
+    background-color: gray;
+    margin: 0.2em;
+    padding: 0.6em;
+}
+
+
+.table-record-actions-panel {
+    align-items: center;
+    align-content: center;
+    display: flex;
+    flex-direction: column;
+    width: 15%;
+}
+
+
+.table-record-description {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    background-color: gray;
+    margin: 0.2em;
+    padding: 0.6em;
+}
+
+.question-title {
+    font-size: 2em;
+    color: burlywood;
+    font-style: normal;
+    margin-bottom: 0.6em;
+}
+
+.question-message {
+    font-size: 1em;
+    color: black;
+    font-style: normal;
+}
+
+.table-record-actions-panel {
+    background-color: gray;
+    margin: 0.2em;
+    padding: 0.6em;
+}
+
+.submission-time {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 0.4em;
+}
+
+.view-vote-numbers {
+    display: flex;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+}
+
+.vote-number {
+    margin-left: 1em;
+    margin-right: 1em;
+}
+
+.view-number {
+    margin-left: 1em;
+    margin-right: 1em;
+}
