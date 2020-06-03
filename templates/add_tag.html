@@ -7,7 +7,7 @@
 {% endblock %}
 {% block body %}
     <br><br><br><br><h3>Select available tag...</h3>
-    <form>
+    <form class="form">
         <select name="new_tag" id="new_tag">
             {% for available_tag in tags_list %}
             <option value="{{ available_tag.name }}">{{ available_tag.name }}</option>
