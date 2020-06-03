@@ -8,7 +8,6 @@ from tag_handler import tag
 
 
 app = Flask(__name__)
-app.config["UPLOAD_FOLDER"] = data_manager.UPLOAD_FOLDER
 app.register_blueprint(question)
 app.register_blueprint(answer)
 app.register_blueprint(comment)
@@ -32,6 +31,8 @@ def homepage():
 
 @app.route("/list", methods=['GET', 'POST'])
 def questions_list():
+    message_max_length = 800
+    title_max_length = 53
     sort_by = request.args.get('sort_by')
     if sort_by:
         criteria_and_direction = sort_by.split("-")
@@ -40,6 +41,10 @@ def questions_list():
         all_questions = data_manager.get_all_records("question")
     for question in all_questions:
         question["number_of_answers"] = len(data_manager.get_answers_for_question(question.get("id")))
+        if len(question["title"]) >= title_max_length:
+            question["title"] = question["title"][:title_max_length] + "..."
+        if len(question["message"]) >= message_max_length:
+            question["message"] = question["message"][:message_max_length] + "..."
     search_phrase = request.args.get('search_phrase')
     if search_phrase:
         return search_for_questions(search_phrase)

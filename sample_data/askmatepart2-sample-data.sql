@@ -95,7 +95,7 @@ INSERT INTO question VALUES (0, '2017-04-28 08:29:00', 29, 7, 'How to make lists
 INSERT INTO question VALUES (1, '2017-05-15 09:19:00', 15, 9, 'Wordpress loading multiple jQuery Versions', 'I like my pepper onion, Wordpress is totaly absurd!', '');
 INSERT INTO question VALUES (2, '2017-12-02 10:41:00', 712, 57, 'Drawing canvas with an image picked with Cordova Camera Plugin', 'Wet closure of my pickles, oh no, I need to screw this on again', '');
 INSERT INTO question VALUES (3, '2018-03-31 08:29:00', 41, 19, 'How to prepare some onions for my trip?', 'Because I need fly carpet', '');
-INSERT INTO question VALUES (4, '2018-01-27 09:19:00', 88, 16, 'I got a problem guys', 'Sometimes I got this', '');
+INSERT INTO question VALUES (4, '2018-01-27 09:19:00', 88, 16, 'I got a problem guys', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque accumsan nisi at dolor condimentum mattis. Suspendisse potenti. Proin feugiat magna quis magna sodales, a eleifend tellus pellentesque. Mauris nec nibh porttitor, laoreet mi eu, lobortis turpis. Morbi eleifend, metus sed facilisis congue, odio nibh viverra leo, nec eleifend purus quam ut ipsum. Aenean vel volutpat nisl. Duis luctus purus urna, vitae commodo turpis ullamcorper sed. Integer ac posuere est. Nulla sit amet hendrerit ipsum, quis suscipit est. Duis in metus aliquam, tempus lectus eget, luctus dolor. Pellentesque a tortor et erat consequat ultrices. In hac habitasse platea dictumst. ', '');
 INSERT INTO question VALUES (5, '2018-12-11 10:41:00', 136, 57, 'Vatican lies', 'Pickled oguras in sloikex', '');
 SELECT pg_catalog.setval('question_id_seq', 6, true);
 
@@ -104,15 +104,15 @@ INSERT INTO answer VALUES (2, '2017-04-25 14:42:00', 35, 1, 'Prepare Spartans, g
 INSERT INTO answer VALUES (3, '2017-04-28 16:49:00', 4, 2, 'Do you know about ALT + F4 shortcut?', 2);
 INSERT INTO answer VALUES (4, '2017-04-25 14:42:00', 35, 2, 'Drop the water drop', 4);
 INSERT INTO answer VALUES (5, '2017-04-28 16:49:00', 4, 3, 'Blanket is wet, oyoy', 1);
-INSERT INTO answer VALUES (6, '2017-04-25 14:42:00', 35, 4, 'Doctor pepper have some issue', 0);
+INSERT INTO answer VALUES (6, '2017-04-25 14:42:00', 35, 4, 'I got umbrella, umbrella, ye, ye, ye, ya, ye, ye i ye', 0);
 SELECT pg_catalog.setval('answer_id_seq', 6, true);
 
-INSERT INTO comment VALUES (1, 0, NULL, 'Totally worth it!', '2017-05-01 05:49:00');
-INSERT INTO comment VALUES (2, NULL, 1, 'Mayoneyzing is a sport', '2017-05-02 16:55:00');
-INSERT INTO comment VALUES (3, 2, NULL, 'Too bad I am that great and glorious', '2017-05-01 05:49:00');
-INSERT INTO comment VALUES (4, NULL, 3, 'Be my valentine.', '2017-05-02 16:55:00');
-INSERT INTO comment VALUES (5, 4, NULL, 'Touch the sky, yhym', '2017-05-01 05:49:00');
-INSERT INTO comment VALUES (6, NULL, 5, 'I believe I can fly', '2017-05-02 16:55:00');
+INSERT INTO comment VALUES (1, 0, NULL, 'Totally worth it!', '2017-05-01 05:49:00', 2;
+INSERT INTO comment VALUES (2, NULL, 1, 'Mayoneyzing is a sport', '2017-05-02 16:55:00', 7);
+INSERT INTO comment VALUES (3, 2, NULL, 'Too bad I am that great and glorious', '2017-05-01 05:49:00', 1);
+INSERT INTO comment VALUES (4, NULL, 3, 'Be my valentine.', '2017-05-02 16:55:00', 3);
+INSERT INTO comment VALUES (5, 4, NULL, 'Touch the sky, yhym', '2017-05-01 05:49:00', 0);
+INSERT INTO comment VALUES (6, NULL, 5, 'I believe I can fly', '2017-05-02 16:55:00', 5);
 SELECT pg_catalog.setval('comment_id_seq', 6, true);
 
 INSERT INTO tag VALUES (1, 'python');
