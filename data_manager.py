@@ -333,7 +333,42 @@ def search_for_phrase_answers(cursor: RealDictCursor, search_phrase: str):
 @connection.connection_handler
 def get_available_tags(cursor: RealDictCursor):
     cursor.execute(f"""
-                SELECT name
+                SELECT *
                 FROM tag
            """)
     return cursor.fetchall()
+
+@connection.connection_handler
+def add_tag_to_db(cursor: RealDictCursor, new_tag: str):
+    cursor.execute(f"""
+                INSERT INTO tag (name)
+                VALUES (%(tag_name)s);
+           """, {'tag_name': new_tag})
+
+
+@connection.connection_handler
+def get_tag_id(cursor: RealDictCursor, new_tag: str):
+    cursor.execute(f"""
+                SELECT id
+                FROM tag
+                WHERE name = (%(tag_name)s);
+           """, {'tag_name': new_tag})
+    return cursor.fetchone()
+
+
+def check_if_tag_already_available(new_tag, tags_list):
+    tag_in_db = False
+    for dictionary in tags_list:
+        if dictionary["name"] == new_tag:
+            tag_in_db = True
+            break
+    return tag_in_db
+
+
+@connection.connection_handler
+def assign_tag_to_question(cursor: RealDictCursor, question_id: int, tag_id: int):
+    cursor.execute(f"""
+                INSERT INTO question_tag 
+                VALUES (%s, %s);
+           """, (question_id, tag_id))
+
