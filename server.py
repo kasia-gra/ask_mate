@@ -34,20 +34,6 @@ def questions_list():
     return render_template("question_list.html", all_questions=all_questions, sort_by=sort_by, search_phrase=search_phrase)
 
 
-# @app.route("/list", methods=['GET', 'POST'])
-# def questions_list():
-#     all_questions = data_manager.get_all_records("question")
-#     if request.method == 'POST':
-#         sort_by = request.form.get("sort_by")
-#     else:
-#         sort_by = "submission_time-DESC"
-#     all_questions = util.sort_dictionary(all_questions, sort_by)
-#     search_phrase = request.args.get('search_phrase')
-#     if search_phrase:
-#         return search_for_questions(search_phrase)
-#     return render_template("question_list.html", all_questions=all_questions, sort_by=sort_by, search_phrase=search_phrase)
-
-
 @app.route("/question", methods=["POST", "GET"])
 def add_question():
     new_record = {}
