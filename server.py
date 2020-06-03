@@ -248,6 +248,19 @@ def delete_comment(comment_id):
     return redirect(url_for("show_question", question_id=question_id))
 
 
+@app.route("/comment/<int:comment_id>/edit", methods=["POST", "GET"])
+def edit_comment(comment_id):
+    comment = data_manager.get_specific_record(comment_id, "comment")
+    if request.method == "POST":
+        comment["message"] = request.form["message"]
+        comment["edited_number"] = comment["edited_number"] + 1 if comment["edited_number"] is not None else 1
+        comment["submission_time"] = util.get_new_timestamp()
+        data_manager.edit_comment(comment)
+        question_id = comment["question_id"] if comment["question_id"] else data_manager.get_specific_record(comment.get("answer_id"), "answer").get("question_id")
+        return redirect(url_for("show_question", question_id=question_id))
+    return render_template("comment_form.html", comment=comment)
+
+
 if __name__ == "__main__":
     app.run(
         host='127.0.0.1',

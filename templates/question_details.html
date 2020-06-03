@@ -36,7 +36,7 @@
     {% else %}
         <h3>Comments:</h3>
         <table class = content-table>
-            {% set question_comments_headers = ["submission_time", "message", "edited_number", "delete"] %}
+            {% set question_comments_headers = ["submission_time", "message", "edited_number", "edit_comment", "delete_comment"] %}
             <thead>
                 <tr>{% for question_comments_header in question_comments_headers %}
                     <th>{{ question_comments_header.capitalize().replace("_", " ") }}</th>
@@ -48,9 +48,10 @@
                     <tr>
                         {% for question_comment_key, question_comment_detail in question_comment.items() %}
                             {% if question_comment_key in question_comments_headers %}
-                                <td>{{ question_comment_detail }}</td>
+                                <td>{{ "Edited " + question_comment_detail|string + " times" if question_comment_key == "edited_number" else question_comment_detail}}</td>
                             {% endif %}
                         {% endfor %}
+                        <td><a href="{{ url_for("edit_comment", comment_id=question_comment.get("id")) }}">Edit</a></td>
                         <td><a href="{{ url_for("delete_comment", comment_id=question_comment.get("id")) }}">Delete</a> </td>
                     </tr>
                 {% endfor %}
@@ -118,9 +119,10 @@
                                 <li>
                                 {% for answer_comments_key, answer_comment_detail in answer_comment.items() %}
                                     {% if answer_comments_key in answer_comments_headers %}
-                                        {{ answer_comment_detail }}
+                                        {{ "Edited " + answer_comment_detail|string + " times" if answer_comments_key == "edited_number" else answer_comment_detail }}
                                     {% endif %}
                                 {% endfor %}
+                                <a href="{{ url_for("edit_comment", comment_id=answer_comment.get("id")) }}">Edit</a>
                                 <a href="{{ url_for("delete_comment", comment_id=answer_comment.get("id")) }}">Delete</a>
                                 </li>
                             {% endif %}

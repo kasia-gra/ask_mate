@@ -150,7 +150,13 @@ def edit_answer(cursor: RealDictCursor, new_record: dict):
 
 @connection.connection_handler
 def edit_comment(cursor: RealDictCursor, new_record: dict):
-    pass
+    query = """
+    UPDATE comment
+    SET message = %s, submission_time = %s, edited_number = %s
+    WHERE id = %s
+    """
+    cursor.execute(query, (new_record.get("message"), new_record.get("submission_time"),
+                           new_record.get("edited_number"), new_record.get("id")))
 
 
 def delete_record(record_id, option):

@@ -1,16 +1,22 @@
 {% extends "layout.html" %}
-{% block title %}New Comment Form{% endblock %}
+{% block title %}{{"Edit " if comment else "New " }} Comment Form {% endblock %}
 {% block header %}
 {% endblock %}
 {% block nav %}
     {{ super() }}
 {% endblock %}
 {% block body %}
-    <h1>Add new comment</h1>
-    <form id=comment_form action="/{{ "answer/" + answer_id|string if answer_id else "question/" + question_id|string }}/new-comment" method="POST">
+    <h1> {{"Edit " if comment else "Add new " }} comment</h1>
+    <form id=comment_form
+          action="{% if comment %}
+                    {{ "/comment/" + comment.id|string + "/edit" }}
+                  {% else %}
+                    {{ "/answer/" + answer_id|string + "/new-comment" if answer_id else "/question/" + question_id|string + "/new-comment" }}
+                  {% endif %}"
+          method="POST">
         <label for="description">Comment message:</label><br/>
-        <textarea id="description" name="message" rows="10" cols="100"></textarea><br/>
-        <button type="submit">Add new comment</button>
+        <textarea id="description" name="message" rows="10" cols="100">{{ comment.message if comment }}</textarea><br/>
+        <button type="submit"> {{ "Edit " if comment else "Add new " }} comment</button>
     </form>
 {% endblock %}
 {% block footer %}{{ super() }}{% endblock %}
