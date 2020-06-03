@@ -42,37 +42,49 @@
             </div>
             {% for question in all_questions %}
                 <div class="table-content">
-                    <div class="table-record-details">
-                        <div class="submission-time">
-                            <div class="submission-time-text">
-                                Update time:
+                    <div class="table-details-and-description">
+                        <div class="table-record-details">
+                            <div class="answers-number">
+                                <div class="answers-number-value">
+                                    {{ question.get("number_of_answers") }}
+                                </div>
+                                <div class="answers-number-text">
+                                    Answers
+                                </div>
                             </div>
-                            <div class="submission-time-value">
-                                {{ question.get("submission_time") }}
+                            <div class="view-vote-numbers">
+                                <div class="view-number">
+                                    <div class="view-number-value">
+                                    {{ question.get("view_number") }}
+                                </div>
+                                <div class="view-number-text">
+                                    Views
+                                </div>
+                                </div>
+                                <div class="vote-number">
+                                    <div class="vote-number-value">
+                                    {{ question.get("vote_number") }}
+                                </div>
+                                <div class="vote-number-text">
+                                    Votes
+                                </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="view-vote-numbers">
-                            <div class="view-number">
-                                Views: {{ question.get("view_number") }}
+                        <div class="table-record-description">
+                            <div class="question-title">
+                                <a href="{{ url_for("show_question", question_id=question.get("id")|string) }}">{{ question.get("title") }}</a>
                             </div>
-                            <div class="vote-number">
-                                Votes: {{ question.get("vote_number") }}
+                            <div class="question-message">
+                                {{ question.get("message") }}
                             </div>
-                        </div>
-                    </div>
-                    <div class="table-record-description">
-                        <div class="question-title">
-                            <a href="{{ url_for("show_question", question_id=question.get("id")|string) }}">{{ question.get("title") }}</a>
-                        </div>
-                        <div class="question-message">
-                            {{ question.get("message") }}
                         </div>
                     </div>
                     <div class="table-record-actions-panel">
-                        <div>
+                        <div class="head-of-actions-panel">
                             USER ICON
                         </div>
-                        <div>
+                        <div class="vote-section">
                             <a href="{{ url_for("vote.question_vote", question_id=question.get("id")|string, vote="up") }}"
                                methods="POST">
                                 <img src="{{ url_for('static', filename="icons/like_up.png") }}" width="50px"
@@ -85,6 +97,14 @@
                                      height="50px"
                                      alt="vote_down">
                             </a>
+                        </div>
+                        <div class="submission-time">
+                            <div class="submission-time-text">
+                                Update time:
+                            </div>
+                            <div class="submission-time-value">
+                                {{ question.get("submission_time") }}
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -38,6 +38,8 @@ def questions_list():
         all_questions = data_manager.get_sorted_questions(criteria_and_direction)
     else:
         all_questions = data_manager.get_all_records("question")
+    for question in all_questions:
+        question["number_of_answers"] = len(data_manager.get_answers_for_question(question.get("id")))
     search_phrase = request.args.get('search_phrase')
     if search_phrase:
         return search_for_questions(search_phrase)

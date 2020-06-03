@@ -1,19 +1,56 @@
 a {
     text-decoration: none;
     font-style: normal;
-    color: maroon;
+    color: #46D21B;
+}
+
+a:hover {
+    color: #60C451;
 }
 
 
+.body {
+    background-color: whitesmoke;
+}
+
+.navigation-menu {
+    border-radius: 1em;
+    border: black solid 0.1em;
+    background-color: #BDB592;
+    position: static;
+    top: 0;
+    display: flex;
+    flex-direction: row;
+    margin-right: 10%;
+    margin-left: 10%;
+    padding: 0.2em;
+    margin-bottom: 2em;
+}
+
 .container {
+    color: #24262A;
     align-content: center;
     justify-content: center;
     display: flex;
     flex-direction: column;
+    margin-bottom: 4em;
 }
 
 
 .button-panel {
+    display: flex;
+    margin-right: 10%;
+    margin-left: 10%;
+}
+
+
+.button-panel > a {
+    border-radius: 1em;
+    border: black solid 0.1em;
+    display: flex;
+    margin-right: 10%;
+    margin-left: 10%;
+    padding: 0.8em;
 }
 
 
@@ -48,6 +85,7 @@ a {
     display: flex;
     justify-content: center;
     align-content: center;
+    margin-bottom: 1em;
 }
 
 .table-record-details {
@@ -55,27 +93,44 @@ a {
     align-content: center;
     display: flex;
     flex-direction: column;
-    width: 15%;
-    background-color: gray;
     margin: 0.2em;
     padding: 0.6em;
+    justify-content: center;
 }
 
 
 .table-record-actions-panel {
-    align-items: center;
-    align-content: center;
+    background-color: #46D21B;
+    width: 15%;
     display: flex;
     flex-direction: column;
-    width: 15%;
+    margin: 0.2em;
+    padding: 0.6em;
+    border-radius: 0.6em;
+    border: none;
+    height: 16em;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+}
+
+
+.table-details-and-description {
+    background-color: white;
+    width: 65%;
+    display: flex;
+    flex-direction: row;
+    margin: 0.2em;
+    padding: 0.6em;
+    border-radius: 0.6em;
+    border: none;
+    height: 16em;
 }
 
 
 .table-record-description {
-    width: 60%;
     display: flex;
     flex-direction: column;
-    background-color: gray;
     margin: 0.2em;
     padding: 0.6em;
 }
@@ -87,29 +142,55 @@ a {
     margin-bottom: 0.6em;
 }
 
-
-.question-title:hover > a {
-    color: chocolate;
-}
-
-
 .question-message {
     font-size: 1em;
     color: black;
     font-style: normal;
 }
 
-.table-record-actions-panel {
-    background-color: gray;
-    margin: 0.2em;
-    padding: 0.6em;
+.head-of-actions-panel {
+    margin-top: 1em;
+    margin-bottom: auto;
+    display: flex;
+    flex-direction: row;
+}
+
+.vote-section {
+    display: flex;
+    flex-direction: row;
+}
+
+.vote-section > a {
+    margin: 0.5em;
 }
 
 .submission-time {
     display: flex;
     flex-direction: column;
+    margin-top: auto;
     align-items: center;
-    margin-bottom: 0.4em;
+    margin-bottom: 1em;
+}
+
+.answers-number {
+    display: flex;
+    flex-direction: column;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+    align-items: center;
+    margin-bottom: 2em;
+    border-radius: 0.6em;
+    border: grey solid 1px;
+    padding: 0.7em;
+}
+
+.answers-number-value {
+    text-decoration-style: solid;
+    font-size: 2em;
+}
+
+.answers-number-text {
+
 }
 
 .view-vote-numbers {
@@ -118,12 +199,36 @@ a {
     margin-right: 0.5em;
 }
 
-.vote-number {
-    margin-left: 1em;
-    margin-right: 1em;
+.view-number {
+    display: flex;
+    flex-direction: column;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+    align-items: center;
 }
 
-.view-number {
-    margin-left: 1em;
-    margin-right: 1em;
+.vote-number {
+    display: flex;
+    flex-direction: column;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+    align-items: center;
+}
+
+.vote-number-text {
+
+}
+
+.vote-number-value {
+    text-decoration-style: solid;
+    font-size: 1.5em;
+}
+
+.view-number-text {
+
+}
+
+.view-number-value {
+    text-decoration-style: solid;
+    font-size: 1.5em;
 }
