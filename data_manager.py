@@ -41,7 +41,7 @@ def get_five_records(cursor: RealDictCursor, table: str):
 
 @connection.connection_handler
 def get_answers_for_question(cursor: RealDictCursor, question_id: int):
-    cursor.execute(f"""
+    cursor.execute("""
                     SELECT *
                     FROM answer
                     WHERE question_id = %(q_id)s;
@@ -60,7 +60,7 @@ def add_record(new_record, option):
 
 @connection.connection_handler
 def add_question(cursor: RealDictCursor, new_record: dict):
-    cursor.execute(f"""
+    cursor.execute("""
                     INSERT INTO question
                         (title, message, image, submission_time, vote_number, view_number)
                     VALUES
@@ -110,7 +110,7 @@ def edit_record(new_record, option):
 
 @connection.connection_handler
 def edit_question(cursor: RealDictCursor, new_record: dict):
-    cursor.execute(f"""
+    cursor.execute("""
                     UPDATE question
                     SET
                         title = %(title)s,
@@ -128,7 +128,7 @@ def edit_question(cursor: RealDictCursor, new_record: dict):
 
 @connection.connection_handler
 def edit_answer(cursor: RealDictCursor, new_record: dict):
-    cursor.execute(f"""
+    cursor.execute("""
                     UPDATE answer
                     SET
                         message = %(message)s,
@@ -164,7 +164,7 @@ def delete_record(record_id, option):
 
 @connection.connection_handler
 def delete_question(cursor: RealDictCursor, record_id: int):
-    cursor.execute(f"""
+    cursor.execute("""
                     DELETE FROM question
                     WHERE id = %(id)s;
                     """, {'id': record_id})
@@ -172,7 +172,7 @@ def delete_question(cursor: RealDictCursor, record_id: int):
 
 @connection.connection_handler
 def delete_answer(cursor: RealDictCursor, record_id: int):
-    cursor.execute(f"""
+    cursor.execute("""
                     DELETE FROM answer
                     WHERE id = %(id)s;
                     """, {'id': record_id})
@@ -180,7 +180,7 @@ def delete_answer(cursor: RealDictCursor, record_id: int):
 
 @connection.connection_handler
 def delete_comment(cursor: RealDictCursor, record_id: int):
-    cursor.execute(f"""
+    cursor.execute("""
                     DELETE FROM comment
                     WHERE id = %(id)s;
                     """, {'id': record_id})
@@ -188,7 +188,7 @@ def delete_comment(cursor: RealDictCursor, record_id: int):
 
 @connection.connection_handler
 def delete_connected_comment(cursor: RealDictCursor, question_id: int = -1, answer_id: int = -1):
-    cursor.execute(f"""
+    cursor.execute("""
                     DELETE FROM comment
                     WHERE question_id = %(qid)s AND answer_id IS NULL OR answer_id = %(aid)s AND question_id IS NULL;
                     """, {'qid': question_id, 'aid': answer_id})
@@ -196,7 +196,7 @@ def delete_connected_comment(cursor: RealDictCursor, question_id: int = -1, answ
 
 @connection.connection_handler
 def delete_tag(cursor: RealDictCursor, question_id: int, tag_id: int):
-    cursor.execute(f"""
+    cursor.execute("""
                     DELETE FROM question_tag
                     WHERE question_id = %(question_id)s AND tag_id = %(tag_id)s;
                     """, {'question_id': question_id, 'tag_id': tag_id})
@@ -204,7 +204,7 @@ def delete_tag(cursor: RealDictCursor, question_id: int, tag_id: int):
 
 @connection.connection_handler
 def delete_connected_tags(cursor: RealDictCursor, question_id: int):
-    cursor.execute(f"""
+    cursor.execute("""
                         DELETE FROM question_tag
                         WHERE question_id = %(question_id)s;
                         """, {'question_id': question_id})

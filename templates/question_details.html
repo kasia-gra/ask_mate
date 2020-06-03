@@ -10,9 +10,9 @@
 {% block body %}
     <div class="container_nav_menu">
         <p>
-            <a href="{{ url_for("add_answer", question_id=record.get("id")) }}" class="nav_button">Add answer</a>
-            <a href="{{ url_for("edit_question", question_id=record.get("id")) }}" class="nav_button">Edit question</a>
-            <a href="{{ url_for("delete_question", question_id=record.get("id")) }}" class="nav_button">Delete question</a>
+            <a href="{{ url_for("answer.add_answer", question_id=record.get("id")) }}" class="nav_button">Add answer</a>
+            <a href="{{ url_for("question.edit_question", question_id=record.get("id")) }}" class="nav_button">Edit question</a>
+            <a href="{{ url_for("question.delete_question", question_id=record.get("id")) }}" class="nav_button">Delete question</a>
             <a href="{{ url_for("add_tag", question_id=record.get("id")) }}" class="nav_button">Add tag</a>
         </p>
     </div>
@@ -29,7 +29,7 @@
         </p>
     </div>
     <p>
-        <a href="{{ url_for("comment_question", question_id=record.get("id")) }}">Add new comment</a>
+        <a href="{{ url_for("comment.comment_question", question_id=record.get("id")) }}">Add new comment</a>
     </p>
     {% if question_comments == [] %}
         <h3>No comments yet</h3>
@@ -51,8 +51,8 @@
                                 <td>{{ "Edited " + question_comment_detail|string + " times" if question_comment_key == "edited_number" else question_comment_detail}}</td>
                             {% endif %}
                         {% endfor %}
-                        <td><a href="{{ url_for("edit_comment", comment_id=question_comment.get("id")) }}">Edit</a></td>
-                        <td><a href="{{ url_for("delete_comment", comment_id=question_comment.get("id")) }}">Delete</a> </td>
+                        <td><a href="{{ url_for("comment.edit_comment", comment_id=question_comment.get("id")) }}">Edit</a></td>
+                        <td><a href="{{ url_for("comment.delete_comment", comment_id=question_comment.get("id")) }}">Delete</a> </td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -86,27 +86,27 @@
                             {% endif %}
                         {% endfor %}
                         <td>
-                            <a href="{{ url_for("edit_answer", answer_id=answer.get("id")|string) }}">
+                            <a href="{{ url_for("answer.edit_answer", answer_id=answer.get("id")|string) }}">
                                 <img src="{{ url_for('static', filename="icons/edit.png") }}" width="50px" height="50px" alt="edit_answer">
                            </a>
                         </td>
                         <td>
-                           <a href="{{ url_for("delete_answer", answer_id=answer.get("id")|string) }}">
+                           <a href="{{ url_for("answer.delete_answer", answer_id=answer.get("id")|string) }}">
                                 <img src="{{ url_for('static', filename="icons/bin.png") }}" width="50px" height="50px" alt="delete_answer">
                            </a>
                         </td>
                         <td>
-                            <a href="{{ url_for("answer_vote_up", answer_id=answer.get("id")|string) }}" methods="POST">
+                            <a href="{{ url_for("vote.answer_vote_up", answer_id=answer.get("id")|string) }}" methods="POST">
                                 <img src="{{ url_for('static', filename="icons/like_up.png") }}" width="50px" height="50px" alt="vote_up">
                             </a>
                         </td>
                         <td>
-                            <a href="{{ url_for("answer_vote_down", answer_id=answer.get("id")|string) }}" methods="POST">
+                            <a href="{{ url_for("vote.answer_vote_down", answer_id=answer.get("id")|string) }}" methods="POST">
                                 <img src="{{ url_for('static', filename="icons/like_down.png") }}" width="50px" height="50px" alt="vote_down">
                             </a>
                         </td>
                         <td>
-                            <a href="{{ url_for("comment_answer", answer_id=answer.get("id")|string) }}">Add comment</a>
+                            <a href="{{ url_for("comment.comment_answer", answer_id=answer.get("id")|string) }}">Add comment</a>
                         </td>
                     </tr>
                     {% if answer.get("id") in comment_id_list %}
@@ -122,8 +122,8 @@
                                         {{ "Edited " + answer_comment_detail|string + " times" if answer_comments_key == "edited_number" else answer_comment_detail }}
                                     {% endif %}
                                 {% endfor %}
-                                <a href="{{ url_for("edit_comment", comment_id=answer_comment.get("id")) }}">Edit</a>
-                                <a href="{{ url_for("delete_comment", comment_id=answer_comment.get("id")) }}">Delete</a>
+                                <a href="{{ url_for("comment.edit_comment", comment_id=answer_comment.get("id")) }}">Edit</a>
+                                <a href="{{ url_for("comment.delete_comment", comment_id=answer_comment.get("id")) }}">Delete</a>
                                 </li>
                             {% endif %}
                         {% endfor %}

@@ -1,9 +1,17 @@
 from flask import Flask, render_template, request, redirect, make_response, url_for
-import data_manager, util
+import data_manager
+from question_handler import question
+from answer_handler import answer
+from comment_handler import comment
+from vote_handler import vote
 
 
 app = Flask(__name__)
 app.config["UPLOAD_FOLDER"] = data_manager.UPLOAD_FOLDER
+app.register_blueprint(question)
+app.register_blueprint(answer)
+app.register_blueprint(comment)
+app.register_blueprint(vote)
 
 
 @app.route("/")
@@ -34,16 +42,6 @@ def questions_list():
     return render_template("question_list.html", all_questions=all_questions, sort_by=sort_by, search_phrase=search_phrase)
 
 
-@app.route("/question", methods=["POST", "GET"])
-def add_question():
-    new_record = {}
-    if request.method == "POST":
-        new_record = get_question_data(new_record)
-        data_manager.add_record(new_record, "question")
-        return redirect("/list")
-    return render_template("question_form.html", old_record=new_record, is_new=True)
-
-
 @app.route("/question/<question_id>")
 def show_question(question_id):
     record = data_manager.get_specific_record(question_id, "question")
@@ -58,143 +56,15 @@ def show_question(question_id):
         answers_comments = data_manager.get_answers_comments(answers_id_list)
         for comment in answers_comments:
             comment_id_list.append(comment.get("answer_id"))
-    return render_template("question_details.html", record=record, answers=all_answers_for_question, question_comments=question_comments, tags=tags, answers_comments=answers_comments, comment_id_list=comment_id_list)
-
-
-@app.route("/question/<question_id>/delete")
-def delete_question(question_id):
-    all_answers = data_manager.get_all_records("answer")
-    for answer in all_answers:
-        if str(answer.get("question_id")) == str(question_id):
-            data_manager.delete_record(answer.get("id"), "answer")
-            data_manager.delete_connected_comment(-1, answer.get("id"))
-    data_manager.delete_connected_comment(question_id, -1)
-    data_manager.delete_connected_tags(question_id)
-    data_manager.delete_record(question_id, "question")
-    return redirect("/list")
-
-
-@app.route("/question/<question_id>/edit", methods=["POST", "GET"])
-def edit_question(question_id):
-    old_record = data_manager.get_specific_record(question_id, "question")
-    if request.method == "POST":
-        old_record = get_question_data(old_record)
-        data_manager.edit_record(old_record, "question")
-        return redirect("/question/" + str(question_id))
-    return render_template("question_form.html", old_record=old_record, is_new=False)
-
-
-def get_question_data(record):
-    record["title"] = request.form["title"]
-    record["submission_time"] = util.get_new_timestamp()
-    record["message"] = request.form["description"]
-    if 'file' in request.files:
-        file = request.files['file']
-        record["image"] = util.save_image(file, app.config['UPLOAD_FOLDER'], "question")
-    if not record["image"]:
-        record["image"] = ""
-    return record
-
-
-@app.route("/answer/<answer_id>/delete")
-def delete_answer(answer_id):
-    old_record = data_manager.get_specific_record(answer_id, "answer")
-    data_manager.delete_record(answer_id, "answer")
-    return redirect("/question/" + str(old_record["question_id"]))
-
-
-@app.route("/question/<question_id>/new-answer", methods=["POST", "GET"])
-def add_answer(question_id):
-    new_record = {"question_id": str(question_id)}
-    if request.method == "POST":
-        new_record["message"] = request.form["description"]
-        new_record["submission_time"] = util.get_new_timestamp()
-        if 'file' in request.files:
-            file = request.files['file']
-            new_record["image"] = util.save_image(file, app.config['UPLOAD_FOLDER'], "answer", str(question_id))
-        if not new_record["image"]:
-            new_record["image"] = ""
-        data_manager.add_record(new_record, "answer")
-        return redirect("/question/" + str(question_id))
-    return render_template("answer_form.html", old_record=new_record, is_new=True)
-
-
-@app.route("/answer/<answer_id>/edit", methods=["POST", "GET"])
-def edit_answer(answer_id):
-    old_record = data_manager.get_specific_record(answer_id, "answer")
-    if request.method == "POST":
-        old_record["submission_time"] = util.get_new_timestamp()
-        old_record["message"] = request.form["description"]
-        if 'file' in request.files:
-            file = request.files['file']
-            old_record["image"] = util.save_image(file, app.config['UPLOAD_FOLDER'], "answer", str(old_record["question_id"]))
-        if not old_record["image"]:
-            old_record["image"] = ""
-        data_manager.edit_record(old_record, "answer")
-        return redirect("/question/" + str(old_record["question_id"]))
-    return render_template("answer_form.html", old_record=old_record, is_new=False)
-
-
-@app.route("/question/<question_id>/<vote>")
-def question_vote(question_id, vote):
-    if request.cookies.get("q" + question_id) != "voted":
-        res = make_response(redirect("/"))
-        res.set_cookie("q" + question_id, "voted")
-        data_manager.update_vote_number("question", str(question_id), vote)
-        return res
-    return redirect("/list")
-
-
-@app.route("/answer/<answer_id>/vote_up")
-def answer_vote_up(answer_id):
-    answer = data_manager.get_specific_record(answer_id, "answer")
-    question_id = answer.get("question_id")
-    if request.cookies.get("a" + str(answer_id)) != "voted":
-        res = make_response(redirect("/question/" + str(question_id)))
-        res.set_cookie("a" + str(answer_id), "voted")
-        data_manager.update_vote_number("answer", str(answer_id), "up")
-        return res
-    return redirect("/question/" + str(question_id))
-
-
-@app.route("/answer/<answer_id>/vote_down")
-def answer_vote_down(answer_id):
-    answer = data_manager.get_specific_record(answer_id, "answer")
-    question_id = answer.get("question_id")
-    if request.cookies.get("a" + str(answer_id)) != "voted":
-        res = make_response(redirect("/question/" + str(question_id)))
-        res.set_cookie("a" + str(answer_id), "voted")
-        data_manager.update_vote_number("answer", str(answer_id), "down")
-        return res
-    return redirect("/question/" + str(question_id))
-
-
-@app.route("/answer/<int:answer_id>/new-comment", methods=["POST", "GET"])
-def comment_answer(answer_id):
-    answer = data_manager.get_specific_record(answer_id, "answer")
-    question_id = answer["question_id"]
-    new_record = {"answer_id": answer_id}
-    if request.method == "POST":
-        new_record["message"] = request.form["message"]
-        new_record["edited_number"] = 0
-        new_record["submission_time"] = util.get_new_timestamp()
-        new_record["question_id"] = None
-        data_manager.add_comment(new_record)
-        return redirect(url_for("show_question", question_id=str(question_id)))
-    return render_template("comment_form.html", answer_id=answer_id, question_id=question_id)
-
-
-@app.route("/question/<int:question_id>/new-comment", methods=["POST", "GET"])
-def comment_question(question_id):
-    new_record = {"question_id": question_id}
-    if request.method == "POST":
-        new_record["message"] = request.form["message"]
-        new_record["edited_number"] = 0
-        new_record["submission_time"] = util.get_new_timestamp()
-        new_record["answer_id"] = None
-        data_manager.add_comment(new_record)
-        return redirect(url_for("show_question", question_id=str(question_id)))
-    return render_template("comment_form.html", question_id=str(question_id))
+    return render_template(
+                    "question_details.html",
+                    record=record,
+                    answers=all_answers_for_question,
+                    question_comments=question_comments,
+                    tags=tags,
+                    answers_comments=answers_comments,
+                    comment_id_list=comment_id_list
+                    )
 
 
 @app.route('/search_phrase')
@@ -220,32 +90,6 @@ def add_tag(question_id):
 def delete_tag(question_id, tag_id):
     data_manager.delete_tag(question_id, tag_id)
     return redirect(url_for("show_question", question_id=question_id))
-
-
-@app.route("/comments/<int:comment_id>/delete")
-def delete_comment(comment_id):
-    comment = data_manager.get_specific_record(comment_id, "comment")
-    if comment.get("question_id"):
-        question_id = comment.get("question_id")
-    else:
-        answer_id = comment.get("answer_id")
-        answer = data_manager.get_specific_record(answer_id, "answer")
-        question_id = answer.get("question_id")
-    data_manager.delete_comment(comment_id)
-    return redirect(url_for("show_question", question_id=question_id))
-
-
-@app.route("/comment/<int:comment_id>/edit", methods=["POST", "GET"])
-def edit_comment(comment_id):
-    comment = data_manager.get_specific_record(comment_id, "comment")
-    if request.method == "POST":
-        comment["message"] = request.form["message"]
-        comment["edited_number"] = comment["edited_number"] + 1 if comment["edited_number"] is not None else 1
-        comment["submission_time"] = util.get_new_timestamp()
-        data_manager.edit_comment(comment)
-        question_id = comment["question_id"] if comment["question_id"] else data_manager.get_specific_record(comment.get("answer_id"), "answer").get("question_id")
-        return redirect(url_for("show_question", question_id=question_id))
-    return render_template("comment_form.html", comment=comment)
 
 
 if __name__ == "__main__":

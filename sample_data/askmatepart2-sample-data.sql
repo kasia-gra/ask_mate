@@ -44,7 +44,7 @@ CREATE TABLE comment (
     answer_id integer,
     message text,
     submission_time timestamp without time zone,
-    edited_number integer
+    edited_number integer NOT NULL
 );
 
 
@@ -99,12 +99,12 @@ INSERT INTO question VALUES (4, '2018-01-27 09:19:00', 88, 16, 'I got a problem 
 INSERT INTO question VALUES (5, '2018-12-11 10:41:00', 136, 57, 'Vatican lies', 'Pickled oguras in sloikex', '');
 SELECT pg_catalog.setval('question_id_seq', 6, true);
 
-INSERT INTO answer VALUES (1, '2017-04-28 16:49:00', 4, 1, 'You need to use baskets.', '');
-INSERT INTO answer VALUES (2, '2017-04-25 14:42:00', 35, 1, 'Prepare Spartans, gone to the ride!', '');
-INSERT INTO answer VALUES (3, '2017-04-28 16:49:00', 4, 2, 'Do you know about ALT + F4 shortcut?', '');
-INSERT INTO answer VALUES (4, '2017-04-25 14:42:00', 35, 2, 'Drop the water drop', '');
-INSERT INTO answer VALUES (5, '2017-04-28 16:49:00', 4, 3, 'Blanket is wet, oyoy', '');
-INSERT INTO answer VALUES (6, '2017-04-25 14:42:00', 35, 4, 'Doctor pepper have some issue', '');
+INSERT INTO answer VALUES (1, '2017-04-28 16:49:00', 4, 1, 'You need to use baskets.', 15);
+INSERT INTO answer VALUES (2, '2017-04-25 14:42:00', 35, 1, 'Prepare Spartans, gone to the ride!', 11);
+INSERT INTO answer VALUES (3, '2017-04-28 16:49:00', 4, 2, 'Do you know about ALT + F4 shortcut?', 2);
+INSERT INTO answer VALUES (4, '2017-04-25 14:42:00', 35, 2, 'Drop the water drop', 4);
+INSERT INTO answer VALUES (5, '2017-04-28 16:49:00', 4, 3, 'Blanket is wet, oyoy', 1);
+INSERT INTO answer VALUES (6, '2017-04-25 14:42:00', 35, 4, 'Doctor pepper have some issue', 0);
 SELECT pg_catalog.setval('answer_id_seq', 6, true);
 
 INSERT INTO comment VALUES (1, 0, NULL, 'Totally worth it!', '2017-05-01 05:49:00');
