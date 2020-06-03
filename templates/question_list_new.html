@@ -1,10 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends "layout.html" %}
+{% block title %}Homepage{% endblock %}
+{% block header %}
+{% endblock %}
+{% block nav %}
+    {{ super() }}
+    {% block nav_extension %}
+    {% endblock %}
+{% endblock %}
+{% block body %}
+TEST
+{% endblock %}
+{% block footer %}{{ super() }}{% endblock %}
