@@ -41,8 +41,8 @@ def questions_list():
     search_phrase = request.args.get('search_phrase')
     if search_phrase:
         return search_for_questions(search_phrase)
-    return render_template("question_list.html", all_questions=all_questions, sort_by=sort_by, search_phrase=search_phrase)
-
+    # return render_template("question_list.html", all_questions=all_questions, sort_by=sort_by, search_phrase=search_phrase)
+    return render_template("question_list_new.html", all_questions=all_questions, sort_by=sort_by, search_phrase=search_phrase)
 
 @app.route("/question/<question_id>")
 def show_question(question_id):

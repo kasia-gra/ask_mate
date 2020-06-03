@@ -21,12 +21,13 @@ def get_all_records(cursor: RealDictCursor, table: str):
 
 @connection.connection_handler
 def get_sorted_questions(cursor: RealDictCursor, criteria_and_direction):
-    cursor.execute(f"""
-                    SELECT *
-                    FROM question
-                    ORDER BY {criteria_and_direction[0]} {criteria_and_direction[1]};
-                    """)
-    return cursor.fetchall()
+    if criteria_and_direction[0] in QUESTION_HEADERS and criteria_and_direction[1] in ['ASC', 'DESC']:
+        cursor.execute(f"""
+                        SELECT *
+                        FROM question
+                        ORDER BY {criteria_and_direction[0]} {criteria_and_direction[1]};
+                        """)
+        return cursor.fetchall()
 
 
 @connection.connection_handler
