@@ -6,62 +6,116 @@
     {{ super() }}
 {% endblock %}
 {% block body %}
-    <h1>SEARCH RESULTS</h1>
+    <div class="container">
+        <div class="table">
+            <div class="table-title">
+                <h1>All questions</h1>
+            </div>
+            <div class="table-header">
+                <div class="table-sorting-form">
+                    <form action="{{ url_for('questions_list', sort_by=sort_by) }}">
+                        <select class="drop_down_btn" name="sort_by" id="sort_by">
+                            {% set sort_criteria = ["submission_time", "view_number", "vote_number", "title", "message"] %}
+                            {% for sort_by_option in sort_criteria %}
+                                {% set sort_order = ['ASC', 'DESC'] %}
+                                {% for order in sort_order %}
+                                    <option value="{{ sort_by_option }}-{{ order }}">sort by: {{ sort_by_option }}
+                                        {% if order=='ASC' %} &#8595 {% else %} &#8593{% endif %}</option>
+                                {% endfor %}
+                            {% endfor %}
+                        </select>
+                        <button class="drop_down_btn" type="submit">Sort</button>
+                    </form>
+                </div>
+                <div class="table-search-form">
+                    <form>
+                        <label for="search_phrase">Search for phrase</label>
+                        <input id="search_phrase" name="search_phrase" type="text">
+                        <button type="submit">Search</button>
+                    </form>
+                </div>
+            </div>
 
-    <table class = content-table>
-        {%  set headers = ["submission_time", "view_number", "vote_number", "title", "message", "vote_up", "vote_down"] %}
-        <thead>
-        <tr>{% for table_header in headers %}
-            <th>{{ table_header.capitalize().replace("_", " ") }}</th>
-            {% endfor %}
-        </tr>
-        </thead>
-
-        <tbody>
             {% for question in all_questions %}
-                <tr>{% for data_header, question_detail in question.items() %}
-                    {% if data_header in headers %}
-                        <td>
-                        {% if data_header == "title" %}
-                            <a href="{{ url_for("show_question", question_id=question.get("id")|string) }}">{{ question_detail }}</a>
-                        {% else %}
-                            {{ question_detail }}
-                        {% endif %}
-                        </td>
+                <div class="table-content">
+                    <div class="table-details-and-description">
+                        <div class="table-record-details">
+                            <div class="answers-number">
+                                <div class="answers-number-value">
+                                    {{ question.get("number_of_answers") }}
+                                </div>
+                                <div class="answers-number-text">
+                                    Answers
+                                </div>
+                            </div>
+                            <div class="view-vote-numbers">
+                                <div class="view-number">
+                                    <div class="view-number-value">
+                                    {{ question.get("view_number") }}
+                                </div>
+                                <div class="view-number-text">
+                                    Views
+                                </div>
+                                </div>
+                                <div class="vote-number">
+                                    <div class="vote-number-value">
+                                    {{ question.get("vote_number") }}
+                                </div>
+                                <div class="vote-number-text">
+                                    Votes
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-record-description">
+                            <div class="question-title">
+                                <a href="{{ url_for("show_question", question_id=question.get("id")|string) }}">{{ question.get("title") }}</a>
+                            </div>
+                            <div class="question-message">
+                                {{ question.get("message") }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {% for answer in answers %}
+                    {% if answer["question_id"] == question["id"] %}
+                        <div class="table-content">
+                            <div class="indented_table-details-and-description">
+                                <div class="table-record-details">
+
+                                    <div class="view-vote-numbers">
+                                        <div class="view-number">
+                                            <div class="view-number-value">
+                                                {{ question.get("view_number") }}
+                                            </div>
+                                            <div class="view-number-text">
+                                                Views
+                                            </div>
+                                        </div>
+
+                                        <div class="vote-number">
+                                            <div class="vote-number-value">
+                                                {{ question.get("vote_number") }}
+                                            </div>
+                                            <div class="vote-number-text">
+                                                Votes
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                    <div class="table-record-description">
+                                        <div class="answer_to_question">
+                                            {{ answer.get("message") }}
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
                     {% endif %}
-                    {% endfor %}
-                    <td>
-                        <a href="{{ url_for("vote.question_vote", question_id=question.get("id")|string, vote="up") }}" methods="POST">
-                            <img src="{{ url_for('static', filename="icons/like_up.png") }}" width="50px" height="50px" alt="vote_up">
-                        </a>
-                    </td>
-                    <td>
-                        <a href="{{ url_for("vote.question_vote", question_id=question.get("id")|string, vote="down") }}" methods="POST">
-                            <img src="{{ url_for('static', filename="icons/like_down.png") }}" width="50px" height="50px" alt="vote_down">
-                        </a>
-                    </td>
-
-                    {% for answer in answers %}
-                            {% if answer["question_id"] == question["id"] %}
-                                </tr>
-                                    <tr>
-                                        {%  set headers = ["submission_time", "view_number", "vote_number", "title", "message", "vote_up", "vote_down"] %}
-                                        {% for header in headers %}
-                                            {% if header == "title" %}
-                                            <td class="answer_to_question">Answer to -> {{ question[header] }}</td>
-                                            {% else %}
-                                            <td class="answer_to_question">{{ answer[header] }}</td>
-                                            {% endif %}
-                                        {% endfor %}
-                                    </tr>
-                                <tr>
-                            {% endif %}
-                    {% endfor %}
-                </tr>
+                {% endfor %}
             {% endfor %}
-        </tbody>
-    </table>
-
-
+        </div>
+    </div>
 {% endblock %}
 {% block footer %}{{ super() }}{% endblock %}

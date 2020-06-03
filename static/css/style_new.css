@@ -227,6 +227,17 @@ a:hover {
     height: 16em;
 }
 
+.indented_table-details-and-description {
+    background-color: ghostwhite;
+    width: 60%;
+    display: flex;
+    flex-direction: row;
+    margin: 0.2em;
+    margin-left: 5%;
+    padding: 0.6em;
+    border-radius: 0.6em;
+    border: none;
+}
 
 .table-record-description {
     display: flex;
