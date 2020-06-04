@@ -23,10 +23,11 @@ def homepage():
         five_questions = data_manager.get_sorted_questions(sort_by)
     else:
         sort_by = "submission_time-DESC"
+    five_questions = prepare_questions_to_display(five_questions)
     search_phrase = request.args.get('search_phrase')
     if search_phrase:
         return search_for_questions(search_phrase)
-    return render_template("index.html", all_questions=five_questions, sort_by=sort_by, search_phrase=search_phrase)
+    return render_template("question_list.html", all_questions=five_questions, sort_by=sort_by, search_phrase=search_phrase, is_homepage=True)
 
 
 @app.route("/list", methods=['GET', 'POST'])
@@ -37,11 +38,24 @@ def questions_list():
         all_questions = data_manager.get_sorted_questions(criteria_and_direction)
     else:
         all_questions = data_manager.get_all_records("question")
+    all_questions = prepare_questions_to_display(all_questions)
     search_phrase = request.args.get('search_phrase')
     if search_phrase:
         return search_for_questions(search_phrase)
-    # return render_template("question_list.html", all_questions=all_questions, sort_by=sort_by, search_phrase=search_phrase)
-    return render_template("question_list_new.html", all_questions=all_questions, sort_by=sort_by, search_phrase=search_phrase)
+    return render_template("question_list.html", all_questions=all_questions, sort_by=sort_by, search_phrase=search_phrase, is_homepage=False)
+
+
+def prepare_questions_to_display(all_questions):
+    message_max_length = 800
+    title_max_length = 53
+    for record in all_questions:
+        record["number_of_answers"] = len(data_manager.get_answers_for_question(record.get("id")))
+        if len(record["title"]) >= title_max_length:
+            record["title"] = record["title"][:title_max_length] + "..."
+        if len(record["message"]) >= message_max_length:
+            record["message"] = record["message"][:message_max_length] + "..."
+    return all_questions
+
 
 @app.route("/question/<question_id>")
 def show_question(question_id):
