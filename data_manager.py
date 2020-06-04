@@ -67,11 +67,11 @@ def add_question(cursor: RealDictCursor, new_record: dict):
                     VALUES
                         (%(title)s, %(message)s, %(img_path)s, %(submission_time)s, 0, 0);
                     """, {
-                        'title': new_record["title"],
-                        'message': new_record["message"],
-                        'submission_time': new_record["submission_time"],
-                        'img_path': new_record["image"]
-                        })
+        'title': new_record["title"],
+        'message': new_record["message"],
+        'submission_time': new_record["submission_time"],
+        'img_path': new_record["image"]
+    })
 
 
 @connection.connection_handler
@@ -82,11 +82,11 @@ def add_answer(cursor: RealDictCursor, new_record: dict):
                     VALUES
                         (%(question_id)s, %(message)s, %(img_path)s, %(submission_time)s, 0);
                     """, {
-                        'question_id': new_record['question_id'],
-                        'message': new_record["message"],
-                        'submission_time': new_record["submission_time"],
-                        'img_path': new_record["image"]
-                        })
+        'question_id': new_record['question_id'],
+        'message': new_record["message"],
+        'submission_time': new_record["submission_time"],
+        'img_path': new_record["image"]
+    })
 
 
 @connection.connection_handler
@@ -97,7 +97,7 @@ def add_comment(cursor: RealDictCursor, new_record: dict):
     VALUES (%s, %s, %s, %s, %s);
     """
     cursor.execute(query, (new_record["question_id"], new_record["answer_id"],
-                   new_record["message"], new_record["submission_time"], new_record["edited_number"]))
+                           new_record["message"], new_record["submission_time"], new_record["edited_number"]))
 
 
 def edit_record(new_record, option):
@@ -120,11 +120,11 @@ def edit_question(cursor: RealDictCursor, new_record: dict):
                         submission_time = %(submission_time)s
                     WHERE id = %(id)s;
                     """, {
-                        'title': new_record["title"],
-                        'message': new_record["message"],
-                        'img_path': new_record["image"],
-                        'submission_time': new_record["submission_time"],
-                        'id': int(new_record["id"])})
+        'title': new_record["title"],
+        'message': new_record["message"],
+        'img_path': new_record["image"],
+        'submission_time': new_record["submission_time"],
+        'id': int(new_record["id"])})
 
 
 @connection.connection_handler
@@ -137,10 +137,10 @@ def edit_answer(cursor: RealDictCursor, new_record: dict):
                         submission_time = %(submission_time)s
                     WHERE id = %(id)s;
                     """, {
-                        'message': new_record["message"],
-                        'img_path': new_record["image"],
-                        'submission_time': new_record["submission_time"],
-                        'id': int(new_record["id"])})
+        'message': new_record["message"],
+        'img_path': new_record["image"],
+        'submission_time': new_record["submission_time"],
+        'id': int(new_record["id"])})
 
 
 @connection.connection_handler
@@ -296,7 +296,9 @@ def search_for_phrase_questions(cursor: RealDictCursor, search_phrase: str):
                 FROM question
                 FULL OUTER JOIN answer
                 ON question.id = answer.question_id
-                WHERE question.message ILIKE %(phrase)s OR question.title ILIKE %(phrase)s OR answer.message ILIKE %(phrase)s;
+                WHERE question.message ILIKE %(phrase)s
+                OR question.title ILIKE %(phrase)s
+                OR answer.message ILIKE %(phrase)s;
            """, {'phrase': '%' + search_phrase + '%'})
     return cursor.fetchall()
 

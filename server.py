@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, make_response, url_for
+from flask import Flask, render_template, request
 import data_manager
 from question_handler import question
 from answer_handler import answer
@@ -42,7 +42,13 @@ def questions_list():
     search_phrase = request.args.get('search_phrase')
     if search_phrase:
         return search_for_questions(search_phrase)
-    return render_template("question_list.html", all_questions=all_questions, sort_by=sort_by, search_phrase=search_phrase, is_homepage=False)
+    return render_template(
+                        "question_list.html",
+                        all_questions=all_questions,
+                        sort_by=sort_by,
+                        search_phrase=search_phrase,
+                        is_homepage=False
+                        )
 
 
 def prepare_questions_to_display(all_questions):
@@ -63,14 +69,14 @@ def show_question(question_id):
     tags = data_manager.get_tags_for_questions(question_id)
     all_answers_for_question = data_manager.get_answers_for_question(question_id)
     question_comments, answers_comments, answers_id_list, comment_id_list = [], [], [], []
-    for answer in all_answers_for_question:
-        answers_id_list.append(answer.get("id"))
+    for element in all_answers_for_question:
+        answers_id_list.append(element.get("id"))
     data_manager.increase_view_number(question_id)
     question_comments = data_manager.get_question_comments(question_id)
     if answers_id_list:
         answers_comments = data_manager.get_answers_comments(answers_id_list)
-        for comment in answers_comments:
-            comment_id_list.append(comment.get("answer_id"))
+        for element in answers_comments:
+            comment_id_list.append(element.get("answer_id"))
     return render_template(
                     "question_details.html",
                     record=record,
@@ -86,7 +92,12 @@ def show_question(question_id):
 def search_for_questions(search_phrase):
     search_results_questions = data_manager.search_for_phrase_questions(search_phrase)
     search_results_answers = data_manager.search_for_phrase_answers(search_phrase)
-    return render_template("search_results.html", all_questions=search_results_questions, answers=search_results_answers, search_phrase=search_phrase)
+    return render_template(
+                        "search_results.html",
+                        all_questions=search_results_questions,
+                        answers=search_results_answers,
+                        search_phrase=search_phrase
+                        )
 
 
 if __name__ == "__main__":
