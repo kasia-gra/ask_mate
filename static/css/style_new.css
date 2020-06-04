@@ -1,3 +1,15 @@
+.flex-column-center-horizontally {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+}
+
+.flex-row-center-horizontally {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+}
+
 a {
     text-decoration: none;
     font-style: normal;
@@ -9,7 +21,7 @@ a:hover {
 }
 
 
-.body {
+.body-styling {
     background-color: whitesmoke;
     margin: 0px 0px 0px 0px;
     font-family: sans-serif;
@@ -22,9 +34,7 @@ a:hover {
     background-color: #24262A;
     justify-content: space-between;
     color: white;
-    padding-top: 5em;
-    padding-left: 10%;
-    padding-right: 10%;
+    padding: 5em 10% 0 10%;
 }
 
 
@@ -44,7 +54,6 @@ a:hover {
 }
 
 .table-search-form {
-    top: 0;
     padding: 0.8em;
     font-size: 1em;
     display: flex;
@@ -69,10 +78,7 @@ a:hover {
 }
 
 .navigation-menu {
-    padding-right: 10%;
-    padding-left: 10%;
-    padding-top: 1em;
-    padding-bottom: 2em;
+    padding: 1em 10% 2em 10%;
     background-color: #46D21B;
     position: static;
     top: 0;
@@ -103,10 +109,7 @@ a:hover {
 
 .button-panel {
     display: flex;
-    padding-left: 10%;
-    padding-right: 10%;
-    padding-bottom: 1.5em;
-    padding-top: 1.5em;
+    padding: 1.5em 10% 1.5em 10%;
     background-color: whitesmoke;
 }
 
@@ -160,14 +163,15 @@ span, span > a {
     border: black solid 0.1em;
     padding: 0.8em;
     font-size: 1em;
-}
-
-.drop_down_btn > button {
-    width: 5em;
-}
-
-.drop_down_btn > select {
     width: 15em;
+}
+
+.search-input {
+    width: 15em;
+}
+
+.search-button {
+    width: 5em;
 }
 
 
@@ -198,8 +202,7 @@ span, span > a {
     width: 60%;
     display: flex;
     flex-direction: row;
-    margin: 0.2em;
-    margin-left: 5%;
+    margin: 0.2em 0.2em 0.2em 5%;
     padding: 0.6em;
     border-radius: 0.6em;
     border: none;
@@ -249,8 +252,7 @@ span, span > a {
     width: 60%;
     display: flex;
     flex-direction: row;
-    margin: 0.2em;
-    margin-left: 5%;
+    margin: 0.2em 0.2em 0.2em 5%;
     padding: 0.6em;
     border-radius: 0.6em;
     border: none;
@@ -309,10 +311,8 @@ span, span > a {
 .answers-number {
     display: flex;
     flex-direction: column;
-    margin-left: 0.5em;
-    margin-right: 0.5em;
+    margin: 0em 0.5em 2em 0.5em;
     align-items: center;
-    margin-bottom: 2em;
     border-radius: 0.6em;
     border: grey solid 1px;
     padding: 0.7em;
@@ -441,6 +441,7 @@ nav a:hover{
 similar transform is needed in nav */
 .nav_toggle:checked ~ nav {
     transform: scale(1,1);
+    padding: 1em 0 0 0;
 }
 
 
