@@ -13,7 +13,6 @@
             </div>
             <div class="table-header">
             </div>
-
             {% for question in all_questions %}
                 <div class="table-content">
                     <div class="table-details-and-description">
@@ -29,33 +28,32 @@
                             <div class="view-vote-numbers">
                                 <div class="view-number">
                                     <div class="view-number-value">
-                                    {{ question.get("view_number") }}
-                                </div>
-                                <div class="view-number-text">
-                                    Views
-                                </div>
+                                        {{ question.get("view_number") }}
+                                    </div>
+                                    <div class="view-number-text">
+                                        Views
+                                    </div>
                                 </div>
                                 <div class="vote-number">
                                     <div class="vote-number-value">
-                                    {{ question.get("vote_number") }}
-                                </div>
-                                <div class="vote-number-text">
-                                    Votes
-                                </div>
+                                        {{ question.get("vote_number") }}
+                                    </div>
+                                    <div class="vote-number-text">
+                                        Votes
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div class="table-record-description">
                             <div class="question-title">
-                                <a href="{{ url_for("show_question", question_id=question.get("id")|string) }}">{{ question.get("title") }}</a>
+                                <a href="{{ url_for("show_question", question_id=question.get("id")|string) }}">{{ question.get("title").replace(search_phrase, '<span>{}</span>'.format(search_phrase))|safe }}</a>
                             </div>
                             <div class="question-message">
-                                {{ question.get("message") }}
+                                {{ question.get("message").replace(search_phrase, '<span>{}</span>'.format(search_phrase))|safe }}
                             </div>
                         </div>
                     </div>
                 </div>
-
                 {% for answer in answers %}
                     {% if answer["question_id"] == question["id"] %}
                         <div class="table-content">
@@ -83,11 +81,11 @@
                                     </div>
                                 </div>
 
-                                    <div class="table-record-description">
-                                        <div class="answer_to_question">
-                                            {{ answer.get("message") }}
-                                        </div>
+                                <div class="table-record-description">
+                                    <div class="answer_to_question">
+                                        {{ answer.get("message").replace(search_phrase, '<span>{}</span>'.format(search_phrase))|safe }}
                                     </div>
+                                </div>
                             </div>
                         </div>
                     {% endif %}
@@ -96,4 +94,6 @@
         </div>
     </div>
 {% endblock %}
-{% block footer %}{{ super() }}{% endblock %}
+{% block footer %}
+    {{ super() }}
+{% endblock %}
