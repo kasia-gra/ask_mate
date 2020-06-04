@@ -1,235 +1,474 @@
-body {
-    margin: 0;
-    background: linear-gradient(to right, whitesmoke, rgba(119, 201, 212, 0.07), rgba(87, 188, 144, 0.32));
-    font-family:Arial;
-    font-style: normal;
-}
-
 a {
+    text-decoration: none;
     font-style: normal;
-    text-decoration-line: none;
-    font-weight: bold;
+    color: #46D21B;
 }
 
-h1 {
-    font-style: normal;
-    font-weight: bold;
-    text-align: center;
-    margin-left: auto;
-    margin-right: auto;
-    padding-top: 70px;
-}
-
-p {
-    padding: 10px;
-    margin-left: 5%;
-}
-
-form {
-    font-style: normal;
-    font-weight: bold;
-    text-align: center;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-/*table, th, td {*/
-/*    text-align:center;*/
-/*    margin-left:auto;*/
-/*    margin-right:auto;*/
-/*    border-collapse: collapse;*/
-/*    border-style: groove;*/
-/*    border-width: 1px;*/
-/*    margin-bottom: 50px;*/
-/*}*/
-
-h3 {
-    text-align: center;
+a:hover {
+    color: #60C451;
 }
 
 
-.content-table {
-    width:70%;
-    margin-left:15%;
-    margin-right:15%;
-    border-collapse: collapse;
-    font-size: 0.9em;
-    min-width: 400px;
-    border-radius: 5px 5px 0 0;
-    overflow: hidden;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-}
-
-.content-table thead tr {
-    background-color: #57BC90;
-    color: #ffffff;
-    text-align: left;
-    font-family:sans-serif;
-    font-weight: bold;
-	padding:13px 32px;
-}
-
-.content-table th,
-.content-table td {
-    padding: 12px 15px;
-}
-
-.content-table tbody tr {
-    border-bottom: 1px solid #dddddd;
-}
-
-.content-table tr td:nth-child(4){
-    width: 200px;
-}
-.content-table tbody tr:nth-of-type(even) {
-    background-color: #f3f3f3;
-}
-
-.content-table tbody tr:last-of-type {
-    border-bottom: 2px solid #57BC90;
-}
-
-.content-table .answer_to_question {
-    background-color: rgba(111, 137, 121, 0.4);
-}
-
-
-.content-table-answer-comment {
-    width:70%;
-    margin-left:30%;
-    margin-right:15%;
-    border-collapse: collapse;
-    font-size: 0.9em;
-    min-width: 400px;
-    border-radius: 5px 5px 0 0;
-    overflow: hidden;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-}
-
-
-.fixed-menu {
-    position: fixed;
-    background-color: #57BC90;
-    top: 0;
-    color: #ffffff;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    text-align: right;
-    width: 100%;
-    vertical-align: center;
-    display: inline-block;
-}
-
-
-.home_icon{
-    margin-left: 10px;
-	background-color:whitesmoke;
-	border-radius:8px;
-	display:inline-block;
-	cursor:pointer;
-    float: left
-
-}
-
-
-.nav_icon{
-    margin-left: 10px;
-	background-color:transparent;
-	border-radius:8px;
-	display:inline-block;
-	cursor:pointer;
-    float: left
-}
-
-
-.drop_down_container{
-    margin-top: 100px;
-    margin-right: 15%;
-    margin-left: 15%;
-    width: 70%;
-}
-
-.drop_down_btn{
-	background-color:#599bb3;
-	box-shadow: 0px 10px 14px -7px #276873;
-    border-radius:8px;
-	display:inline-block;
-	cursor:pointer;
-	color: whitesmoke;
-	font-family:sans-serif;
-	font-size:15px;
-	font-weight:bold;
-	padding:10px 22px;
-    float: left
-}
-
-
-/*.fixed-button {*/
-/*    display: inline-block;*/
-/*}*/
-
-.fixed-sorter {
-    display: inline-block;
-}
-
-.fixed-footer {
-    position: fixed;
-    background-color: #57BC90;
-    bottom: 0;
-    color: #ffffff;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    padding-left: 5px;
-    text-align: left;
-    vertical-align: center;
-    width: 100%;
-    display: inline-block;
-}
-
-.question_container {
+.body {
     background-color: whitesmoke;
-    width:70%;
-    margin-left:15%;
-    margin-right:15%;
-    border-radius: 5px 5px 0 0;
-    overflow: hidden;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-    margin-top: 100px;
+    margin: 0px 0px 0px 0px;
 }
 
-
-.container_nav_menu{
-    background-color: transparent;
-    width:70%;
-    margin-top: 100px;
-    margin-left:15%;
-    margin-right:15%;
-}
-
-
-.nav_button{
-	box-shadow: 0px 10px 14px -7px #276873;
-	background:linear-gradient(to bottom, #599bb3 5%, #408c99 100%);
-	background-color:#599bb3;
-	border-radius:8px;
-	display:inline-block;
-	cursor:pointer;
-	color:#ffffff;
-	font-family:sans-serif;
-	font-size:15px;
-	font-weight:bold;
-	padding:10px 22px;
-	text-decoration:none;
-	text-shadow:0px 1px 0px #3d768a;
-    float: left
-}
-
-.form {
-    width: 40em;
-    height: 20em;
+.table-header-and-title {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    background-color: #24262A;
+    justify-content: space-between;
+    color: white;
+    padding-top: 5em;
+    padding-left: 10%;
+    padding-right: 10%;
+}
+
+
+.table-title {
+    display: flex;
+    flex-direction: row;
     justify-content: center;
     align-content: center;
 }
 
+
+.table-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+}
+
+.table-search-form {
+    top: 0;
+    padding: 0.8em;
+    font-size: 1em;
+    display: flex;
+    align-content: center;
+    align-self: flex-end;
+    justify-self: right;
+    justify-content: flex-end;
+}
+
+.table-search-form > input {
+    border-radius: 0.6em;
+    border: black solid 0.1em;
+    padding: 0.8em;
+    font-size: 1em;
+}
+
+.table-search-form > button {
+    border-radius: 0.6em;
+    border: black solid 0.1em;
+    padding: 0.8em;
+    font-size: 1em;
+}
+
+.navigation-menu {
+    padding-right: 10%;
+    padding-left: 10%;
+    padding-top: 1em;
+    padding-bottom: 2em;
+    background-color: #46D21B;
+    position: static;
+    top: 0;
+    display: flex;
+    flex-direction: row;
+    align-content: flex-start;
+    justify-content: space-between;
+}
+
+.icons-menu {
+    position: static;
+    top: 0;
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: center;
+}
+
+.container {
+    color: #24262A;
+    align-content: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 4em;
+}
+
+
+.button-panel {
+    display: flex;
+    padding-left: 10%;
+    padding-right: 10%;
+    padding-bottom: 1.5em;
+    padding-top: 1.5em;
+    background-color: whitesmoke;
+}
+
+.nav_button {
+    background-color: #46D21B;
+    color: white;
+    font-size: larger;
+    font-weight: bold;
+}
+
+.nav_button:hover {
+    background-color: #46D21B;
+    color: whitesmoke;
+    font-size: larger;
+    font-weight: bold;
+}
+
+.home-button {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.button-nav-home {
+    display: flex;
+    flex-direction: column;
+    padding-right: 0.4em;
+    padding-top: 0.4em;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+}
+
+
+span, span > a {
+    background-color: #46D21B;
+}
+
+.button-nav-home:hover {
+    color: black;
+}
+
+.table-sorting-form {
+    display: flex;
+    flex-direction: row;
+}
+
+
+.drop_down_btn {
+    border-radius: 0.6em;
+    border: black solid 0.1em;
+    padding: 0.8em;
+    font-size: 1em;
+}
+
+.drop_down_btn > button {
+    width: 5em;
+}
+
+.drop_down_btn > select {
+    width: 15em;
+}
+
+
+.button-panel > a {
+    border-radius: 1em;
+    border: black solid 0.1em;
+    display: flex;
+    padding: 0.8em;
+}
+
+
+.table-sorting-form {
+}
+
+
+.table-search-form {
+}
+
+
+.table-content {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    margin-bottom: 1em;
+}
+
+.table-record-details {
+    align-items: center;
+    align-content: center;
+    display: flex;
+    flex-direction: column;
+    margin: 0.2em;
+    padding: 0.6em;
+    justify-content: center;
+}
+
+
+.table-record-actions-panel {
+    background-color: #46D21B;
+    color: white;
+    width: 15%;
+    display: flex;
+    flex-direction: column;
+    margin: 0.2em;
+    padding: 0.6em;
+    border-radius: 0.6em;
+    border: none;
+    height: 16em;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+}
+
+
+.table-details-and-description {
+    background-color: white;
+    width: 65%;
+    display: flex;
+    flex-direction: row;
+    margin: 0.2em;
+    padding: 0.6em;
+    border-radius: 0.6em;
+    border: none;
+    height: 16em;
+}
+
+.indented_table-details-and-description {
+    background-color: ghostwhite;
+    width: 60%;
+    display: flex;
+    flex-direction: row;
+    margin: 0.2em;
+    margin-left: 5%;
+    padding: 0.6em;
+    border-radius: 0.6em;
+    border: none;
+}
+
+.table-record-description {
+    display: flex;
+    flex-direction: column;
+    margin: 0.2em;
+    padding: 0.6em;
+}
+
+.question-title {
+    font-size: 2em;
+    color: burlywood;
+    font-style: normal;
+    margin-bottom: 0.6em;
+}
+
+.question-message {
+    font-size: 1em;
+    color: black;
+    font-style: normal;
+}
+
+.head-of-actions-panel {
+    margin-top: 1em;
+    margin-bottom: auto;
+    display: flex;
+    flex-direction: row;
+}
+
+.vote-section {
+    display: flex;
+    flex-direction: row;
+}
+
+.vote-section > a {
+    margin: 0.5em;
+}
+
+.submission-time {
+    display: flex;
+    flex-direction: column;
+    margin-top: auto;
+    align-items: center;
+    margin-bottom: 1em;
+}
+
+.answers-number {
+    display: flex;
+    flex-direction: column;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+    align-items: center;
+    margin-bottom: 2em;
+    border-radius: 0.6em;
+    border: grey solid 1px;
+    padding: 0.7em;
+}
+
+.answers-number-value {
+    text-decoration-style: solid;
+    font-size: 2em;
+}
+
+.answers-number-text {
+
+}
+
+.view-vote-numbers {
+    display: flex;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+}
+
+.view-number {
+    display: flex;
+    flex-direction: column;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+    align-items: center;
+}
+
+.vote-number {
+    display: flex;
+    flex-direction: column;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+    align-items: center;
+}
+
+.vote-number-text {
+
+}
+
+.vote-number-value {
+    text-decoration-style: solid;
+    font-size: 1.5em;
+}
+
+.view-number-text {
+
+}
+
+.view-number-value {
+    text-decoration-style: solid;
+    font-size: 1.5em;
+}
+
+
+
+
+/* navigation styles */
+
+:root {
+    --main_bgd: rgb(72, 54, 73);
+    --logo_bgd: rgb(42, 187, 2);
+    --nav_bgd: rgb(2, 0, 0);
+    --hover_bgd: rgb(251, 242, 242);
+  }
+
+*,*::before, *::after {
+    box-sizing: border-box;
+}
+
+header {
+    background-color: var(--logo_bgd);
+    text-align: center;
+    position: fixed;
+    margin: 0;
+    width: 100%;
+    z-index: 999;
+}
+
+.search {
+    color: blanchedalmond;
+}
+
+/* setting position to absolute so it is relative -header already set to fixed */
+nav {
+    position: absolute;
+    text-align: left;
+/* move 100% from header that is fixed */
+    top: 100%;
+    left: 0;
+    background-color: var(--nav_bgd);
+    width: 100%;
+    transform: scale(1,0);
+    transform-origin: top;
+    transition: 400ms ease-in-out;
+}
+
+nav ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+nav li {
+    margin-bottom: 1em;
+    margin-left: 1em;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    /* to make letter fade in the menu */
+    opacity: 0;
+    transition: opacity 150ms ease-in-out;
+}
+
+nav a:hover{
+    color:rgb(32, 32, 66);
+    background-color: whitesmoke;
+}
+
+
+/* create checkbox for displaying & hiding nav, transform is needed so we do not use display none -
+similar transform is needed in nav */
+.nav_toggle:checked ~ nav {
+    transform: scale(1,1);
+}
+
+
+.nav_toggle{
+    display: none;
+}
+
+
+.nav_toggle_label{
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin-left: 1em;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.nav_toggle_label span,
+.nav_toggle_label span::before,
+.nav_toggle_label span::after {
+    display: block;
+    background: whitesmoke;
+    height: 2px;
+    width: 2em;
+    border-radius: 2px;
+    position: relative;
+}
+
+.nav_toggle_label span::before,
+.nav_toggle_label span::after {
+    content: '';
+    position: absolute;
+}
+
+.nav_toggle_label span::before {
+    bottom: 7px;
+}
+
+.nav_toggle_label span::after {
+    top: 7px;
+}
+
+/* to make letters in the menu fade */
+
+.nav_toggle:checked ~ nav a {
+    opacity: 1;
+    transition: opacity 250ms ease-in-out 250ms;
+}
