@@ -91,6 +91,7 @@ def show_question(question_id):
 @app.route('/search_phrase')
 def search_for_questions(search_phrase):
     search_results_questions = data_manager.search_for_phrase_questions(search_phrase)
+    search_results_questions = prepare_questions_to_display(search_results_questions)
     search_results_answers = data_manager.search_for_phrase_answers(search_phrase)
     return render_template(
         "search_results.html",
