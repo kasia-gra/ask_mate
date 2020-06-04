@@ -369,6 +369,22 @@ span, span > a {
 
 
 
+.add_edit_form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 3em;
+    margin-top: 2em;
+    webkit-box-shadow: 0px 0px 60px 0px rgba(207,209,207,1);
+    moz-box-shadow: 0px 0px 60px 0px rgba(207,209,207,1);
+    box-shadow: 0px 0px 60px 0px rgba(207,209,207,1);
+    border-radius: 13px 13px 13px 13px;
+    moz-border-radius: 13px 13px 13px 13px;
+    webkit-border-radius: 13px 13px 13px 13px;
+    border: 0px solid #000000;
+}
+
 
 /* navigation styles */
 
