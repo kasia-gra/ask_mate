@@ -23,7 +23,7 @@
                                   {% endif %}"
                             method="POST">
                             <label for="description">Comment message:</label><br/>
-                            <textarea id="description" name="message" rows="10"
+                            <textarea class="text_input" id="description" name="message" rows="10"
                                   cols="100">{{ comment.message if comment }}</textarea><br/>
                             <button class="drop_down_btn" type="submit"> {{ "Edit " if comment else "Add new " }} comment</button>
                     </form>
