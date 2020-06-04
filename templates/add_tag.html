@@ -16,7 +16,7 @@
             <div class="table-content">
                 <div class="add_edit_form">
                     <h3>Select available tag...</h3>
-                    <form>
+                    <form class="flex-column-center-horizontally">
                         <select class="drop_down_btn" name="new_tag" id="new_tag">
                             {% for available_tag in tags_list %}
                                 <option value="{{ available_tag.name }}">{{ available_tag.name }}</option>
@@ -25,7 +25,7 @@
                         <button class="drop_down_btn" type="submit">Submit</button>
                     </form>
                     <h3>...or add a new tag</h3>
-                    <form>
+                    <form class="flex-column-center-horizontally">
                         <input class="search-input drop_down_btn" id="new_tag" name="new_tag" type="text">
                         <button class="drop_down_btn" type="submit">Submit</button>
                     </form>
