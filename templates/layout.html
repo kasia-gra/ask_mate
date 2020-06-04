@@ -5,8 +5,7 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style_new.css') }}">
     <title>{% block title %}{% endblock %}</title>
 </head>
-
-   <header>
+<header>
     <div class="search">
         <div class="table-search-form">
             <form action="/" methor="GET">
@@ -15,9 +14,7 @@
             </form>
         </div>
     </div>
-
     <input type="checkbox" id="nav_toggle" class="nav_toggle">
-
     <nav>
         <ul>
             <li><a href="{{ url_for("homepage") }}">Home</a></li>
@@ -26,12 +23,10 @@
             <li><a href="google.com">Some Link</a></li>
         </ul>
     </nav>
-
     <label for="nav_toggle" class="nav_toggle_label">
         <span></span>
     </label>
 </header>
-
 <body class="body-styling">
 {% block header %}{% endblock %}
 {% block nav %}
@@ -39,38 +34,38 @@
 
 
 
-{#    <div class="navigation-menu">#}
-{#        <div class="icons-menu">#}
-{#            <div class="home-button">#}
-{#                <a href="{{ url_for("homepage") }}" class="button-nav-home">#}
-{#                    <div>#}
-{#                        <img src="{{ url_for('static', filename="icons/home.png") }}" width="50px" height="50px"#}
-{#                             alt="HOME">#}
-{#                    </div>#}
-{#                    <div>#}
-{#                        HOME#}
-{#                    </div>#}
-{#                </a>#}
-{#            </div>#}
-{#            <div class="home-button">#}
-{#                <a href="{{ url_for("questions_list") }}" class="button-nav-home">#}
-{#                    <div>#}
-{#                        <img src="{{ url_for('static', filename="icons/list.png") }}" width="50px" height="50px"#}
-{#                             alt="QUESTIONS_LIST">#}
-{#                    </div>#}
-{#                    <div>#}
-{#                        QUESTIONS#}
-{#                    </div>#}
-{#                </a>#}
-{#            </div>#}
-{#        </div>#}
-{#        <div class="table-search-form">#}
-{#            <form>#}
-{#                <input class="drop_down_btn" id="search_phrase" name="search_phrase" type="text">#}
-{#                <button class="drop_down_btn" type="submit">Search</button>#}
-{#            </form>#}
-{#        </div>#}
-{#    </div>#}
+    {#    <div class="navigation-menu">#}
+    {#        <div class="icons-menu">#}
+    {#            <div class="home-button">#}
+    {#                <a href="{{ url_for("homepage") }}" class="button-nav-home">#}
+    {#                    <div>#}
+    {#                        <img src="{{ url_for('static', filename="icons/home.png") }}" width="50px" height="50px"#}
+    {#                             alt="HOME">#}
+    {#                    </div>#}
+    {#                    <div>#}
+    {#                        HOME#}
+    {#                    </div>#}
+    {#                </a>#}
+    {#            </div>#}
+    {#            <div class="home-button">#}
+    {#                <a href="{{ url_for("questions_list") }}" class="button-nav-home">#}
+    {#                    <div>#}
+    {#                        <img src="{{ url_for('static', filename="icons/list.png") }}" width="50px" height="50px"#}
+    {#                             alt="QUESTIONS_LIST">#}
+    {#                    </div>#}
+    {#                    <div>#}
+    {#                        QUESTIONS#}
+    {#                    </div>#}
+    {#                </a>#}
+    {#            </div>#}
+    {#        </div>#}
+    {#        <div class="table-search-form">#}
+    {#            <form>#}
+    {#                <input class="drop_down_btn" id="search_phrase" name="search_phrase" type="text">#}
+    {#                <button class="drop_down_btn" type="submit">Search</button>#}
+    {#            </form>#}
+    {#        </div>#}
+    {#    </div>#}
     {% block nav_extension %}
     {% endblock %}
 {% endblock %}

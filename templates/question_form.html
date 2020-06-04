@@ -15,11 +15,15 @@
             </div>
             <div class="table-content">
                 <div class="add_edit_form">
-                    <form class="form" id=question_form action={{ "/question" if is_new else "/question/" + old_record.id|string + "/edit" }} method="POST" enctype="multipart/form-data">
+                    <form class="form" id=question_form
+                          action={{ "/question" if is_new else "/question/" + old_record.id|string + "/edit" }} method="POST"
+                          enctype="multipart/form-data">
                         <label for="title">Question title:</label><br/>
-                        <input id="title" name="title" type="text" required="required" minlength="5" value='{{ old_record.title|string }}'><br/>
+                        <input id="title" name="title" type="text" required="required" minlength="5"
+                               value='{{ old_record.title|string }}'><br/>
                         <label for="description">Question message:</label><br/>
-                        <textarea id="description" name="description" rows="10" cols="100">{{ old_record.message|string }}</textarea><br/>
+                        <textarea id="description" name="description" rows="10"
+                                  cols="100">{{ old_record.message|string }}</textarea><br/>
                         <label>Select image</label>
                         <input type="file" name="file" id="file">
                         <button type="submit">{{ "Add new question" if is_new else "Edit your question" }}</button>
@@ -28,6 +32,5 @@
             </div>
         </div>
     </div>
-
 {% endblock %}
 {% block footer %}{{ super() }}{% endblock %}

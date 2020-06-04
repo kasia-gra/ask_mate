@@ -19,7 +19,7 @@
                     <form>
                         <select name="new_tag" id="new_tag">
                             {% for available_tag in tags_list %}
-                            <option value="{{ available_tag.name }}">{{ available_tag.name }}</option>
+                                <option value="{{ available_tag.name }}">{{ available_tag.name }}</option>
                             {% endfor %}
                         </select>
                         <button type="submit">Submit</button>
@@ -31,8 +31,8 @@
                     </form>
                 </div>
             </div>
-            </div>
         </div>
+    </div>
     </div>
 {% endblock %}
 {% block footer %}{{ super() }}{% endblock %}

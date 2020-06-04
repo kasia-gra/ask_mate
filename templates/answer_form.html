@@ -13,9 +13,12 @@
                     <h1>{{ "Add new answer" if is_new else "Edit your answer" }}</h1>
                 </div>
             </div>
-            <form class="form" id=answer_form action={{ "/question/" + old_record.question_id|string + "/new-answer" if is_new else "/answer/" + old_record.id|string + "/edit" }} method="POST" enctype="multipart/form-data">
+            <form class="form" id=answer_form
+                  action={{ "/question/" + old_record.question_id|string + "/new-answer" if is_new else "/answer/" + old_record.id|string + "/edit" }} method="POST"
+                  enctype="multipart/form-data">
                 <label for="description">Answer message:</label><br/>
-                <textarea id="description" name="description" rows="10" cols="100">{{ old_record.message|string }}</textarea><br/>
+                <textarea id="description" name="description" rows="10"
+                          cols="100">{{ old_record.message|string }}</textarea><br/>
                 <label>Select image</label>
                 <input type="file" name="file" id="file">
                 <button type="submit">{{ "Add new answer" if is_new else "Edit your answer" }}</button>
