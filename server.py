@@ -26,7 +26,7 @@ def homepage():
     search_phrase = request.args.get('search_phrase')
     if search_phrase:
         return search_for_questions(search_phrase)
-    return render_template("index.html", all_questions=five_questions, sort_by=sort_by, search_phrase=search_phrase)
+    return render_template("question_list.html", all_questions=five_questions, sort_by=sort_by, search_phrase=search_phrase, is_homepage=True)
 
 
 @app.route("/list", methods=['GET', 'POST'])
@@ -48,7 +48,7 @@ def questions_list():
     search_phrase = request.args.get('search_phrase')
     if search_phrase:
         return search_for_questions(search_phrase)
-    return render_template("question_list.html", all_questions=all_questions, sort_by=sort_by, search_phrase=search_phrase)
+    return render_template("question_list.html", all_questions=all_questions, sort_by=sort_by, search_phrase=search_phrase, is_homepage=False)
 
 
 @app.route("/question/<question_id>")
