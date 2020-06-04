@@ -6,7 +6,6 @@ from comment_handler import comment
 from vote_handler import vote
 from tag_handler import tag
 
-
 app = Flask(__name__)
 app.register_blueprint(question)
 app.register_blueprint(answer)
@@ -27,7 +26,8 @@ def homepage():
     search_phrase = request.args.get('search_phrase')
     if search_phrase:
         return search_for_questions(search_phrase)
-    return render_template("question_list.html", all_questions=five_questions, sort_by=sort_by, search_phrase=search_phrase, is_homepage=True)
+    return render_template("question_list.html", all_questions=five_questions, sort_by=sort_by,
+                           search_phrase=search_phrase, is_homepage=True)
 
 
 @app.route("/list", methods=['GET', 'POST'])
@@ -43,12 +43,12 @@ def questions_list():
     if search_phrase:
         return search_for_questions(search_phrase)
     return render_template(
-                        "question_list.html",
-                        all_questions=all_questions,
-                        sort_by=sort_by,
-                        search_phrase=search_phrase,
-                        is_homepage=False
-                        )
+        "question_list.html",
+        all_questions=all_questions,
+        sort_by=sort_by,
+        search_phrase=search_phrase,
+        is_homepage=False
+    )
 
 
 def prepare_questions_to_display(all_questions):
@@ -78,14 +78,14 @@ def show_question(question_id):
         for element in answers_comments:
             comment_id_list.append(element.get("answer_id"))
     return render_template(
-                    "question_details.html",
-                    record=record,
-                    answers=all_answers_for_question,
-                    question_comments=question_comments,
-                    tags=tags,
-                    answers_comments=answers_comments,
-                    comment_id_list=comment_id_list
-                    )
+        "question_details.html",
+        record=record,
+        answers=all_answers_for_question,
+        question_comments=question_comments,
+        tags=tags,
+        answers_comments=answers_comments,
+        comment_id_list=comment_id_list
+    )
 
 
 @app.route('/search_phrase')
@@ -93,11 +93,11 @@ def search_for_questions(search_phrase):
     search_results_questions = data_manager.search_for_phrase_questions(search_phrase)
     search_results_answers = data_manager.search_for_phrase_answers(search_phrase)
     return render_template(
-                        "search_results.html",
-                        all_questions=search_results_questions,
-                        answers=search_results_answers,
-                        search_phrase=search_phrase
-                        )
+        "search_results.html",
+        all_questions=search_results_questions,
+        answers=search_results_answers,
+        search_phrase=search_phrase
+    )
 
 
 if __name__ == "__main__":

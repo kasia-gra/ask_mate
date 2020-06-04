@@ -1,13 +1,13 @@
 .flex-column-center-horizontally {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .flex-row-center-horizontally {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
 a {
@@ -368,7 +368,6 @@ span, span > a {
 }
 
 
-
 .add_edit_form {
     display: flex;
     align-items: center;
@@ -376,9 +375,9 @@ span, span > a {
     flex-direction: column;
     padding: 3em;
     margin-top: 2em;
-    webkit-box-shadow: 0px 0px 60px 0px rgba(207,209,207,1);
-    moz-box-shadow: 0px 0px 60px 0px rgba(207,209,207,1);
-    box-shadow: 0px 0px 60px 0px rgba(207,209,207,1);
+    webkit-box-shadow: 0px 0px 60px 0px rgba(207, 209, 207, 1);
+    moz-box-shadow: 0px 0px 60px 0px rgba(207, 209, 207, 1);
+    box-shadow: 0px 0px 60px 0px rgba(207, 209, 207, 1);
     border-radius: 13px 13px 13px 13px;
     moz-border-radius: 13px 13px 13px 13px;
     webkit-border-radius: 13px 13px 13px 13px;
@@ -393,9 +392,9 @@ span, span > a {
     --logo_bgd: rgb(42, 187, 2);
     --nav_bgd: rgb(2, 0, 0);
     --hover_bgd: rgb(251, 242, 242);
-  }
+}
 
-*,*::before, *::after {
+*, *::before, *::after {
     box-sizing: border-box;
 }
 
@@ -416,12 +415,12 @@ header {
 nav {
     position: absolute;
     text-align: left;
-/* move 100% from header that is fixed */
+    /* move 100% from header that is fixed */
     top: 100%;
     left: 0;
     background-color: var(--nav_bgd);
     width: 100%;
-    transform: scale(1,0);
+    transform: scale(1, 0);
     transform-origin: top;
     transition: 400ms ease-in-out;
 }
@@ -447,8 +446,8 @@ nav a {
     transition: opacity 150ms ease-in-out;
 }
 
-nav a:hover{
-    color:rgb(32, 32, 66);
+nav a:hover {
+    color: rgb(32, 32, 66);
     background-color: whitesmoke;
 }
 
@@ -456,17 +455,17 @@ nav a:hover{
 /* create checkbox for displaying & hiding nav, transform is needed so we do not use display none -
 similar transform is needed in nav */
 .nav_toggle:checked ~ nav {
-    transform: scale(1,1);
+    transform: scale(1, 1);
     padding: 1em 0 0 0;
 }
 
 
-.nav_toggle{
+.nav_toggle {
     display: none;
 }
 
 
-.nav_toggle_label{
+.nav_toggle_label {
     position: absolute;
     top: 0;
     left: 0;

@@ -1,5 +1,6 @@
 from flask import request, redirect, make_response, Blueprint
 import data_manager
+
 vote = Blueprint('vote', __name__, template_folder='templates')
 
 
@@ -35,4 +36,3 @@ def answer_vote_down(answer_id):
         data_manager.update_vote_number("answer", str(answer_id), "down")
         return res
     return redirect("/question/" + str(question_id))
-

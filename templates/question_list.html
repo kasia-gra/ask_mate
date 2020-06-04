@@ -33,7 +33,7 @@
                 </div>
             </div>
             <div class="button-panel">
-                {% if is_homepage  %}
+                {% if is_homepage %}
                     <a href="{{ url_for("questions_list") }}" class="nav_button">All Questions</a>
                 {% else %}
                     <a href="{{ url_for("question.add_question") }}" class="nav_button">Ask new question</a>

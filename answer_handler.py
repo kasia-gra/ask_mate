@@ -1,6 +1,7 @@
 from flask import render_template, request, redirect, Blueprint
 import data_manager
 import util
+
 answer = Blueprint('answer', __name__, template_folder='templates')
 
 
