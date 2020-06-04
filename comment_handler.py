@@ -35,7 +35,7 @@ def edit_comment(comment_id):
         comment["edited_number"] = comment["edited_number"] + 1 if comment["edited_number"] is not None else 1
         comment["submission_time"] = util.get_new_timestamp()
         data_manager.edit_comment(comment)
-        question_id = comment["question_id"] if comment["question_id"] else data_manager.get_specific_record(comment.get("answer_id"), "answer").get("question_id")
+        question_id = comment["question_id"] if type(comment["question_id"]) is int else data_manager.get_specific_record(comment.get("answer_id"), "answer").get("question_id")
         return redirect(url_for("show_question", question_id=question_id))
     return render_template("comment_form.html", comment=comment)
 
@@ -43,7 +43,7 @@ def edit_comment(comment_id):
 @comment.route("/comments/<int:comment_id>/delete")
 def delete_comment(comment_id):
     comment = data_manager.get_specific_record(comment_id, "comment")
-    if comment.get("question_id"):
+    if type(comment.get("question_id")) is int:
         question_id = comment.get("question_id")
     else:
         answer_id = comment.get("answer_id")

@@ -8,132 +8,198 @@
     {% endblock %}
 {% endblock %}
 {% block body %}
-    <div class="container_nav_menu">
-        <p>
-            <a href="{{ url_for("answer.add_answer", question_id=record.get("id")) }}" class="nav_button">Add answer</a>
-            <a href="{{ url_for("question.edit_question", question_id=record.get("id")) }}" class="nav_button">Edit question</a>
-            <a href="{{ url_for("question.delete_question", question_id=record.get("id")) }}" class="nav_button">Delete question</a>
-            <a href="{{ url_for("tag.add_tag", question_id=record.get("id")) }}" class="nav_button">Add tag</a>
-        </p>
-    </div>
-    <div class="question_container">
-        <h2>{{ record.get("title") }}</h2>
-        <img src="{{ url_for('static', filename="img/" + record.get("image")|string) }}" width="400px" height="400px" alt="No available image!" align="left">
-        <p>{{ record.get("message") }}</p>
-        <p>
-            {% for tag in tags %}
-                <p>
-                    #{{ tag.get("name") }} <a href="{{ url_for("tag.delete_tag", question_id=tag.question_id, tag_id=tag.tag_id) }}">X</a>
-                </p>
-            {% endfor %}
-        </p>
-    </div>
-    <p>
-        <a href="{{ url_for("comment.comment_question", question_id=record.get("id")) }}">Add new comment</a>
-    </p>
-    {% if question_comments == [] %}
-        <h3>No comments yet</h3>
-    {% else %}
-        <h3>Comments:</h3>
-        <table class = content-table>
-            {% set question_comments_headers = ["submission_time", "message", "edited_number", "edit_comment", "delete_comment"] %}
-            <thead>
-                <tr>{% for question_comments_header in question_comments_headers %}
-                    <th>{{ question_comments_header.capitalize().replace("_", " ") }}</th>
-                    {% endfor %}
-                </tr>
-            </thead>
-            <tbody>
-                {% for question_comment in question_comments %}
-                    <tr>
-                        {% for question_comment_key, question_comment_detail in question_comment.items() %}
-                            {% if question_comment_key in question_comments_headers %}
-                                <td>{{ "Edited " + question_comment_detail|string + " times" if question_comment_key == "edited_number" else question_comment_detail}}</td>
-                            {% endif %}
-                        {% endfor %}
-                        <td><a href="{{ url_for("comment.edit_comment", comment_id=question_comment.get("id")) }}">Edit</a></td>
-                        <td><a href="{{ url_for("comment.delete_comment", comment_id=question_comment.get("id")) }}">Delete</a> </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% endif %}
-    {% if answers == [] %}
-        <h3>No answers yet</h3>
-    {% else %}
-        <h3>Answers:</h3>
-        <table class = content-table>
-            {%  set headers = ["submission_time", "vote_number", "message", "image", "edit_answer", "delete_answer", "vote_up", "vote_down", "add_comment"] %}
-            <thead>
-                <tr>{% for table_header in headers %}
-                        <th>{{ table_header.capitalize().replace("_", " ") }}</th>
-                    {% endfor %}
-                </tr>
-            </thead>
-            <tbody>
-                {% for answer in answers %}
-                    <tr>
-                        {% for table_header, answer_detail in answer.items() %}
-                            {% if table_header in headers %}
-                                {% if table_header == "image" %}
-                                    <td>
-                                        <img src="{{ url_for('static', filename="img/" + answer.get("question_id")|string + "/" + answer_detail) }}"
-                                             width="100px" height="100px" alt="No image!">
-                                    </td>
-                                {% else %}
-                                    <td>{{ answer_detail }}</td>
-                                {% endif %}
-                            {% endif %}
-                        {% endfor %}
-                        <td>
-                            <a href="{{ url_for("answer.edit_answer", answer_id=answer.get("id")|string) }}">
-                                <img src="{{ url_for('static', filename="icons/edit.png") }}" width="50px" height="50px" alt="edit_answer">
-                           </a>
-                        </td>
-                        <td>
-                           <a href="{{ url_for("answer.delete_answer", answer_id=answer.get("id")|string) }}">
-                                <img src="{{ url_for('static', filename="icons/bin.png") }}" width="50px" height="50px" alt="delete_answer">
-                           </a>
-                        </td>
-                        <td>
-                            <a href="{{ url_for("vote.answer_vote_up", answer_id=answer.get("id")|string) }}" methods="POST">
-                                <img src="{{ url_for('static', filename="icons/like_up.png") }}" width="50px" height="50px" alt="vote_up">
-                            </a>
-                        </td>
-                        <td>
-                            <a href="{{ url_for("vote.answer_vote_down", answer_id=answer.get("id")|string) }}" methods="POST">
-                                <img src="{{ url_for('static', filename="icons/like_down.png") }}" width="50px" height="50px" alt="vote_down">
-                            </a>
-                        </td>
-                        <td>
-                            <a href="{{ url_for("comment.comment_answer", answer_id=answer.get("id")|string) }}">Add comment</a>
-                        </td>
-                    </tr>
-                    {% if answer.get("id") in comment_id_list %}
-                        <tr>
-                        <td colspan="9">
-                        {% set answer_comments_headers = ["submission_time", "message", "edited_number"] %}
-                        <ul>
-                        {% for answer_comment in answers_comments %}
-                            {% if answer_comment.get("answer_id") == answer.get("id") %}
-                                <li>
-                                {% for answer_comments_key, answer_comment_detail in answer_comment.items() %}
-                                    {% if answer_comments_key in answer_comments_headers %}
-                                        {{ "Edited " + answer_comment_detail|string + " times" if answer_comments_key == "edited_number" else answer_comment_detail }}
-                                    {% endif %}
-                                {% endfor %}
-                                <a href="{{ url_for("comment.edit_comment", comment_id=answer_comment.get("id")) }}">Edit</a>
-                                <a href="{{ url_for("comment.delete_comment", comment_id=answer_comment.get("id")) }}">Delete</a>
-                                </li>
-                            {% endif %}
-                        {% endfor %}
-                        </ul>
-                        </td>
-                        </tr>
+    <div class="container">
+        <div class="table">
+            <div class="question-button-panel button-panel">
+                <a href="{{ url_for("answer.add_answer", question_id=record.get("id")) }}" class="nav_button">Add new answer</a>
+                <a href="{{ url_for("comment.comment_question", question_id=record.get("id")) }}" class="nav_button">Add new comment</a>
+                <a href="{{ url_for("question.edit_question", question_id=record.get("id")) }}" class="nav_button">Edit question</a>
+                <a href="{{ url_for("question.delete_question", question_id=record.get("id")) }}" class="nav_button">Delete question</a>
+                <a href="{{ url_for("tag.add_tag", question_id=record.get("id")) }}" class="nav_button">Add tag</a>
+            </div>
+        </div>
+        <div class="table-content">
+            <div class="table-height table-details-and-description">
+                <div class="table-record-details">
+                    <div class="answers-number">
+                        <div class="answers-number-value">
+                            {{ record.get("number_of_answers") }}
+                        </div>
+                        <div class="answers-number-text">
+                            Answers
+                        </div>
+                    </div>
+                    <div class="view-vote-numbers">
+                        <div class="view-number">
+                            <div class="view-number-value">
+                                {{ record.get("view_number") }}
+                            </div>
+                            <div class="view-number-text">
+                                Views
+                            </div>
+                        </div>
+                        <div class="vote-number">
+                            <div class="vote-number-value">
+                                {{ record.get("vote_number") }}
+                            </div>
+                            <div class="vote-number-text">
+                                Votes
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-record-description">
+                    <div class="question-title">
+                        <a href="{{ url_for("show_question", question_id=record.get("id")|string) }}">{{ record.get("title") }}</a>
+                    </div>
+                    {% if record.get("image") %}
+                        <div class="image-container">
+                            <img src="{{ url_for('static', filename="img/" + record.get("image")|string) }}" alt="No available image!">
+                        </div>
                     {% endif %}
-                {% endfor %}
-            </tbody>
-        </table>
-    {% endif %}
+                    <div class="question-message">
+                        {{ record.get("message") }}
+                    </div>
+                    <div class="tag-container">
+                        {% for tag in tags %}
+                            <div class="tag-button">
+                                {{ tag.get("name") }} <a href="{{ url_for("tag.delete_tag", question_id=tag.question_id, tag_id=tag.tag_id) }}"><img src="{{ url_for('static', filename="icons/bin.png") }}" alt="delete_answer"></a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="table-height table-record-actions-panel">
+                <div class="head-of-actions-panel">
+                    USER ICON
+                </div>
+                <div class="submission-time">
+                    <div class="submission-time-text">
+                        Update time:
+                    </div>
+                    <div class="submission-time-value">
+                        {{ record.get("submission_time") }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% for question_comment in question_comments %}
+            <div class="table-content">
+                <div class="comment-margin table-height indented_table-details-and-description">
+                    {{ question_comment.get("message") }}
+                </div>
+                <div class="table-height table-record-actions-panel">
+                    <div class="comment-center comment-action-panel">
+                        <a href="{{ url_for("comment.edit_comment", comment_id=question_comment.get("id")) }}">
+                            <img src="{{ url_for('static', filename="icons/edit.png") }}" alt="edit_comment">
+                        </a>
+                        <a href="{{ url_for("comment.delete_comment", comment_id=question_comment.get("id")) }}">
+                            <img src="{{ url_for('static', filename="icons/bin.png") }}" alt="delete_comment">
+                        </a>
+                    </div>
+                    <div class="comment-center">
+                        {{ "Edited " + question_comment.get("edited_number")|string + " times" }}
+                    </div>
+                    <div class="comment-center submission-time">
+                        <div class="submission-time-text">
+                            Update time:
+                        </div>
+                        <div class="submission-time-value">
+                            {{ question_comment.get("submission_time") }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        {% if answers == [] %}
+            <div class="answer-title">No answers yet</div>
+        {% else %}
+            <div class="answer-title">Answers:</div>
+            {% for answer in answers %}
+                <div class="table-content">
+                    <div class="table-height table-details-and-description">
+                        <div class="table-record-details">
+                            <div class="vote-section">
+                                <a href="{{ url_for("vote.answer_vote_up", answer_id=answer.get("id")|string) }}" methods="POST">
+                                    <img src="{{ url_for('static', filename="icons/like_up.png") }}" width="50px" height="50px" alt="vote_up">
+                                </a>
+                                <a href="{{ url_for("vote.answer_vote_down", answer_id=answer.get("id")|string) }}" methods="POST">
+                                    <img src="{{ url_for('static', filename="icons/like_down.png") }}" width="50px" height="50px" alt="vote_down">
+                                </a>
+                            </div>
+                            <div class="answer-vote">
+                                {{ answer.get("vote_number") }} Votes
+                            </div>
+                        </div>
+                        <div class="table-record-description">
+                            {% if answer.get("image") %}
+                                <div class="image-container">
+                                    <img src="{{ url_for('static', filename="img/" + answer.get("question_id")|string + "/" + answer.get("image")|string) }}" alt="No available image!">
+                                </div>
+                            {% endif %}
+                            <div class="question-message">
+                                {{ answer.get("message") }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-height table-record-actions-panel">
+                        <div class="comment-center comment-action-panel">
+                            <a href="{{ url_for("answer.edit_answer", answer_id=answer.get("id")) }}">
+                                <img src="{{ url_for('static', filename="icons/edit.png") }}" alt="edit_answer">
+                            </a>
+                            <a href="{{ url_for("answer.delete_answer", answer_id=answer.get("id")) }}">
+                                <img src="{{ url_for('static', filename="icons/bin.png") }}" alt="delete_answer">
+                            </a>
+                        </div>
+                        <div class="comment-center">
+                            <a href="{{ url_for("comment.comment_answer", answer_id=answer.get("id")|string) }}">
+                                <img src="{{ url_for('static', filename="icons/comment.png") }}" alt="comment_answer">
+                            </a>
+                        </div>
+                        <div class="comment-center submission-time">
+                            <div class="submission-time-text">
+                                Update time:
+                            </div>
+                            <div class="submission-time-value">
+                                {{ answer.get("submission_time") }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% if answer.get("id") in comment_id_list %}
+                    {% for answer_comment in answers_comments %}
+                        {% if answer_comment.get("answer_id") == answer.get("id") %}
+                            <div class="table-content">
+                                <div class="comment-margin table-height indented_table-details-and-description">
+                                    {{ answer_comment.get("message") }}
+                                </div>
+                                <div class="table-height table-record-actions-panel">
+                                    <div class="comment-center comment-action-panel">
+                                        <a href="{{ url_for("comment.edit_comment", comment_id=answer_comment.get("id")) }}">
+                                            <img src="{{ url_for('static', filename="icons/edit.png") }}" alt="edit_comment">
+                                        </a>
+                                        <a href="{{ url_for("comment.delete_comment", comment_id=answer_comment.get("id")) }}">
+                                            <img src="{{ url_for('static', filename="icons/bin.png") }}" alt="delete_comment">
+                                        </a>
+                                    </div>
+                                    <div class="comment-center">
+                                        {{ "Edited " + answer_comment.get("edited_number")|string + " times" }}
+                                    </div>
+                                    <div class="comment-center submission-time">
+                                        <div class="submission-time-text">
+                                            Update time:
+                                        </div>
+                                        <div class="submission-time-value">
+                                            {{ answer_comment.get("submission_time") }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    </div>
 {%  endblock %}
 {% block footer %}{{ super() }}{% endblock %}

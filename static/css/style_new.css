@@ -258,6 +258,7 @@ a:hover {
     font-size: 1em;
     color: black;
     font-style: normal;
+    margin-bottom: 0.6em;
 }
 
 .head-of-actions-panel {
@@ -467,4 +468,86 @@ similar transform is needed in nav */
 .nav_toggle:checked ~ nav a {
     opacity: 1;
     transition: opacity 250ms ease-in-out 250ms;
+}
+
+.question-button-panel {
+    padding-top: 6.5em;
+}
+
+.question-button-panel > a {
+    margin-right: 0.5em;
+}
+
+.image-container {
+    height: 5em;
+}
+
+.image-container img {
+    height: 100%;
+}
+
+.tag-container {
+    margin-top: auto;
+    display: flex;
+    justify-content: flex-start;
+    flex-flow: wrap row;
+}
+
+.tag-button {
+    font-style: normal;
+    font-size: small;
+    color: #46D21B;
+    padding: 0.3em;
+    background-color: white;
+    border-radius: 0.6em;
+    border: black solid 0.1em;
+    margin-right: 0.5em;
+}
+
+.tag-button img {
+    height: 0.7em;
+}
+
+.table-height {
+    height: auto;
+}
+
+.comment-margin {
+    width: 60%;
+    padding: 2em;
+}
+
+.comment-action-panel {
+    margin-top: 1em;
+    width: 30%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.comment-action-panel img {
+    height: 1.5em;
+}
+
+.comment-center {
+    height: auto;
+    margin-top: 1em;
+}
+
+.answer-vote {
+    font-style: normal;
+    font-size: 1.2em;
+}
+
+.comment-center img {
+    height: 1.5em;
+}
+
+.answer-title {
+    display: flex;
+    font-style: normal;
+    color: #46D21B;
+    font-size: 2em;
+    margin-left: 20%;
+    margin-bottom: 1em;
 }

@@ -62,6 +62,7 @@ def show_question(question_id):
     record = data_manager.get_specific_record(question_id, "question")
     tags = data_manager.get_tags_for_questions(question_id)
     all_answers_for_question = data_manager.get_answers_for_question(question_id)
+    record["number_of_answers"] = len(all_answers_for_question)
     question_comments, answers_comments, answers_id_list, comment_id_list = [], [], [], []
     for answer in all_answers_for_question:
         answers_id_list.append(answer.get("id"))
