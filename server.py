@@ -17,12 +17,20 @@ app.register_blueprint(tag)
 
 @app.route("/")
 def homepage():
+    message_max_length = 800
+    title_max_length = 53
     five_questions = data_manager.get_five_records("question")
     if request.method == 'POST':
         sort_by = request.form.get("sort_by")
         five_questions = data_manager.get_sorted_questions(sort_by)
     else:
         sort_by = "submission_time-DESC"
+    for question in five_questions:
+        question["number_of_answers"] = len(data_manager.get_answers_for_question(question.get("id")))
+        if len(question["title"]) >= title_max_length:
+            question["title"] = question["title"][:title_max_length] + "..."
+        if len(question["message"]) >= message_max_length:
+            question["message"] = question["message"][:message_max_length] + "..."
     search_phrase = request.args.get('search_phrase')
     if search_phrase:
         return search_for_questions(search_phrase)
