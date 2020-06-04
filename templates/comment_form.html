@@ -6,17 +6,25 @@
     {{ super() }}
 {% endblock %}
 {% block body %}
-    <h1> {{"Edit " if comment else "Add new " }} comment</h1>
-    <form id=comment_form
-          action="{% if comment %}
-                    {{ "/comment/" + comment.id|string + "/edit" }}
-                  {% else %}
-                    {{ "/answer/" + answer_id|string + "/new-comment" if answer_id else "/question/" + question_id|string + "/new-comment" }}
-                  {% endif %}"
-          method="POST">
-        <label for="description">Comment message:</label><br/>
-        <textarea id="description" name="message" rows="10" cols="100">{{ comment.message if comment }}</textarea><br/>
-        <button type="submit"> {{ "Edit " if comment else "Add new " }} comment</button>
-    </form>
+    <div class="container">
+        <div class="table">
+            <div class="table-header-and-title">
+                <div class="table-title">
+                    <h1> {{"Edit " if comment else "Add new " }} comment</h1>
+                </div>
+            </div>
+            <form id=comment_form
+                  action="{% if comment %}
+                            {{ "/comment/" + comment.id|string + "/edit" }}
+                          {% else %}
+                            {{ "/answer/" + answer_id|string + "/new-comment" if answer_id else "/question/" + question_id|string + "/new-comment" }}
+                          {% endif %}"
+                  method="POST">
+                <label for="description">Comment message:</label><br/>
+                <textarea id="description" name="message" rows="10" cols="100">{{ comment.message if comment }}</textarea><br/>
+                <button type="submit"> {{ "Edit " if comment else "Add new " }} comment</button>
+            </form>
+        </div>
+    </div>
 {% endblock %}
 {% block footer %}{{ super() }}{% endblock %}

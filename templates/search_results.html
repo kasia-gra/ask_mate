@@ -13,6 +13,29 @@
             </div>
             <div class="table-header">
             </div>
+                <div class="table-sorting-form">
+                    <form action="{{ url_for('questions_list', sort_by=sort_by) }}">
+                        <select class="drop_down_btn" name="sort_by" id="sort_by">
+                            {% set sort_criteria = ["submission_time", "view_number", "vote_number", "title", "message"] %}
+                            {% for sort_by_option in sort_criteria %}
+                                {% set sort_order = ['ASC', 'DESC'] %}
+                                {% for order in sort_order %}
+                                    <option value="{{ sort_by_option }}-{{ order }}">sort by: {{ sort_by_option }}
+                                        {% if order=='ASC' %} &#8595 {% else %} &#8593{% endif %}</option>
+                                {% endfor %}
+                            {% endfor %}
+                        </select>
+                        <button class="drop_down_btn" type="submit">Sort</button>
+                    </form>
+                </div>
+                <div class="table-search-form">
+                    <form>
+                        <label for="search_phrase">Search for phrase</label>
+                        <input id="search_phrase" name="search_phrase" type="text">
+                        <button type="submit">Search</button>
+                    </form>
+                </div>
+            </div>
             {% for question in all_questions %}
                 <div class="table-content">
                     <div class="table-details-and-description">
@@ -41,6 +64,19 @@
                                     <div class="vote-number-text">
                                         Votes
                                     </div>
+                                    {{ question.get("view_number") }}
+                                </div>
+                                <div class="view-number-text">
+                                    Views
+                                </div>
+                                </div>
+                                <div class="vote-number">
+                                    <div class="vote-number-value">
+                                    {{ question.get("vote_number") }}
+                                </div>
+                                <div class="vote-number-text">
+                                    Votes
+                                </div>
                                 </div>
                             </div>
                         </div>
@@ -50,6 +86,10 @@
                             </div>
                             <div class="question-message">
                                 {{ question.get("message").replace(search_phrase, '<span>{}</span>'.format(search_phrase))|safe }}
+                                <a href="{{ url_for("show_question", question_id=question.get("id")|string) }}">{{ question.get("title") }}</a>
+                            </div>
+                            <div class="question-message">
+                                {{ question.get("message") }}
                             </div>
                         </div>
                     </div>
@@ -86,6 +126,39 @@
                                         {{ answer.get("message").replace(search_phrase, '<span>{}</span>'.format(search_phrase))|safe }}
                                     </div>
                                 </div>
+                {% for answer in answers %}
+                    {% if answer["question_id"] == question["id"] %}
+                        <div class="table-content">
+                            <div class="indented_table-details-and-description">
+                                <div class="table-record-details">
+
+                                    <div class="view-vote-numbers">
+                                        <div class="view-number">
+                                            <div class="view-number-value">
+                                                {{ question.get("view_number") }}
+                                            </div>
+                                            <div class="view-number-text">
+                                                Views
+                                            </div>
+                                        </div>
+
+                                        <div class="vote-number">
+                                            <div class="vote-number-value">
+                                                {{ question.get("vote_number") }}
+                                            </div>
+                                            <div class="vote-number-text">
+                                                Votes
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                    <div class="table-record-description">
+
+                                        <div class="answer_to_question">
+                                            {{ answer.get("message") }}
+                                        </div>
+                                    </div>
                             </div>
                         </div>
                     {% endif %}
