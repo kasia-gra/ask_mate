@@ -91,12 +91,10 @@
                 <div class="table-height table-record-actions-panel">
                     <div class="comment-center comment-action-panel">
                         <a href="{{ url_for("comment.edit_comment", comment_id=question_comment.get("id")) }}">
-                            <img src="{{ url_for('static', filename="icons/edit.png") }}" alt="edit_comment" width="50px"
-                                     height="50px">
+                            <img src="{{ url_for('static', filename="icons/edit.png") }}" alt="edit_comment">
                         </a>
                         <a href="{{ url_for("comment.delete_comment", comment_id=question_comment.get("id")) }}">
-                            <img src="{{ url_for('static', filename="icons/bin.png") }}" alt="delete_comment" width="50px"
-                                     height="50px">
+                            <img src="{{ url_for('static', filename="icons/bin.png") }}" alt="delete_comment">
                         </a>
                     </div>
                     <div class="comment-center">
@@ -147,12 +145,10 @@
                     <div class="table-height table-record-actions-panel">
                         <div class="comment-center comment-action-panel">
                             <a href="{{ url_for("answer.edit_answer", answer_id=answer.get("id")) }}">
-                                <img src="{{ url_for('static', filename="icons/edit.png") }}" alt="edit_answer" width="50px"
-                                     height="50px">
+                                <img src="{{ url_for('static', filename="icons/edit.png") }}" alt="edit_answer">
                             </a>
                             <a href="{{ url_for("answer.delete_answer", answer_id=answer.get("id")) }}">
-                                <img src="{{ url_for('static', filename="icons/bin.png") }}" alt="delete_answer" width="50px"
-                                     height="50px">
+                                <img src="{{ url_for('static', filename="icons/bin.png") }}" alt="delete_answer">
                             </a>
                         </div>
                         <div class="comment-center">
@@ -180,12 +176,10 @@
                                 <div class="table-height table-record-actions-panel">
                                     <div class="comment-center comment-action-panel">
                                         <a href="{{ url_for("comment.edit_comment", comment_id=answer_comment.get("id")) }}">
-                                            <img src="{{ url_for('static', filename="icons/edit.png") }}" alt="edit_comment" width="50px"
-                                     height="50px">
+                                            <img src="{{ url_for('static', filename="icons/edit.png") }}" alt="edit_comment">
                                         </a>
                                         <a href="{{ url_for("comment.delete_comment", comment_id=answer_comment.get("id")) }}">
-                                            <img src="{{ url_for('static', filename="icons/bin.png") }}" alt="delete_comment" width="50px"
-                                     height="50px">
+                                            <img src="{{ url_for('static', filename="icons/bin.png") }}" alt="delete_comment">
                                         </a>
                                     </div>
                                     <div class="comment-center">
