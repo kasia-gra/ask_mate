@@ -1,15 +1,3 @@
-.flex-column-center-horizontally {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.flex-row-center-horizontally {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
-
 a {
     text-decoration: none;
     font-style: normal;
@@ -21,19 +9,9 @@ a:hover {
 }
 
 
-.header-navigation {
-    background-color: #46D21B;
-    margin: 0px 0px 0px 0px;
-    font-family: sans-serif;
-    font-size: medium;
-}
-
-
 .body-styling {
     background-color: whitesmoke;
     margin: 0px 0px 0px 0px;
-    font-family: sans-serif;
-    font-size: medium;
 }
 
 .table-header-and-title {
@@ -42,7 +20,9 @@ a:hover {
     background-color: #24262A;
     justify-content: space-between;
     color: white;
-    padding: 5em 10% 0 10%;
+    padding-top: 5em;
+    padding-left: 10%;
+    padding-right: 10%;
 }
 
 
@@ -62,6 +42,7 @@ a:hover {
 }
 
 .table-search-form {
+    top: 0;
     padding: 0.8em;
     font-size: 1em;
     display: flex;
@@ -85,8 +66,17 @@ a:hover {
     font-size: 1em;
 }
 
+.header-navigation {
+    margin: 0px 0px 1em 1em;
+}
+
+
 .navigation-menu {
-    padding: 1em 10% 2em 10%;
+    padding-right: 10%;
+    padding-left: 10%;
+    padding-top: 1em;
+    padding-bottom: 2em;
+    margin: 0px 0px 0px 0px;
     background-color: #46D21B;
     position: static;
     top: 0;
@@ -117,7 +107,10 @@ a:hover {
 
 .button-panel {
     display: flex;
-    padding: 1.5em 10% 1.5em 10%;
+    padding-left: 10%;
+    padding-right: 10%;
+    padding-bottom: 1.5em;
+    padding-top: 1.5em;
     background-color: whitesmoke;
 }
 
@@ -152,10 +145,6 @@ a:hover {
 }
 
 
-span, span > a {
-    background-color: #46D21B;
-}
-
 .button-nav-home:hover {
     color: black;
 }
@@ -171,31 +160,16 @@ span, span > a {
     border: black solid 0.1em;
     padding: 0.8em;
     font-size: 1em;
-    width: 15em;
-    margin-bottom: 0.3em;
 }
 
-.search-input {
-    width: 15em;
-}
-
-.text_input{
-    border-radius: 0.6em;
-    border: black solid 0.1em;
-    padding: 0.8em;
-    font-size: 1em;
-    margin-bottom: 0.3em;
-}
-
-.search-button {
+.drop_down_btn > button {
     width: 5em;
 }
 
-.select_img {
-    padding: 1em;
-    margin-bottom: 2em;
-    box-sizing: border-box;
+.drop_down_btn > select {
+    width: 15em;
 }
+
 
 .button-panel > a {
     border-radius: 1em;
@@ -212,22 +186,12 @@ span, span > a {
 .table-search-form {
 }
 
+
 .table-content {
     display: flex;
     justify-content: center;
     align-content: center;
     margin-bottom: 1em;
-}
-
-.indented_table-details-and-description {
-    background-color: ghostwhite;
-    width: 60%;
-    display: flex;
-    flex-direction: row;
-    margin: 0.2em 0.2em 0.2em 5%;
-    padding: 0.6em;
-    border-radius: 0.6em;
-    border: none;
 }
 
 .table-record-details {
@@ -239,6 +203,7 @@ span, span > a {
     padding: 0.6em;
     justify-content: center;
 }
+
 
 .table-record-actions-panel {
     background-color: #46D21B;
@@ -274,7 +239,8 @@ span, span > a {
     width: 60%;
     display: flex;
     flex-direction: row;
-    margin: 0.2em 0.2em 0.2em 5%;
+    margin: 0.2em;
+    margin-left: 5%;
     padding: 0.6em;
     border-radius: 0.6em;
     border: none;
@@ -300,12 +266,6 @@ span, span > a {
     font-style: normal;
 }
 
-.answer_to_question {
-    font-size: 1em;
-    color: black;
-    font-style: normal;
-}
-
 .head-of-actions-panel {
     margin-top: 1em;
     margin-bottom: auto;
@@ -317,6 +277,9 @@ span, span > a {
     display: flex;
     flex-direction: row;
 }
+
+
+
 
 .vote-section > a {
     margin: 0.5em;
@@ -333,8 +296,10 @@ span, span > a {
 .answers-number {
     display: flex;
     flex-direction: column;
-    margin: 0em 0.5em 2em 0.5em;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
     align-items: center;
+    margin-bottom: 2em;
     border-radius: 0.6em;
     border: grey solid 1px;
     padding: 0.7em;
@@ -390,25 +355,6 @@ span, span > a {
 }
 
 
-.add_edit_form {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    padding: 3em;
-    margin-top: 2em;
-    webkit-box-shadow: 0px 0px 60px 0px rgba(207, 209, 207, 1);
-    moz-box-shadow: 0px 0px 60px 0px rgba(207, 209, 207, 1);
-    box-shadow: 0px 0px 60px 0px rgba(207, 209, 207, 1);
-    border-radius: 13px 13px 13px 13px;
-    moz-border-radius: 13px 13px 13px 13px;
-    webkit-border-radius: 13px 13px 13px 13px;
-    border: 0px solid #000000;
-}
-
-.form_group{
-    padding: 1em;
-}
 
 
 /* navigation styles */
@@ -418,9 +364,9 @@ span, span > a {
     --logo_bgd: rgb(42, 187, 2);
     --nav_bgd: rgb(2, 0, 0);
     --hover_bgd: rgb(251, 242, 242);
-}
+  }
 
-*, *::before, *::after {
+*,*::before, *::after {
     box-sizing: border-box;
 }
 
@@ -441,12 +387,12 @@ header {
 nav {
     position: absolute;
     text-align: left;
-    /* move 100% from header that is fixed */
+/* move 100% from header that is fixed */
     top: 100%;
     left: 0;
     background-color: var(--nav_bgd);
     width: 100%;
-    transform: scale(1, 0);
+    transform: scale(1,0);
     transform-origin: top;
     transition: 400ms ease-in-out;
 }
@@ -472,8 +418,8 @@ nav a {
     transition: opacity 150ms ease-in-out;
 }
 
-nav a:hover {
-    color: rgb(32, 32, 66);
+nav a:hover{
+    color:rgb(32, 32, 66);
     background-color: whitesmoke;
 }
 
@@ -481,17 +427,17 @@ nav a:hover {
 /* create checkbox for displaying & hiding nav, transform is needed so we do not use display none -
 similar transform is needed in nav */
 .nav_toggle:checked ~ nav {
-    transform: scale(1, 1);
-    padding: 1em 0 0 0;
+    transform: scale(1,1);
+    margin-bottom: 1em;
 }
 
 
-.nav_toggle {
+.nav_toggle{
     display: none;
 }
 
 
-.nav_toggle_label {
+.nav_toggle_label{
     position: absolute;
     top: 0;
     left: 0;
