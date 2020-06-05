@@ -172,16 +172,30 @@ span, span > a {
     padding: 0.8em;
     font-size: 1em;
     width: 15em;
+    margin-bottom: 0.3em;
 }
 
 .search-input {
     width: 15em;
 }
 
+.text_input{
+    border-radius: 0.6em;
+    border: black solid 0.1em;
+    padding: 0.8em;
+    font-size: 1em;
+    margin-bottom: 0.3em;
+}
+
 .search-button {
     width: 5em;
 }
 
+.select_img {
+    padding: 1em;
+    margin-bottom: 2em;
+    box-sizing: border-box;
+}
 
 .button-panel > a {
     border-radius: 1em;
@@ -390,6 +404,10 @@ span, span > a {
     moz-border-radius: 13px 13px 13px 13px;
     webkit-border-radius: 13px 13px 13px 13px;
     border: 0px solid #000000;
+}
+
+.form_group{
+    padding: 1em;
 }
 
 
