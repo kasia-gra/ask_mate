@@ -21,6 +21,14 @@ a:hover {
 }
 
 
+.header-navigation {
+    background-color: #46D21B;
+    margin: 0px 0px 0px 0px;
+    font-family: sans-serif;
+    font-size: medium;
+}
+
+
 .body-styling {
     background-color: whitesmoke;
     margin: 0px 0px 0px 0px;
