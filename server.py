@@ -72,6 +72,7 @@ def show_question(question_id):
     for element in all_answers_for_question:
         answers_id_list.append(element.get("id"))
     data_manager.increase_view_number(question_id)
+    record["number_of_answers"] = len(data_manager.get_answers_for_question(record.get("id")))
     question_comments = data_manager.get_question_comments(question_id)
     if answers_id_list:
         answers_comments = data_manager.get_answers_comments(answers_id_list)
