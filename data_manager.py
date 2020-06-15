@@ -50,6 +50,16 @@ def get_answers_for_question(cursor: RealDictCursor, question_id: int):
     return cursor.fetchall()
 
 
+@connection.connection_handler
+def count_answers_for_question(cursor: RealDictCursor, question_id: int):
+    cursor.execute("""
+                        SELECT COUNT(*)
+                        FROM answer
+                        WHERE question_id = %(q_id)s;
+                        """, {'q_id': question_id})
+    return cursor.fetchone()
+
+
 def add_record(new_record, option):
     if option == "question":
         add_question(new_record)

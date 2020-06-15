@@ -55,7 +55,7 @@ def prepare_questions_to_display(all_questions):
     message_max_length = 800
     title_max_length = 53
     for record in all_questions:
-        record["number_of_answers"] = len(data_manager.get_answers_for_question(record.get("id")))
+        record["number_of_answers"] = data_manager.count_answers_for_question(record["id"])["count"]
         if len(record["title"]) >= title_max_length:
             record["title"] = record["title"][:title_max_length] + "..."
         if len(record["message"]) >= message_max_length:
@@ -72,7 +72,7 @@ def show_question(question_id):
     for element in all_answers_for_question:
         answers_id_list.append(element.get("id"))
     data_manager.increase_view_number(question_id)
-    record["number_of_answers"] = len(data_manager.get_answers_for_question(record.get("id")))
+    record["number_of_answers"] = data_manager.count_answers_for_question(record["id"])["count"]
     question_comments = data_manager.get_question_comments(question_id)
     if answers_id_list:
         answers_comments = data_manager.get_answers_comments(answers_id_list)
