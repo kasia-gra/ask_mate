@@ -1,11 +1,12 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session
 import data_manager
+
 from question_handler import question
 from answer_handler import answer
 from comment_handler import comment
 from vote_handler import vote
 from tag_handler import tag
-from session_handler import session
+
 
 app = Flask(__name__)
 app.register_blueprint(question)
@@ -13,12 +14,16 @@ app.register_blueprint(answer)
 app.register_blueprint(comment)
 app.register_blueprint(vote)
 app.register_blueprint(tag)
-app.register_blueprint(session)
 
 
 @app.route("/")
 def homepage():
-    logged_status = False
+    if 'username' in session:
+        logged_status = True
+        user_id = data_manager.get_user_id(session['username'])["id"]
+    else:
+        logged_status = False
+        user_id = None
     five_questions = data_manager.get_five_records("question")
     if request.method == 'POST':
         sort_by = request.form.get("sort_by")
@@ -35,13 +40,19 @@ def homepage():
         sort_by=sort_by,
         search_phrase=search_phrase,
         is_homepage=True,
-        logged=logged_status
+        logged=logged_status,
+        user_id=user_id
     )
 
 
 @app.route("/list", methods=['GET', 'POST'])
 def questions_list():
-    logged_status = False
+    if 'username' in session:
+        logged_status = True
+        user_id = data_manager.get_user_id(session['username'])["id"]
+    else:
+        logged_status = False
+        user_id = None
     sort_by = request.args.get('sort_by')
     if sort_by:
         criteria_and_direction = sort_by.split("-")
@@ -58,7 +69,8 @@ def questions_list():
         sort_by=sort_by,
         search_phrase=search_phrase,
         is_homepage=False,
-        logged=logged_status
+        logged=logged_status,
+        user_id=user_id
     )
 
 
@@ -76,7 +88,12 @@ def prepare_questions_to_display(all_questions):
 
 @app.route("/question/<question_id>")
 def show_question(question_id):
-    logged_status = False
+    if 'username' in session:
+        logged_status = True
+        user_id = data_manager.get_user_id(session['username'])["id"]
+    else:
+        logged_status = False
+        user_id = None
     record = data_manager.get_specific_record(question_id, "question")
     tags = data_manager.get_tags_for_questions(question_id)
     all_answers_for_question = data_manager.get_answers_for_question(question_id)
@@ -98,13 +115,19 @@ def show_question(question_id):
         tags=tags,
         answers_comments=answers_comments,
         comment_id_list=comment_id_list,
-        logged=logged_status
+        logged=logged_status,
+        user_id=user_id
     )
 
 
 @app.route('/search_phrase')
 def search_for_questions(search_phrase):
-    logged_status = False
+    if 'username' in session:
+        logged_status = True
+        user_id = data_manager.get_user_id(session['username'])["id"]
+    else:
+        logged_status = False
+        user_id = None
     search_results_questions = data_manager.search_for_phrase_questions(search_phrase)
     search_results_questions = prepare_questions_to_display(search_results_questions)
     search_results_answers = data_manager.search_for_phrase_answers(search_phrase)
@@ -113,7 +136,8 @@ def search_for_questions(search_phrase):
         all_questions=search_results_questions,
         answers=search_results_answers,
         search_phrase=search_phrase,
-        logged=logged_status
+        logged=logged_status,
+        user_id=user_id
     )
 
 
