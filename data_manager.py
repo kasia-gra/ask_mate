@@ -385,3 +385,13 @@ def get_password_from_user(cursor: RealDictCursor, email: str):
                     WHERE email = (%(email)s);
                """, {'email': email})
     return cursor.fetchone()
+
+
+@connection.connection_handler
+def get_user_id(cursor: RealDictCursor, email: str):
+    cursor.execute(f"""
+                    SELECT id
+                    FROM users
+                    WHERE email = (%(email)s);
+               """, {'email': email})
+    return cursor.fetchone()
