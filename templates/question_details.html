@@ -63,7 +63,7 @@
                     <div class="tag-container">
                         {% for tag in tags %}
                             <div class="tag-button">
-                                {{ tag.get("name") }} <a href="{{ url_for("tag.delete_tag", question_id=tag.question_id, tag_id=tag.tag_id) }}"><img src="{{ url_for('static', filename="icons/bin.png") }}" alt="delete_answer"></a>
+                                {{ tag.get("name") }} <a href="{{ url_for("tag.delete_tag", question_id=tag.question_id, tag_id=tag.tag_id) }}" onclick="return confirm('Are you sure to delete tag?')"><img src="{{ url_for('static', filename="icons/bin.png") }}" alt="delete_answer"></a>
                             </div>
                         {% endfor %}
                     </div>
