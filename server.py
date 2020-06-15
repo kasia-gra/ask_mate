@@ -5,6 +5,7 @@ from answer_handler import answer
 from comment_handler import comment
 from vote_handler import vote
 from tag_handler import tag
+from session_handler import session
 
 app = Flask(__name__)
 app.register_blueprint(question)
@@ -12,6 +13,7 @@ app.register_blueprint(answer)
 app.register_blueprint(comment)
 app.register_blueprint(vote)
 app.register_blueprint(tag)
+app.register_blueprint(session)
 
 
 @app.route("/")
