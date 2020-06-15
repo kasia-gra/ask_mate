@@ -16,6 +16,7 @@ app.register_blueprint(tag)
 
 @app.route("/")
 def homepage():
+    logged_status = False
     five_questions = data_manager.get_five_records("question")
     if request.method == 'POST':
         sort_by = request.form.get("sort_by")
@@ -26,12 +27,19 @@ def homepage():
     search_phrase = request.args.get('search_phrase')
     if search_phrase:
         return search_for_questions(search_phrase)
-    return render_template("question_list.html", all_questions=five_questions, sort_by=sort_by,
-                           search_phrase=search_phrase, is_homepage=True)
+    return render_template(
+        "question_list.html",
+        all_questions=five_questions,
+        sort_by=sort_by,
+        search_phrase=search_phrase,
+        is_homepage=True,
+        logged=logged_status
+    )
 
 
 @app.route("/list", methods=['GET', 'POST'])
 def questions_list():
+    logged_status = False
     sort_by = request.args.get('sort_by')
     if sort_by:
         criteria_and_direction = sort_by.split("-")
@@ -47,7 +55,8 @@ def questions_list():
         all_questions=all_questions,
         sort_by=sort_by,
         search_phrase=search_phrase,
-        is_homepage=False
+        is_homepage=False,
+        logged=logged_status
     )
 
 
@@ -65,6 +74,7 @@ def prepare_questions_to_display(all_questions):
 
 @app.route("/question/<question_id>")
 def show_question(question_id):
+    logged_status = False
     record = data_manager.get_specific_record(question_id, "question")
     tags = data_manager.get_tags_for_questions(question_id)
     all_answers_for_question = data_manager.get_answers_for_question(question_id)
@@ -85,12 +95,14 @@ def show_question(question_id):
         question_comments=question_comments,
         tags=tags,
         answers_comments=answers_comments,
-        comment_id_list=comment_id_list
+        comment_id_list=comment_id_list,
+        logged=logged_status
     )
 
 
 @app.route('/search_phrase')
 def search_for_questions(search_phrase):
+    logged_status = False
     search_results_questions = data_manager.search_for_phrase_questions(search_phrase)
     search_results_questions = prepare_questions_to_display(search_results_questions)
     search_results_answers = data_manager.search_for_phrase_answers(search_phrase)
@@ -98,7 +110,8 @@ def search_for_questions(search_phrase):
         "search_results.html",
         all_questions=search_results_questions,
         answers=search_results_answers,
-        search_phrase=search_phrase
+        search_phrase=search_phrase,
+        logged=logged_status
     )
 
 

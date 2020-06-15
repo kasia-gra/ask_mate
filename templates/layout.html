@@ -9,6 +9,12 @@
     <div class="search">
         <div class="table-search-form">
             <form action="/" methor="GET">
+                {% if logged %}
+                    <a href="/logout" class="text">Logout</a>
+                {% else %}
+                    <a href="/login" class="text">Login</a>
+                    <a href="/registration" class="text">Register</a>
+                {% endif %}
                 <input class="search-input drop_down_btn" id="search_phrase" name="search_phrase" type="text">
                 <button class="search-button drop_down_btn" type="submit">Search</button>
             </form>
@@ -18,9 +24,12 @@
     <nav>
         <ul>
             <li><a href="{{ url_for("homepage") }}">Home</a></li>
-            <li><a href="{{ url_for("questions_list") }}">View all questions</a></li>
-            <li><a href="google.com">Some Link</a></li>
-            <li><a href="google.com">Some Link</a></li>
+            <li><a href="{{ url_for("questions_list") }}">All questions</a></li>
+            <li><a href="/tags">Tags</a></li>
+            {% if logged %}
+                <li><a href="/user/{{ user_id }}">User page</a></li>
+                <li><a href="/users">All users</a></li>
+            {% endif %}
         </ul>
     </nav>
     <label for="nav_toggle" class="nav_toggle_label">
