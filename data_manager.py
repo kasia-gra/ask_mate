@@ -365,3 +365,13 @@ def assign_tag_to_question(cursor: RealDictCursor, question_id: int, tag_id: int
                 INSERT INTO question_tag 
                 VALUES (%s, %s);
            """, (question_id, tag_id))
+
+
+@connection.connection_handler
+def get_password_from_user(cursor: RealDictCursor, email: str):
+    cursor.execute(f"""
+                    SELECT password
+                    FROM users
+                    WHERE email = (%(email)s);
+               """, {'email': email})
+    return cursor.fetchone()
