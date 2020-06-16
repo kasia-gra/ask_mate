@@ -28,6 +28,7 @@ def edit_answer(answer_id):
 @answer.route("/answer/<answer_id>/delete")
 def delete_answer(answer_id):
     old_record = data_manager.get_specific_record(answer_id, "answer")
+    data_manager.delete_connected_comment(None, answer_id)
     data_manager.delete_record(answer_id, "answer")
     return redirect("/question/" + str(old_record["question_id"]))
 

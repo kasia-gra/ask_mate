@@ -589,6 +589,16 @@ similar transform is needed in nav */
     margin-top: 1em;
 }
 
+.text {
+    color: black;
+    margin-right: 1em;
+}
+
+.text:hover {
+    color: #24262A;
+    margin-right: 1em;
+}
+
 .answer-vote {
     font-style: normal;
     font-size: 1.2em;

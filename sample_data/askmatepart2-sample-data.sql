@@ -43,7 +43,8 @@ CREATE TABLE answer (
     question_id integer,
     message text,
     image text NOT NULL DEFAULT '',
-    user_id integer
+    user_id integer,
+    accepted boolean
 );
 
 DROP TABLE IF EXISTS public.comment;
@@ -139,8 +140,10 @@ ALTER TABLE ONLY question_tag
 
 
 INSERT INTO users VALUES (1, 'test@test.com', 'abc123', '2017-04-28 08:29:00', 5);
+SELECT pg_catalog.setval('users_id_seq', 1, true);
 
 INSERT INTO roles VALUES (1, 1, 'user');
+SELECT pg_catalog.setval('roles_id_seq', 1, true);
 
 INSERT INTO question VALUES (0, '2017-04-28 08:29:00', 29, 7, 'How to make lists in Python?', 'I am totally new to this, any hints?', '', 1);
 INSERT INTO question VALUES (1, '2017-05-15 09:19:00', 15, 9, 'Wordpress loading multiple jQuery Versions', 'I like my pepper onion, Wordpress is totaly absurd!', '', 1);
@@ -150,12 +153,12 @@ INSERT INTO question VALUES (4, '2018-01-27 09:19:00', 88, 16, 'I got a problem 
 INSERT INTO question VALUES (5, '2018-12-11 10:41:00', 136, 57, 'Vatican lies', 'Pickled oguras in sloikex', '', 1);
 SELECT pg_catalog.setval('question_id_seq', 6, true);
 
-INSERT INTO answer VALUES (1, '2017-04-28 16:49:00', 4, 1, 'You need to use baskets.', 15, 1);
-INSERT INTO answer VALUES (2, '2017-04-25 14:42:00', 35, 1, 'Prepare Spartans, gone to the ride!', 11, 1);
-INSERT INTO answer VALUES (3, '2017-04-28 16:49:00', 4, 2, 'Do you know about ALT + F4 shortcut?', 2, 1);
-INSERT INTO answer VALUES (4, '2017-04-25 14:42:00', 35, 2, 'Drop the water drop', 4, 1);
-INSERT INTO answer VALUES (5, '2017-04-28 16:49:00', 4, 3, 'Blanket is wet, oyoy', 1, 1);
-INSERT INTO answer VALUES (6, '2017-04-25 14:42:00', 35, 4, 'I got umbrella, umbrella, ye, ye, ye, ya, ye, ye i ye', 0, 1);
+INSERT INTO answer VALUES (1, '2017-04-28 16:49:00', 4, 1, 'You need to use baskets.', 15, 1, False);
+INSERT INTO answer VALUES (2, '2017-04-25 14:42:00', 35, 1, 'Prepare Spartans, gone to the ride!', 11, 1, False);
+INSERT INTO answer VALUES (3, '2017-04-28 16:49:00', 4, 2, 'Do you know about ALT + F4 shortcut?', 2, 1, False);
+INSERT INTO answer VALUES (4, '2017-04-25 14:42:00', 35, 2, 'Drop the water drop', 4, 1, True);
+INSERT INTO answer VALUES (5, '2017-04-28 16:49:00', 4, 3, 'Blanket is wet, oyoy', 1, 1, True);
+INSERT INTO answer VALUES (6, '2017-04-25 14:42:00', 35, 4, 'I got umbrella, umbrella, ye, ye, ye, ya, ye, ye i ye', 0, 1, False);
 SELECT pg_catalog.setval('answer_id_seq', 6, true);
 
 INSERT INTO comment VALUES (1, 0, NULL, 'Totally worth it!', '2017-05-01 05:49:00', 2, 1);
