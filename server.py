@@ -148,42 +148,51 @@ def search_for_questions(search_phrase):
 
 @app.errorhandler(400)
 def page_not_found(error):
-    return render_template(
-        "error_page.html",
-        error_code="400",
-        error_message="Bad Request",
-        message="Sorry, I can't found that request in my database."
-    ), 400
+    error_code = "400"
+    error_message = "Bad Request"
+    message = "Sorry, I can't found that request in my database."
+    return render_error_page(error_code, error_message, message)
 
 
 @app.errorhandler(401)
 def page_not_found(error):
-    return render_template(
-        "error_page.html",
-        error_code="401",
-        error_message="Unauthorized",
-        message="You need to sign in to do that!"
-    ), 401
+    error_code = "401"
+    error_message = "Unauthorized"
+    message = "You need to sign in to do that!"
+    return render_error_page(error_code, error_message, message)
 
 
 @app.errorhandler(403)
 def page_not_found(error):
-    return render_template(
-        "error_page.html",
-        error_code="403",
-        error_message="Forbidden",
-        message="You don't have access to do that!"
-    ), 403
+    error_code = "403"
+    error_message = "Forbidden"
+    message = "You don't have access to do that!"
+    return render_error_page(error_code, error_message, message)
 
 
 @app.errorhandler(404)
 def page_not_found(error):
+    error_code = "404"
+    error_message = "Not Found"
+    message = "Sorry, Page doesn't exist!"
+    return render_error_page(error_code, error_message, message)
+
+
+def render_error_page(error_code, error_message, message):
+    if 'username' in session:
+        username = session['username']
+        user_id = session['user_id']
+    else:
+        username = None
+        user_id = None
     return render_template(
         "error_page.html",
-        error_code="404",
-        error_message="Not Found",
-        message="Sorry, Page doesn't exist!"
-    ), 404
+        error_code=error_code,
+        error_message=error_message,
+        message=message,
+        user_id=user_id,
+        username=username
+    ), error_code
 
 
 if __name__ == "__main__":
