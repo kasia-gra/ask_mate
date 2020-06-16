@@ -139,8 +139,10 @@ ALTER TABLE ONLY question_tag
 
 
 INSERT INTO users VALUES (1, 'test@test.com', 'abc123', '2017-04-28 08:29:00', 5);
+SELECT pg_catalog.setval('users_id_seq', 1, true);
 
 INSERT INTO roles VALUES (1, 1, 'user');
+SELECT pg_catalog.setval('roles_id_seq', 1, true);
 
 INSERT INTO question VALUES (0, '2017-04-28 08:29:00', 29, 7, 'How to make lists in Python?', 'I am totally new to this, any hints?', '', 1);
 INSERT INTO question VALUES (1, '2017-05-15 09:19:00', 15, 9, 'Wordpress loading multiple jQuery Versions', 'I like my pepper onion, Wordpress is totaly absurd!', '', 1);

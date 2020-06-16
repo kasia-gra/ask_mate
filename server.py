@@ -5,6 +5,7 @@ from answer_handler import answer
 from comment_handler import comment
 from vote_handler import vote
 from tag_handler import tag
+from registration_handler import registration
 
 app = Flask(__name__)
 app.register_blueprint(question)
@@ -12,7 +13,9 @@ app.register_blueprint(answer)
 app.register_blueprint(comment)
 app.register_blueprint(vote)
 app.register_blueprint(tag)
+app.register_blueprint(registration)
 
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 @app.route("/")
 def homepage():

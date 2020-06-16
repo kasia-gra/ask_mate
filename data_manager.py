@@ -365,3 +365,19 @@ def assign_tag_to_question(cursor: RealDictCursor, question_id: int, tag_id: int
                 INSERT INTO question_tag 
                 VALUES (%s, %s);
            """, (question_id, tag_id))
+
+
+
+@connection.connection_handler
+def add_user(cursor: RealDictCursor, user_dict: dict):
+    cursor.execute("""
+                    INSERT INTO users
+                        (email, password, registration_time, reputation)
+                    VALUES
+                        (%(email)s, %(password)s, %(registration_time)s, %(reputation)s);
+                    """, {
+        'email': user_dict["email"],
+        'password': user_dict["password"],
+        'registration_time': user_dict["registration_time"],
+        'reputation': user_dict["reputation"]
+    })
