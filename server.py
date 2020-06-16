@@ -25,6 +25,7 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 def homepage():
     if 'username' in session:
         logged_status = True
+        username = session['username']
         user_id = session['user_id']
     else:
         logged_status = False
@@ -54,6 +55,7 @@ def homepage():
 def questions_list():
     if 'username' in session:
         logged_status = True
+        username = session['username']
         user_id = session['user_id']
     else:
         logged_status = False
@@ -95,6 +97,7 @@ def prepare_questions_to_display(all_questions):
 def show_question(question_id):
     if 'username' in session:
         logged_status = True
+        username = session['username']
         user_id = session['user_id']
     else:
         logged_status = False
@@ -129,6 +132,7 @@ def show_question(question_id):
 def search_for_questions(search_phrase):
     if 'username' in session:
         logged_status = True
+        username = session['username']
         user_id = session['user_id']
     else:
         logged_status = False

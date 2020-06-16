@@ -27,6 +27,8 @@ def login():
 
 @registration.route("/registration", methods=['GET', 'POST'])
 def register():
+    if 'username' in session:
+        return redirect("/")
     if request.method == "POST":
         if request.form.get("password") == request.form.get("cpassword"):
             user_dict = {}
@@ -45,7 +47,7 @@ def register():
 
 @registration.route("/logout")
 def logout():
-    if 'username' in session_handler:
+    if 'username' in session:
         session.pop('username', None)
         session.pop('user_id', None)
     return redirect("/")
