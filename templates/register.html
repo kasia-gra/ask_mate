@@ -31,6 +31,15 @@
                         <input input type="password" id="cpassword" name="cpassword" required>
                         <input type=submit value=Register>
                     </form>
+
+                    {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                            {% for message in messages %}
+                                <p>{{ message }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+
                 </div>
             </div>
         </div>

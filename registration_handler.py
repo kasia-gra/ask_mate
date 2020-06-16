@@ -6,7 +6,7 @@ import util
 registration = Blueprint('registration', __name__, template_folder='templates')
 
 
-@registration.route("/register", methods=['GET', 'POST'])
+@registration.route("/registration", methods=['GET', 'POST'])
 def register():
     if request.method == "POST":
         if request.form.get("password") == request.form.get("cpassword"):
@@ -19,6 +19,6 @@ def register():
             data_manager.add_user(user_dict)
         else:
             flash('Passwords not matching - try again')
-            return redirect("/register")
+            return redirect("/registration")
         return redirect("/")
     return render_template("register.html")
