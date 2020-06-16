@@ -7,8 +7,6 @@ vote = Blueprint('vote', __name__, template_folder='templates')
 @vote.route("/question/<question_id>/<vote>")
 def question_vote(question_id, vote):
     try_to_raise_401_error()
-    username = session['username']
-    user_id = session['user_id']
     question = data_manager.get_specific_record(question_id, "question")
     if int(session['user_id']) == int(question["user_id"]):
         abort(403)
@@ -21,21 +19,12 @@ def question_vote(question_id, vote):
         else:
             data_manager.update_reputation(question["user_id"], -2)
         return res
-    return render_template(
-        "error_page.html",
-        error_code="",
-        error_message="Already voted",
-        message="You already voted on question!",
-        user_id=user_id,
-        username=username
-    )
+    return render_error_page("question")
 
 
 @vote.route("/answer/<answer_id>/vote_up")
 def answer_vote_up(answer_id):
     try_to_raise_401_error()
-    username = session['username']
-    user_id = session['user_id']
     answer = data_manager.get_specific_record(answer_id, "answer")
     question_id = answer.get("question_id")
     if int(session['user_id']) == int(answer["user_id"]):
@@ -46,21 +35,12 @@ def answer_vote_up(answer_id):
         data_manager.update_vote_number("answer", str(answer_id), "up")
         data_manager.update_reputation(answer["user_id"], 10)
         return res
-    return render_template(
-        "error_page.html",
-        error_code="",
-        error_message="Already voted",
-        message="You already voted on answer!",
-        user_id=user_id,
-        username=username
-    )
+    return render_error_page("answer")
 
 
 @vote.route("/answer/<answer_id>/vote_down")
 def answer_vote_down(answer_id):
     try_to_raise_401_error()
-    username = session['username']
-    user_id = session['user_id']
     answer = data_manager.get_specific_record(answer_id, "answer")
     question_id = answer.get("question_id")
     if int(session['user_id']) == int(answer["user_id"]):
@@ -71,11 +51,17 @@ def answer_vote_down(answer_id):
         data_manager.update_vote_number("answer", str(answer_id), "down")
         data_manager.update_reputation(answer["user_id"], -2)
         return res
+    return render_error_page("answer")
+
+
+def render_error_page(option):
+    username = session['username']
+    user_id = session['user_id']
     return render_template(
         "error_page.html",
         error_code="",
         error_message="Already voted",
-        message="You already voted on answer!",
+        message="You already voted on {}!".format(option),
         user_id=user_id,
         username=username
     )
