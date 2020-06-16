@@ -50,6 +50,16 @@ def get_answers_for_question(cursor: RealDictCursor, question_id: int):
     return cursor.fetchall()
 
 
+@connection.connection_handler
+def count_answers_for_question(cursor: RealDictCursor, question_id: int):
+    cursor.execute("""
+                        SELECT COUNT(*)
+                        FROM answer
+                        WHERE question_id = %(q_id)s;
+                        """, {'q_id': question_id})
+    return cursor.fetchone()
+
+
 def add_record(new_record, option):
     if option == "question":
         add_question(new_record)
@@ -367,7 +377,6 @@ def assign_tag_to_question(cursor: RealDictCursor, question_id: int, tag_id: int
            """, (question_id, tag_id))
 
 
-
 @connection.connection_handler
 def add_user(cursor: RealDictCursor, user_dict: dict):
     cursor.execute("""
@@ -381,3 +390,22 @@ def add_user(cursor: RealDictCursor, user_dict: dict):
         'registration_time': user_dict["registration_time"],
         'reputation': user_dict["reputation"]
     })
+
+@connection.connection_handler
+def get_password_from_user(cursor: RealDictCursor, email: str):
+    cursor.execute(f"""
+                    SELECT password
+                    FROM users
+                    WHERE email = (%(email)s);
+               """, {'email': email})
+    return cursor.fetchone()
+
+
+@connection.connection_handler
+def get_user_id(cursor: RealDictCursor, email: str):
+    cursor.execute(f"""
+                    SELECT id
+                    FROM users
+                    WHERE email = (%(email)s);
+               """, {'email': email})
+    return cursor.fetchone()
