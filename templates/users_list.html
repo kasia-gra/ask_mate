@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+{% block title %}  {% endblock %}
+{% block header %}
+{% endblock %}
+{% block nav %}
+    {{ super() }}
+    {% block nav_extension %}
+    {% endblock %}
+{% endblock %}
+{% block body %}
+    <div class="container">
+        <div class="table">
+            <div class="table-header-and-title">
+                <div class="table-title">
+                    <h1>Users</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
