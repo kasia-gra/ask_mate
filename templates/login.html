@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% block title %}Login{% endblock %}
+{% block header %}
+{% endblock %}
+{% block nav %}
+    {{ super() }}
+    {% block nav_extension %}
+    {% endblock %}
+{% endblock %}
+{% block body %}
+    <div class="container">
+        <div class="table">
+            <div class="table-header-and-title">
+                <div class="table-title">
+                    <h1>Login</h1>
+                </div>
+            </div>
+            <div class="table-content">
+                <div class="add_edit_form">
+                    <form class="flex-column-center-horizontally"
+                          action="{{ url_for('registration.login') }}"
+                          method="POST">
+                        <label for="email">Email</label>
+                        <input type="email" name= "email" id="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required>
+                        <label for="password">Password</label>
+                        <input input type="password" id="password" name="password" required>
+{#                               pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"#}
+{#                               title="Must contain at least one  number and one uppercase and lowercase letter,#}
+{#                                and at least 8 or more characters">#}
+                        <input type=submit value=Login>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block footer %}{{ super() }}{% endblock %}

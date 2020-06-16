@@ -20,11 +20,12 @@ app.register_blueprint(user)
 
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
+
 @app.route("/")
 def homepage():
     if 'username' in session:
         logged_status = True
-        user_id = data_manager.get_user_id(session['username'])["id"]
+        user_id = session['user_id']
     else:
         logged_status = False
         user_id = None
@@ -53,7 +54,7 @@ def homepage():
 def questions_list():
     if 'username' in session:
         logged_status = True
-        user_id = data_manager.get_user_id(session['username'])["id"]
+        user_id = session['user_id']
     else:
         logged_status = False
         user_id = None
@@ -94,7 +95,7 @@ def prepare_questions_to_display(all_questions):
 def show_question(question_id):
     if 'username' in session:
         logged_status = True
-        user_id = data_manager.get_user_id(session['username'])["id"]
+        user_id = session['user_id']
     else:
         logged_status = False
         user_id = None
@@ -128,7 +129,7 @@ def show_question(question_id):
 def search_for_questions(search_phrase):
     if 'username' in session:
         logged_status = True
-        user_id = data_manager.get_user_id(session['username'])["id"]
+        user_id = session['user_id']
     else:
         logged_status = False
         user_id = None
