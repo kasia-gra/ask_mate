@@ -19,6 +19,7 @@ app.register_blueprint(registration)
 
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
+
 @app.route("/")
 def homepage():
     if 'username' in session:

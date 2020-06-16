@@ -3,15 +3,14 @@ import data_manager
 import bcrypt
 
 
-session.secret_key = "$2a$10$vI8aWBnW3fID.ZQ4/zo1G.q1lRps.9cGLcZEiGDMVr5yUP1KUYTa"
-
-
 def create_session(email):
     session["username"] = email
+    session["user_id"] = data_manager.get_user_id(email)["id"]
 
 
 def drop_session():
     session.pop('username', None)
+    session.pop('user_id', None)
 
 
 def validate_password_match(email, password):

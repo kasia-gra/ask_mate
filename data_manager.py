@@ -391,8 +391,9 @@ def add_user(cursor: RealDictCursor, user_dict: dict):
         'reputation': user_dict["reputation"]
     })
 
+
 @connection.connection_handler
-def get_password_from_user(cursor: RealDictCursor, email: str):
+def get_password(cursor: RealDictCursor, email: str):
     cursor.execute(f"""
                     SELECT password
                     FROM users
