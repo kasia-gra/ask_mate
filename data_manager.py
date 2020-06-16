@@ -403,6 +403,15 @@ def get_password(cursor: RealDictCursor, email: str):
 
 
 @connection.connection_handler
+def update_reputation(cursor: RealDictCursor, user_id: int, amount: int):
+    cursor.execute("""
+                UPDATE users
+                SET reputation = reputation + %(amount)s
+                WHERE id = %(id)s;
+           """, {'id': user_id, 'amount': amount})
+
+
+@connection.connection_handler
 def get_user_id(cursor: RealDictCursor, email: str):
     cursor.execute(f"""
                     SELECT id
