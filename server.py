@@ -143,6 +143,7 @@ def search_for_questions(search_phrase):
     else:
         logged_status = False
         user_id = None
+        username = None
     search_results_questions = data_manager.search_for_phrase_questions(search_phrase)
     search_results_questions = prepare_questions_to_display(search_results_questions)
     search_results_answers = data_manager.search_for_phrase_answers(search_phrase)
@@ -155,6 +156,46 @@ def search_for_questions(search_phrase):
         user_id=user_id,
         username=username
     )
+
+
+@app.errorhandler(400)
+def page_not_found(error):
+    return render_template(
+        "error_page.html",
+        error_code="400",
+        error_message="Bad Request",
+        message="Sorry, I can't found that request in my database."
+    ), 400
+
+
+@app.errorhandler(401)
+def page_not_found(error):
+    return render_template(
+        "error_page.html",
+        error_code="401",
+        error_message="Unauthorized",
+        message="You need to sign in to do that!"
+    ), 401
+
+
+@app.errorhandler(403)
+def page_not_found(error):
+    return render_template(
+        "error_page.html",
+        error_code="403",
+        error_message="Forbidden",
+        message="You don't have access to do that!"
+    ), 403
+
+
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template(
+        "error_page.html",
+        error_code="403",
+        error_message="Not Found",
+        message="Sorry, Page doesn't exist!"
+    ), 404
 
 
 if __name__ == "__main__":

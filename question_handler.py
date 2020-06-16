@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, Blueprint, flash, session
+from flask import render_template, request, redirect, Blueprint, flash, session, abort
 import data_manager
 import util
 
@@ -8,8 +8,7 @@ question = Blueprint('question', __name__, template_folder='templates')
 @question.route("/question", methods=["POST", "GET"])
 def add_question():
     if 'username' not in session:
-        flash("You can't add question!")
-        return redirect("/list")
+        abort(401)
     logged_status = True
     username = session['username']
     user_id = session['user_id']
@@ -31,8 +30,7 @@ def add_question():
 @question.route("/question/<question_id>/edit", methods=["POST", "GET"])
 def edit_question(question_id):
     if 'username' not in session:
-        flash("You can't edit question!")
-        return redirect("/question/" + str(question_id))
+        abort(401)
     logged_status = True
     username = session['username']
     user_id = session['user_id']
@@ -54,8 +52,7 @@ def edit_question(question_id):
 @question.route("/question/<question_id>/delete")
 def delete_question(question_id):
     if 'username' not in session:
-        flash("You can't delete question!")
-        return redirect("/question/" + str(question_id))
+        abort(401)
     all_answers = data_manager.get_all_records("answer")
     for answer in all_answers:
         if str(answer.get("question_id")) == str(question_id):

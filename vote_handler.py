@@ -1,4 +1,4 @@
-from flask import request, redirect, make_response, Blueprint
+from flask import request, redirect, make_response, Blueprint, session, abort
 import data_manager
 
 vote = Blueprint('vote', __name__, template_folder='templates')
@@ -6,6 +6,8 @@ vote = Blueprint('vote', __name__, template_folder='templates')
 
 @vote.route("/question/<question_id>/<vote>")
 def question_vote(question_id, vote):
+    if 'username' not in session:
+        abort(401)
     if request.cookies.get("q" + question_id) != "voted":
         res = make_response(redirect("/"))
         res.set_cookie("q" + question_id, "voted")
@@ -16,6 +18,8 @@ def question_vote(question_id, vote):
 
 @vote.route("/answer/<answer_id>/vote_up")
 def answer_vote_up(answer_id):
+    if 'username' not in session:
+        abort(401)
     answer = data_manager.get_specific_record(answer_id, "answer")
     question_id = answer.get("question_id")
     if request.cookies.get("a" + str(answer_id)) != "voted":
@@ -28,6 +32,8 @@ def answer_vote_up(answer_id):
 
 @vote.route("/answer/<answer_id>/vote_down")
 def answer_vote_down(answer_id):
+    if 'username' not in session:
+        abort(401)
     answer = data_manager.get_specific_record(answer_id, "answer")
     question_id = answer.get("question_id")
     if request.cookies.get("a" + str(answer_id)) != "voted":

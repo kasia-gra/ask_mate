@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, Blueprint, flash, session
+from flask import render_template, request, redirect, Blueprint, abort, session
 import data_manager
 import util
 
@@ -8,8 +8,7 @@ answer = Blueprint('answer', __name__, template_folder='templates')
 @answer.route("/question/<question_id>/new-answer", methods=["POST", "GET"])
 def add_answer(question_id):
     if 'username' not in session:
-        flash("You can't add answer!")
-        return redirect("/question/" + str(question_id))
+        abort(401)
     logged_status = True
     username = session['username']
     user_id = session['user_id']
@@ -30,13 +29,12 @@ def add_answer(question_id):
 
 @answer.route("/answer/<answer_id>/edit", methods=["POST", "GET"])
 def edit_answer(answer_id):
-    old_record = data_manager.get_specific_record(answer_id, "answer")
     if 'username' not in session:
-        flash("You can't edit answer!")
-        return redirect("/question/" + str(old_record["question_id"]))
+        abort(401)
     logged_status = True
     username = session['username']
     user_id = session['user_id']
+    old_record = data_manager.get_specific_record(answer_id, "answer")
     if request.method == "POST":
         old_record = get_answer_data(old_record)
         data_manager.edit_record(old_record, "answer")
@@ -53,10 +51,9 @@ def edit_answer(answer_id):
 
 @answer.route("/answer/<answer_id>/delete")
 def delete_answer(answer_id):
-    old_record = data_manager.get_specific_record(answer_id, "answer")
     if 'username' not in session:
-        flash("You can't delete answer!")
-        return redirect("/question/" + str(old_record["question_id"]))
+        abort(401)
+    old_record = data_manager.get_specific_record(answer_id, "answer")
     data_manager.delete_connected_comment(None, answer_id)
     data_manager.delete_record(answer_id, "answer")
     return redirect("/question/" + str(old_record["question_id"]))
