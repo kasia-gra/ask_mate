@@ -7,7 +7,7 @@ from comment_handler import comment
 from vote_handler import vote
 from tag_handler import tag
 from registration_handler import registration
-
+from user_handler import user
 
 app = Flask(__name__)
 app.register_blueprint(question)
@@ -16,6 +16,7 @@ app.register_blueprint(comment)
 app.register_blueprint(vote)
 app.register_blueprint(tag)
 app.register_blueprint(registration)
+app.register_blueprint(user)
 
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
