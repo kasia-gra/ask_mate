@@ -192,7 +192,7 @@ def page_not_found(error):
 def page_not_found(error):
     return render_template(
         "error_page.html",
-        error_code="403",
+        error_code="404",
         error_message="Not Found",
         message="Sorry, Page doesn't exist!"
     ), 404
