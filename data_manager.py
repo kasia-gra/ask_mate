@@ -89,15 +89,14 @@ def add_question(cursor: RealDictCursor, new_record: dict):
 def add_answer(cursor: RealDictCursor, new_record: dict):
     cursor.execute("""
                     INSERT INTO answer
-                        (question_id, message, image, submission_time, user_id, vote_number)
+                        (question_id, message, image, submission_time, vote_number)
                     VALUES
-                        (%(question_id)s, %(message)s, %(img_path)s, %(submission_time)s, %(user_id)s, 0);
+                        (%(question_id)s, %(message)s, %(img_path)s, %(submission_time)s, 0);
                     """, {
         'question_id': new_record['question_id'],
         'message': new_record["message"],
         'submission_time': new_record["submission_time"],
-        'img_path': new_record["image"],
-        'user_id': new_record["user_id"]
+        'img_path': new_record["image"]
     })
 
 
@@ -420,4 +419,26 @@ def get_user_id(cursor: RealDictCursor, email: str):
                     FROM users
                     WHERE email = (%(email)s);
                """, {'email': email})
+    return cursor.fetchone()
+
+
+@connection.connection_handler
+def get_users(cursor: RealDictCursor):
+    query = """
+    SELECT u.id, u.email, u.registration_time, u.reputation, COUNT(DISTINCT q.*) AS questions_number, COUNT(DISTINCT a.*) AS answers_number, COUNT(DISTINCT c.*) AS comments_number
+    FROM users u LEFT JOIN question q ON u.id = q.user_id LEFT JOIN answer a ON q.user_id = a.user_id LEFT JOIN comment c ON u.id = c.user_id
+    GROUP BY u.id ORDER BY u.id;
+    """
+    cursor.execute(query)
+    return cursor.fetchall()
+
+
+@connection.connection_handler
+def get_user_by_id(cursor: RealDictCursor, user_id: int):
+    query = """
+    SELECT u.id, u.email, u.registration_time, u.reputation, COUNT(DISTINCT q.*) AS questions_number, COUNT(DISTINCT a.*) AS answers_number, COUNT(DISTINCT c.*) AS comments_number
+    FROM users u LEFT JOIN question q ON u.id = q.user_id LEFT JOIN answer a ON q.user_id = a.user_id LEFT JOIN comment c ON u.id = c.user_id
+    WHERE u.id = %(user_id)s GROUP BY u.id ORDER BY u.id;
+    """
+    cursor.execute(query, {"user_id": user_id})
     return cursor.fetchone()
