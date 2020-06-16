@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, Blueprint
+from flask import render_template, request, redirect, Blueprint, flash, session
 import data_manager
 import util
 
@@ -7,26 +7,55 @@ question = Blueprint('question', __name__, template_folder='templates')
 
 @question.route("/question", methods=["POST", "GET"])
 def add_question():
+    if 'username' not in session:
+        flash("You can't add question!")
+        return redirect("/list")
+    logged_status = True
+    username = session['username']
+    user_id = session['user_id']
     new_record = {}
     if request.method == "POST":
         new_record = get_question_data(new_record)
         data_manager.add_record(new_record, "question")
         return redirect("/list")
-    return render_template("question_form.html", old_record=new_record, is_new=True)
+    return render_template(
+        "question_form.html",
+        old_record=new_record,
+        is_new=True,
+        logged=logged_status,
+        user_id=user_id,
+        username=username
+    )
 
 
 @question.route("/question/<question_id>/edit", methods=["POST", "GET"])
 def edit_question(question_id):
+    if 'username' not in session:
+        flash("You can't edit question!")
+        return redirect("/question/" + str(question_id))
+    logged_status = True
+    username = session['username']
+    user_id = session['user_id']
     old_record = data_manager.get_specific_record(question_id, "question")
     if request.method == "POST":
         old_record = get_question_data(old_record)
         data_manager.edit_record(old_record, "question")
         return redirect("/question/" + str(question_id))
-    return render_template("question_form.html", old_record=old_record, is_new=False)
+    return render_template(
+        "question_form.html",
+        old_record=old_record,
+        is_new=False,
+        logged=logged_status,
+        user_id=user_id,
+        username=username
+    )
 
 
 @question.route("/question/<question_id>/delete")
 def delete_question(question_id):
+    if 'username' not in session:
+        flash("You can't delete question!")
+        return redirect("/question/" + str(question_id))
     all_answers = data_manager.get_all_records("answer")
     for answer in all_answers:
         if str(answer.get("question_id")) == str(question_id):

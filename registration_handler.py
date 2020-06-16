@@ -1,7 +1,6 @@
 from flask import render_template, request, redirect, url_for, Blueprint, flash, session
 import bcrypt
 import data_manager
-import session_handler
 import util
 
 registration = Blueprint('registration', __name__, template_folder='templates')
@@ -22,7 +21,7 @@ def login():
                 return redirect("/")
         flash('Wrong password!')
         return redirect("/login")
-    return render_template("login.html")
+    return render_template("login.html", logged=False)
 
 
 @registration.route("/registration", methods=['GET', 'POST'])
@@ -42,7 +41,7 @@ def register():
             flash('Passwords not matching - try again')
             return redirect("/registration")
         return redirect("/")
-    return render_template("register.html")
+    return render_template("register.html", logged=False)
 
 
 @registration.route("/logout")

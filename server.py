@@ -30,6 +30,7 @@ def homepage():
     else:
         logged_status = False
         user_id = None
+        username = None
     five_questions = data_manager.get_five_records("question")
     if request.method == 'POST':
         sort_by = request.form.get("sort_by")
@@ -47,7 +48,8 @@ def homepage():
         search_phrase=search_phrase,
         is_homepage=True,
         logged=logged_status,
-        user_id=user_id
+        user_id=user_id,
+        username=username
     )
 
 
@@ -60,6 +62,7 @@ def questions_list():
     else:
         logged_status = False
         user_id = None
+        username = None
     sort_by = request.args.get('sort_by')
     if sort_by:
         criteria_and_direction = sort_by.split("-")
@@ -77,7 +80,8 @@ def questions_list():
         search_phrase=search_phrase,
         is_homepage=False,
         logged=logged_status,
-        user_id=user_id
+        user_id=user_id,
+        username=username
     )
 
 
@@ -102,6 +106,7 @@ def show_question(question_id):
     else:
         logged_status = False
         user_id = None
+        username = None
     record = data_manager.get_specific_record(question_id, "question")
     tags = data_manager.get_tags_for_questions(question_id)
     all_answers_for_question = data_manager.get_answers_for_question(question_id)
@@ -124,7 +129,8 @@ def show_question(question_id):
         answers_comments=answers_comments,
         comment_id_list=comment_id_list,
         logged=logged_status,
-        user_id=user_id
+        user_id=user_id,
+        username=username
     )
 
 
@@ -146,7 +152,8 @@ def search_for_questions(search_phrase):
         answers=search_results_answers,
         search_phrase=search_phrase,
         logged=logged_status,
-        user_id=user_id
+        user_id=user_id,
+        username=username
     )
 
 
