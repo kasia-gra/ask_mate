@@ -73,14 +73,15 @@ def add_record(new_record, option):
 def add_question(cursor: RealDictCursor, new_record: dict):
     cursor.execute("""
                     INSERT INTO question
-                        (title, message, image, submission_time, vote_number, view_number)
+                        (title, message, image, submission_time, user_id, vote_number, view_number)
                     VALUES
-                        (%(title)s, %(message)s, %(img_path)s, %(submission_time)s, 0, 0);
+                        (%(title)s, %(message)s, %(img_path)s, %(submission_time)s, %(user_id)s, 0, 0);
                     """, {
         'title': new_record["title"],
         'message': new_record["message"],
         'submission_time': new_record["submission_time"],
-        'img_path': new_record["image"]
+        'img_path': new_record["image"],
+        'user_id': new_record["user_id"]
     })
 
 

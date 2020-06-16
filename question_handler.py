@@ -64,6 +64,7 @@ def get_question_data(record):
     record["title"] = request.form["title"]
     record["submission_time"] = util.get_new_timestamp()
     record["message"] = request.form["description"]
+    record["user_id"] = session['user_id']
     if 'file' in request.files:
         file = request.files['file']
         record["image"] = util.save_image(file, data_manager.UPLOAD_FOLDER, "question")
