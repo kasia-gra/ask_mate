@@ -8,7 +8,6 @@ tag = Blueprint('tag', __name__, template_folder='templates')
 def add_tag(question_id):
     if 'username' not in session:
         abort(401)
-    logged_status = True
     username = session['username']
     user_id = session['user_id']
     tags_list = data_manager.get_available_tags()
@@ -23,7 +22,6 @@ def add_tag(question_id):
     return render_template(
         "add_tag.html",
         tags_list=tags_list,
-        logged=logged_status,
         user_id=user_id,
         username=username
     )

@@ -9,7 +9,6 @@ comment = Blueprint('comment', __name__, template_folder='templates')
 def comment_question(question_id):
     if 'username' not in session:
         abort(401)
-    logged_status = True
     username = session['username']
     user_id = session['user_id']
     new_record = {"question_id": question_id}
@@ -20,7 +19,6 @@ def comment_question(question_id):
     return render_template(
         "comment_form.html",
         question_id=str(question_id),
-        logged=logged_status,
         user_id=user_id,
         username=username
     )
@@ -30,7 +28,6 @@ def comment_question(question_id):
 def comment_answer(answer_id):
     if 'username' not in session:
         abort(401)
-    logged_status = True
     username = session['username']
     user_id = session['user_id']
     answer = data_manager.get_specific_record(answer_id, "answer")
@@ -44,7 +41,6 @@ def comment_answer(answer_id):
         "comment_form.html",
         answer_id=answer_id,
         question_id=question_id,
-        logged=logged_status,
         user_id=user_id,
         username=username
     )
@@ -54,7 +50,6 @@ def comment_answer(answer_id):
 def edit_comment(comment_id):
     if 'username' not in session:
         abort(401)
-    logged_status = True
     username = session['username']
     user_id = session['user_id']
     comment = data_manager.get_specific_record(comment_id, "comment")
@@ -70,7 +65,6 @@ def edit_comment(comment_id):
     return render_template(
         "comment_form.html",
         comment=comment,
-        logged=logged_status,
         user_id=user_id,
         username=username
     )
