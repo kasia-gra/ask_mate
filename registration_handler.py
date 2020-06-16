@@ -14,14 +14,14 @@ def login():
     if request.method == "POST":
         username = request.form.get("email")
         password = request.form.get("password")
-        hashed_password = data_manager.get_password(username)["password"]
-        print(hashed_password)
-        if password and bcrypt.checkpw(password.encode('utf-8'), hashed_password.encode('utf-8')):
-            session["username"] = username
-            session["user_id"] = data_manager.get_user_id(username)["id"]
-            return redirect("/")
+        if username and password:
+            hashed_password = data_manager.get_password(username).get("password")
+            if bcrypt.checkpw(password.encode("utf-8"), hashed_password.encode("utf-8")):
+                session["username"] = username
+                session["user_id"] = data_manager.get_user_id(username).get("id")
+                return redirect("/")
         flash('Wrong password!')
-        return redirect("/register")
+        return redirect("/login")
     return render_template("login.html")
 
 
@@ -32,7 +32,7 @@ def register():
             user_dict = {}
             user_dict["email"] = request.form.get("email")
             user_dict["password"] = bcrypt.hashpw(request.form.get("password").encode("utf-8"),
-                                                  bcrypt.gensalt(rounds=10))
+                                                  bcrypt.gensalt(rounds=10)).decode("utf-8")
             user_dict["registration_time"] = util.get_new_timestamp()
             user_dict["reputation"] = 0
             data_manager.add_user(user_dict)
