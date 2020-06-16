@@ -632,3 +632,10 @@ similar transform is needed in nav */
     margin-left: 20%;
     margin-bottom: 1em;
 }
+
+.user-detail-numbers {
+    font-size: 1.2em;
+    color: black;
+    font-style: normal;
+    margin-bottom: 0.8em;
+}
