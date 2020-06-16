@@ -24,11 +24,9 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 @app.route("/")
 def homepage():
     if 'username' in session:
-        logged_status = True
         username = session['username']
         user_id = session['user_id']
     else:
-        logged_status = False
         user_id = None
         username = None
     five_questions = data_manager.get_five_records("question")
@@ -47,7 +45,6 @@ def homepage():
         sort_by=sort_by,
         search_phrase=search_phrase,
         is_homepage=True,
-        logged=logged_status,
         user_id=user_id,
         username=username
     )
@@ -56,11 +53,9 @@ def homepage():
 @app.route("/list", methods=['GET', 'POST'])
 def questions_list():
     if 'username' in session:
-        logged_status = True
         username = session['username']
         user_id = session['user_id']
     else:
-        logged_status = False
         user_id = None
         username = None
     sort_by = request.args.get('sort_by')
@@ -79,7 +74,6 @@ def questions_list():
         sort_by=sort_by,
         search_phrase=search_phrase,
         is_homepage=False,
-        logged=logged_status,
         user_id=user_id,
         username=username
     )
@@ -100,11 +94,9 @@ def prepare_questions_to_display(all_questions):
 @app.route("/question/<question_id>")
 def show_question(question_id):
     if 'username' in session:
-        logged_status = True
         username = session['username']
         user_id = session['user_id']
     else:
-        logged_status = False
         user_id = None
         username = None
     record = data_manager.get_specific_record(question_id, "question")
@@ -128,7 +120,6 @@ def show_question(question_id):
         tags=tags,
         answers_comments=answers_comments,
         comment_id_list=comment_id_list,
-        logged=logged_status,
         user_id=user_id,
         username=username
     )
@@ -137,11 +128,9 @@ def show_question(question_id):
 @app.route('/search_phrase')
 def search_for_questions(search_phrase):
     if 'username' in session:
-        logged_status = True
         username = session['username']
         user_id = session['user_id']
     else:
-        logged_status = False
         user_id = None
         username = None
     search_results_questions = data_manager.search_for_phrase_questions(search_phrase)
@@ -152,7 +141,6 @@ def search_for_questions(search_phrase):
         all_questions=search_results_questions,
         answers=search_results_answers,
         search_phrase=search_phrase,
-        logged=logged_status,
         user_id=user_id,
         username=username
     )

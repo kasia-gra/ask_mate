@@ -9,7 +9,6 @@ question = Blueprint('question', __name__, template_folder='templates')
 def add_question():
     if 'username' not in session:
         abort(401)
-    logged_status = True
     username = session['username']
     user_id = session['user_id']
     new_record = {}
@@ -21,7 +20,6 @@ def add_question():
         "question_form.html",
         old_record=new_record,
         is_new=True,
-        logged=logged_status,
         user_id=user_id,
         username=username
     )
@@ -31,7 +29,6 @@ def add_question():
 def edit_question(question_id):
     if 'username' not in session:
         abort(401)
-    logged_status = True
     username = session['username']
     user_id = session['user_id']
     old_record = data_manager.get_specific_record(question_id, "question")
@@ -43,7 +40,6 @@ def edit_question(question_id):
         "question_form.html",
         old_record=old_record,
         is_new=False,
-        logged=logged_status,
         user_id=user_id,
         username=username
     )
