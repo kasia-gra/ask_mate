@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, url_for, Blueprint, session, flash
+from flask import render_template, request, redirect, url_for, Blueprint, session, abort
 import data_manager
 
 tag = Blueprint('tag', __name__, template_folder='templates')
@@ -7,8 +7,7 @@ tag = Blueprint('tag', __name__, template_folder='templates')
 @tag.route('/question/<question_id>/new-tag')
 def add_tag(question_id):
     if 'username' not in session:
-        flash("You can't add tag!")
-        return redirect(f"/question/{question_id}")
+        abort(401)
     logged_status = True
     username = session['username']
     user_id = session['user_id']
@@ -33,7 +32,6 @@ def add_tag(question_id):
 @tag.route("/question/<question_id>/tag/<tag_id>/delete")
 def delete_tag(question_id, tag_id):
     if 'username' not in session:
-        flash("You can't delete tag!")
-        return redirect(url_for("show_question", question_id=question_id))
+        abort(401)
     data_manager.delete_tag(question_id, tag_id)
     return redirect(url_for("show_question", question_id=question_id))

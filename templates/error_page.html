@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+{% block title %}Error page{% endblock %}
+{% block header %}
+{% endblock %}
+{% block nav %}
+    {{ super() }}
+{% endblock %}
+{% block body %}
+    <div class="container">
+        <div class="table">
+            <div class="table-header-and-title">
+                <div class="table-title">
+                    <h1>Error page</h1>
+                </div>
+            </div>
+                <div class="table-content">
+                    <div class="add_edit_form">
+                        <div class="flex-column-center-horizontally">
+                            <div class="error_code">{{ error_code }}</div>
+                            <div class="error_message">{{ error_message }}</div>
+                            <div class="error_message">{{ message }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block footer %}{{ super() }}{% endblock %}

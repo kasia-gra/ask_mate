@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, url_for, Blueprint, flash, session
+from flask import render_template, request, redirect, url_for, Blueprint, abort, session
 import data_manager
 import util
 
@@ -8,8 +8,7 @@ comment = Blueprint('comment', __name__, template_folder='templates')
 @comment.route("/question/<int:question_id>/new-comment", methods=["POST", "GET"])
 def comment_question(question_id):
     if 'username' not in session:
-        flash("You can't add comment!")
-        return redirect(url_for("show_question", question_id=str(question_id)))
+        abort(401)
     logged_status = True
     username = session['username']
     user_id = session['user_id']
@@ -29,14 +28,13 @@ def comment_question(question_id):
 
 @comment.route("/answer/<int:answer_id>/new-comment", methods=["POST", "GET"])
 def comment_answer(answer_id):
-    answer = data_manager.get_specific_record(answer_id, "answer")
-    question_id = answer["question_id"]
     if 'username' not in session:
-        flash("You can't add comment!")
-        return redirect(url_for("show_question", question_id=str(question_id)))
+        abort(401)
     logged_status = True
     username = session['username']
     user_id = session['user_id']
+    answer = data_manager.get_specific_record(answer_id, "answer")
+    question_id = answer["question_id"]
     new_record = {"answer_id": answer_id}
     if request.method == "POST":
         new_record["question_id"] = None
@@ -54,13 +52,12 @@ def comment_answer(answer_id):
 
 @comment.route("/comment/<int:comment_id>/edit", methods=["POST", "GET"])
 def edit_comment(comment_id):
-    comment = data_manager.get_specific_record(comment_id, "comment")
     if 'username' not in session:
-        flash("You can't edit comment!")
-        return redirect(url_for("show_question", question_id=comment["question_id"]))
+        abort(401)
     logged_status = True
     username = session['username']
     user_id = session['user_id']
+    comment = data_manager.get_specific_record(comment_id, "comment")
     if request.method == "POST":
         comment["message"] = request.form["message"]
         comment["edited_number"] = comment["edited_number"] + 1 if comment["edited_number"] is not None else 1
@@ -81,6 +78,8 @@ def edit_comment(comment_id):
 
 @comment.route("/comments/<int:comment_id>/delete")
 def delete_comment(comment_id):
+    if 'username' not in session:
+        abort(401)
     comment = data_manager.get_specific_record(comment_id, "comment")
     if type(comment.get("question_id")) is int:
         question_id = comment.get("question_id")
@@ -88,9 +87,6 @@ def delete_comment(comment_id):
         answer_id = comment.get("answer_id")
         answer = data_manager.get_specific_record(answer_id, "answer")
         question_id = answer.get("question_id")
-    if 'username' not in session:
-        flash("You can't delete answer!")
-        return redirect(url_for("show_question", question_id=question_id))
     data_manager.delete_comment(comment_id)
     return redirect(url_for("show_question", question_id=question_id))
 

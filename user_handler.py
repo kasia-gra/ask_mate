@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, url_for, Blueprint, flash, session
+from flask import render_template, Blueprint, abort, session
 
 
 user = Blueprint('user', __name__, 'templates')
@@ -7,8 +7,7 @@ user = Blueprint('user', __name__, 'templates')
 @user.route("/users")
 def list_users():
     if 'username' not in session:
-        flash("You can't see users!")
-        return redirect("/")
+        abort(401)
     else:
         logged_status = True
         username = session['username']
