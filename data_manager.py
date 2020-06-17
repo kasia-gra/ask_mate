@@ -1,6 +1,7 @@
 import os
 from psycopg2.extras import RealDictCursor
 import connection
+import util
 
 dir_path = os.path.dirname(__file__)
 QUESTION_HEADERS = ["id", "submission_time", "view_number", "vote_number", "title", "message", "image"]
@@ -89,14 +90,15 @@ def add_question(cursor: RealDictCursor, new_record: dict):
 def add_answer(cursor: RealDictCursor, new_record: dict):
     cursor.execute("""
                     INSERT INTO answer
-                        (question_id, message, image, submission_time, vote_number)
+                        (question_id, message, image, submission_time, vote_number, user_id)
                     VALUES
-                        (%(question_id)s, %(message)s, %(img_path)s, %(submission_time)s, 0);
+                        (%(question_id)s, %(message)s, %(img_path)s, %(submission_time)s, 0, %(user_id)s);
                     """, {
         'question_id': new_record['question_id'],
         'message': new_record["message"],
         'submission_time': new_record["submission_time"],
-        'img_path': new_record["image"]
+        'img_path': new_record["image"],
+        'user_id': new_record["user_id"]
     })
 
 
@@ -431,7 +433,7 @@ def get_user_id(cursor: RealDictCursor, email: str):
     cursor.execute(f"""
                     SELECT id
                     FROM users
-                    WHERE email = (%(email)s);
+                    WHERE email = %(email)s;
                """, {'email': email})
     return cursor.fetchone()
 
@@ -456,3 +458,33 @@ def get_user_by_id(cursor: RealDictCursor, user_id: int):
     """
     cursor.execute(query, {"user_id": user_id})
     return cursor.fetchone()
+
+
+@connection.connection_handler
+def update_answer_vote(cursor: RealDictCursor, user_id: int, answer_id: int):
+    time = util.get_new_timestamp()
+    cursor.execute("""
+        INSERT INTO votes (user_id, question_id, answer_id, vote_time)
+        VALUES (%(user_id)s, Null, %(answer_id)s, %(vote_time)s);
+        """, {"user_id": user_id, 'answer_id': answer_id, 'vote_time': time}
+        )
+
+
+@connection.connection_handler
+def update_question_vote(cursor: RealDictCursor, user_id: int, question_id: int):
+    time = util.get_new_timestamp()
+    cursor.execute("""
+        INSERT INTO votes (user_id, question_id, answer_id, vote_time)
+        VALUES (%(user_id)s, %(question_id)s, Null, %(vote_time)s);
+        """, {"user_id": user_id, 'question_id': question_id, 'vote_time': time}
+        )
+
+
+@connection.connection_handler
+def get_user_votes(cursor: RealDictCursor, user_id: int):
+    cursor.execute("""
+        SELECT user_id, question_id, answer_id FROM votes
+        WHERE user_id = %(user_id)s;
+        """, {'user_id': user_id}
+    )
+    return cursor.fetchall()
