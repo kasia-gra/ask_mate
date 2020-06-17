@@ -30,8 +30,10 @@ def edit_answer(answer_id):
     if 'username' not in session:
         abort(401)
     username = session['username']
-    user_id = session['user_id']
+    user_id = data_manager.get_user_id(username)
     old_record = data_manager.get_specific_record(answer_id, "answer")
+    if user_id != old_record["user_id"]:
+        abort(401)
     if request.method == "POST":
         old_record = get_answer_data(old_record)
         data_manager.edit_record(old_record, "answer")
@@ -49,7 +51,11 @@ def edit_answer(answer_id):
 def delete_answer(answer_id):
     if 'username' not in session:
         abort(401)
+    username = session['username']
+    user_id = data_manager.get_user_id(username)
     old_record = data_manager.get_specific_record(answer_id, "answer")
+    if user_id != old_record["user_id"]:
+        abort(401)
     data_manager.delete_connected_comment(None, answer_id)
     data_manager.delete_record(answer_id, "answer")
     return redirect("/question/" + str(old_record["question_id"]))

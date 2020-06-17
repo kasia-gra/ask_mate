@@ -51,8 +51,10 @@ def edit_comment(comment_id):
     if 'username' not in session:
         abort(401)
     username = session['username']
-    user_id = session['user_id']
+    user_id = data_manager.get_user_id(username)
     comment = data_manager.get_specific_record(comment_id, "comment")
+    if user_id != comment["user_id"]:
+        abort(401)
     if request.method == "POST":
         comment["message"] = request.form["message"]
         comment["edited_number"] = comment["edited_number"] + 1 if comment["edited_number"] is not None else 1
@@ -74,7 +76,11 @@ def edit_comment(comment_id):
 def delete_comment(comment_id):
     if 'username' not in session:
         abort(401)
+    username = session['username']
+    user_id = data_manager.get_user_id(username)
     comment = data_manager.get_specific_record(comment_id, "comment")
+    if user_id != comment["user_id"]:
+        abort(401)
     if type(comment.get("question_id")) is int:
         question_id = comment.get("question_id")
     else:

@@ -30,8 +30,10 @@ def edit_question(question_id):
     if 'username' not in session:
         abort(401)
     username = session['username']
-    user_id = session['user_id']
     old_record = data_manager.get_specific_record(question_id, "question")
+    user_id = data_manager.get_user_id(username)
+    if user_id != question["user_id"]:
+        abort(401)
     if request.method == "POST":
         old_record = get_question_data(old_record)
         data_manager.edit_record(old_record, "question")
@@ -48,6 +50,11 @@ def edit_question(question_id):
 @question.route("/question/<question_id>/delete")
 def delete_question(question_id):
     if 'username' not in session:
+        abort(401)
+    username = session['username']
+    user_id = data_manager.get_user_id(username)
+    record = data_manager.get_specific_record(question_id, "question")
+    if user_id != record["user_id"]:
         abort(401)
     all_answers = data_manager.get_all_records("answer")
     for answer in all_answers:
