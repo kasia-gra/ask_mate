@@ -71,3 +71,15 @@ def remove_question_image_with_answer_images(question_id, image_name):
     folder_path = data_manager.UPLOAD_FOLDER + question_id
     if os.path.isfile(folder_path):
         os.rmdir(folder_path)
+
+
+def prepare_questions_to_display(all_questions):
+    message_max_length = 800
+    title_max_length = 53
+    for record in all_questions:
+        record["number_of_answers"] = data_manager.count_answers_for_question(record["id"])["count"]
+        if len(record["title"]) >= title_max_length:
+            record["title"] = record["title"][:title_max_length] + "..."
+        if len(record["message"]) >= message_max_length:
+            record["message"] = record["message"][:message_max_length] + "..."
+    return all_questions

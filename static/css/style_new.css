@@ -20,6 +20,23 @@ a:hover {
     color: #60C451;
 }
 
+.tags-name {
+    text-decoration: none;
+    font-style: normal;
+    color: ghostwhite;
+    font-size: 1.6em;
+}
+
+.white-background {
+    background-color: ghostwhite;
+}
+
+.tags-background {
+    border: #46D21B;
+    border-radius: 0.8em;
+    padding: 0.5em 0.5em 0.5em 0.5em;
+    background-color: #46D21B;
+}
 
 .body-styling {
     background-color: whitesmoke;

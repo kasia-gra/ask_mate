@@ -328,8 +328,22 @@ def search_for_phrase_answers(cursor: RealDictCursor, search_phrase: str):
 def get_available_tags(cursor: RealDictCursor):
     cursor.execute(f"""
                 SELECT *
-                FROM tag
+                FROM tag;
            """)
+    return cursor.fetchall()
+
+
+@connection.connection_handler
+def get_questions_with_specific_tag(cursor: RealDictCursor, tag: str):
+    cursor.execute("""
+                SELECT *
+                FROM question
+                LEFT JOIN question_tag
+                    ON question.id = question_tag.question_id
+                LEFT JOIN tag
+                    ON question_tag.tag_id = tag.id
+                WHERE tag.name = %(tag)s;
+           """, {'tag': tag})
     return cursor.fetchall()
 
 

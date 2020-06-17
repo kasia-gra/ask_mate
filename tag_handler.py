@@ -1,7 +1,27 @@
 from flask import render_template, request, redirect, url_for, Blueprint, session, abort
 import data_manager
+import util
 
 tag = Blueprint('tag', __name__, template_folder='templates')
+
+
+@tag.route('/tags')
+def display_tags():
+    if 'username' in session:
+        username = session['username']
+        user_id = session['user_id']
+    else:
+        user_id = None
+        username = None
+    tags_list = data_manager.get_available_tags()
+    for tag in tags_list:
+        tag["questions"] = util.prepare_questions_to_display(data_manager.get_questions_with_specific_tag(tag.get("name")))
+    return render_template(
+        "tags_list.html",
+        tags=tags_list,
+        user_id=user_id,
+        username=username
+    )
 
 
 @tag.route('/question/<question_id>/new-tag')

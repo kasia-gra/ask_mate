@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, session
 import data_manager
+import util
 
 from question_handler import question
 from answer_handler import answer
@@ -35,7 +36,7 @@ def homepage():
         five_questions = data_manager.get_sorted_questions(sort_by)
     else:
         sort_by = "submission_time-DESC"
-    five_questions = prepare_questions_to_display(five_questions)
+    five_questions = util.prepare_questions_to_display(five_questions)
     search_phrase = request.args.get('search_phrase')
     if search_phrase:
         return search_for_questions(search_phrase)
@@ -64,7 +65,7 @@ def questions_list():
         all_questions = data_manager.get_sorted_questions(criteria_and_direction)
     else:
         all_questions = data_manager.get_all_records("question")
-    all_questions = prepare_questions_to_display(all_questions)
+    all_questions = util.prepare_questions_to_display(all_questions)
     search_phrase = request.args.get('search_phrase')
     if search_phrase:
         return search_for_questions(search_phrase)
@@ -77,18 +78,6 @@ def questions_list():
         user_id=user_id,
         username=username
     )
-
-
-def prepare_questions_to_display(all_questions):
-    message_max_length = 800
-    title_max_length = 53
-    for record in all_questions:
-        record["number_of_answers"] = data_manager.count_answers_for_question(record["id"])["count"]
-        if len(record["title"]) >= title_max_length:
-            record["title"] = record["title"][:title_max_length] + "..."
-        if len(record["message"]) >= message_max_length:
-            record["message"] = record["message"][:message_max_length] + "..."
-    return all_questions
 
 
 @app.route("/question/<question_id>")
@@ -134,7 +123,7 @@ def search_for_questions(search_phrase):
         user_id = None
         username = None
     search_results_questions = data_manager.search_for_phrase_questions(search_phrase)
-    search_results_questions = prepare_questions_to_display(search_results_questions)
+    search_results_questions = util.prepare_questions_to_display(search_results_questions)
     search_results_answers = data_manager.search_for_phrase_answers(search_phrase)
     return render_template(
         "search_results.html",
