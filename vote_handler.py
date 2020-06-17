@@ -4,6 +4,12 @@ import data_manager
 vote = Blueprint('vote', __name__, template_folder='templates')
 
 
+'''
+    REWORK ALL VOTE HANDLER
+    FUNCTION IS NOT ABSTRACT ENOUGH
+'''
+
+
 @vote.route("/question/<question_id>/<vote>")
 def question_vote(question_id, vote):
     try_to_raise_401_error()
