@@ -55,7 +55,7 @@
                         </div>
                         <div class="table-record-description">
                             <div class="question-title">
-                                <a href="{{ url_for("show_question", question_id=question.get("id")|string) }}">{{ question.get("title") }}</a>
+                                <a href="{{ url_for("show_question", question_id=question.get("question_id")|string) }}">{{ question.get("title") }}</a>
                             </div>
                             <div class="question-message">
                                 {{ question.get("message") }}
@@ -67,14 +67,14 @@
                             USER ICON
                         </div>
                         <div class="vote-section">
-                            <a href="{{ url_for("vote.question_vote", question_id=question.get("id")|string, vote="up") }}"
+                            <a href="{{ url_for("vote.question_vote", question_id=question.get("question_id")|string, vote="up") }}"
                                methods="POST">
                                 <img src="{{ url_for('static', filename="icons/like_up.png") }}"
                                      width="50px"
                                      height="50px"
                                      alt="vote_up">
                             </a>
-                            <a href="{{ url_for("vote.question_vote", question_id=question.get("id")|string, vote="down") }}"
+                            <a href="{{ url_for("vote.question_vote", question_id=question.get("question_id")|string, vote="down") }}"
                                methods="POST">
                                 <img src="{{ url_for('static', filename="icons/like_down.png") }}"
                                      width="50px"
