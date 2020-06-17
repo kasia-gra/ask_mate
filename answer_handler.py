@@ -30,7 +30,7 @@ def edit_answer(answer_id):
     if 'username' not in session:
         abort(401)
     username = session['username']
-    user_id = data_manager.get_user_id(username)
+    user_id = data_manager.get_user_id(username)['id']
     old_record = data_manager.get_specific_record(answer_id, "answer")
     if user_id != old_record["user_id"]:
         abort(401)
@@ -52,7 +52,7 @@ def delete_answer(answer_id):
     if 'username' not in session:
         abort(401)
     username = session['username']
-    user_id = data_manager.get_user_id(username)
+    user_id = data_manager.get_user_id(username)['id']
     old_record = data_manager.get_specific_record(answer_id, "answer")
     if user_id != old_record["user_id"]:
         abort(401)

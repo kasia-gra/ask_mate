@@ -51,7 +51,7 @@ def edit_comment(comment_id):
     if 'username' not in session:
         abort(401)
     username = session['username']
-    user_id = data_manager.get_user_id(username)
+    user_id = data_manager.get_user_id(username)['id']
     comment = data_manager.get_specific_record(comment_id, "comment")
     if user_id != comment["user_id"]:
         abort(401)
@@ -77,7 +77,7 @@ def delete_comment(comment_id):
     if 'username' not in session:
         abort(401)
     username = session['username']
-    user_id = data_manager.get_user_id(username)
+    user_id = data_manager.get_user_id(username)['id']
     comment = data_manager.get_specific_record(comment_id, "comment")
     if user_id != comment["user_id"]:
         abort(401)
