@@ -19,3 +19,21 @@ def list_users():
         username=username,
         users=users
         )
+
+
+@user.route("/user/<user_id>")
+def show_user(user_id):
+    if 'username' not in session:
+        abort(401)
+    else:
+        username = session['username']
+        logged_user_id = session['user_id']
+        user_details = data_manager.get_user_by_id(int(user_id))
+    return render_template(
+        "user_details.html",
+        user_id=logged_user_id,
+        username=username,
+        user=user_details
+        )
+
+
