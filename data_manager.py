@@ -421,3 +421,14 @@ def get_user_id(cursor: RealDictCursor, email: str):
                     WHERE email = (%(email)s);
                """, {'email': email})
     return cursor.fetchone()
+
+
+@connection.connection_handler
+def get_users(cursor: RealDictCursor):
+    query = """
+    SELECT u.id, u.email, u.registration_time, u.reputation, COUNT(DISTINCT q.*) AS questions_number, COUNT(DISTINCT a.*) AS answers_number, COUNT(DISTINCT c.*) AS comments_number
+    FROM users u LEFT JOIN question q ON u.id = q.user_id LEFT JOIN answer a ON q.user_id = a.user_id LEFT JOIN comment c ON u.id = c.user_id
+    GROUP BY u.id ORDER BY u.id;
+    """
+    cursor.execute(query)
+    return cursor.fetchall()
