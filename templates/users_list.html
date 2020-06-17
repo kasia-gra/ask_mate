@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% block title %}  {% endblock %}
+{% block title %} Users {% endblock %}
 {% block header %}
 {% endblock %}
 {% block nav %}
@@ -16,5 +16,56 @@
                 </div>
             </div>
         </div>
+        {% for user in users %}
+            <div class="table-content">
+                <div class="table-height table-details-and-description">
+                    <div class="table-record-details">
+                        <div class="answers-number">
+                            <div class="answers-number-value">
+                                {{ user.get("id") }}
+                            </div>
+                            <div class="answers-number-text">
+                                User ID
+                            </div>
+                        </div>
+                        <div class="view-number">
+                            <div class="view-number-text">
+                                Reputation
+                            </div>
+                            <div class="view-number-value">
+                                {{ user.get("reputation") }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-record-description">
+                        <div class="question-title">
+                            <a href="/user/{{ user.get("id")|string }}">{{ user.get("email") }}</a>
+                        </div>
+                        <div class="user-detail-numbers">
+                            Asked {{ user.get("questions_number") }} {{ "question" if user.get("questions_number") == 1 else "questions" }}
+                        </div>
+                        <div class="user-detail-numbers">
+                            Replied to {{ user.get("answers_number") }} {{ "question" if user.get("answers_number") == 1 else "questions" }}
+                        </div>
+                        <div class="user-detail-numbers">
+                            Wrote {{ user.get("comments_number") }} {{ "comment" if user.get("comments_number") == 1 else "comments" }}
+                        </div>
+                    </div>
+                </div>
+                <div class="table-height table-record-actions-panel">
+                    <div class="head-of-actions-panel">
+                        USER ICON
+                    </div>
+                    <div class="submission-time">
+                        <div class="submission-time-text">
+                            Registration time:
+                        </div>
+                        <div class="submission-time-value">
+                            {{ user.get("registration_time") }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
     </div>
 {% endblock %}
