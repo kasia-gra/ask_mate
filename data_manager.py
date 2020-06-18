@@ -203,7 +203,7 @@ def delete_connected_tags(cursor: RealDictCursor, question_id: int):
 @connection.connection_handler
 def get_question_comments(cursor: RealDictCursor, question_id: int):
     query = """
-    SELECT id, submission_time, message, edited_number from comment
+    SELECT id, submission_time, message, edited_number, user_id FROM comment
     WHERE question_id = %s
     """
     cursor.execute(query, (question_id,))
@@ -214,7 +214,7 @@ def get_question_comments(cursor: RealDictCursor, question_id: int):
 def get_answers_comments(cursor: RealDictCursor, answers_id_list: list):
     answers_id = ", ".join(str(id) for id in answers_id_list)
     query = f"""
-    SELECT id, answer_id, submission_time, message, edited_number from comment
+    SELECT id, answer_id, submission_time, message, edited_number, user_id FROM comment
     WHERE answer_id IN ({answers_id})
     """
     cursor.execute(query)
