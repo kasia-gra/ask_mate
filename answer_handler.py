@@ -76,10 +76,13 @@ def get_answer_data(record):
 @answer.route("/answer/<answer_id>/status")
 def add_answer_status(answer_id):
     answer_data = data_manager.get_specific_record(answer_id, "answer")
+    answer_owner = answer_data['user_id']
+    reputation_points_based_on_accept_status = {True: 15, False: -15}
     question_owner_id = data_manager.get_question_owner_based_on_answer(answer_id)['user_id']
     if 'username' in session and int(question_owner_id) == int(data_manager.get_user_id(session['username'])['id']):
         status = not answer_data["accepted"]
         data_manager.change_answer_status(answer_id, status)
+        data_manager.update_reputation(answer_owner, reputation_points_based_on_accept_status[status])
         return redirect("/question/" + str(answer_data["question_id"]))
     else:
         abort(401)
