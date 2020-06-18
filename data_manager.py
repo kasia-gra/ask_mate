@@ -504,6 +504,7 @@ def get_question_owner_based_on_answer(cursor: RealDictCursor, answer_id: int):
     cursor.execute(query, {'answer_id': answer_id})
     return cursor.fetchone()
 
+
 @connection.connection_handler
 def change_answer_status(cursor: RealDictCursor, answer_id: int, status=bool):
     query = f"""
