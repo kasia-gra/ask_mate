@@ -12,6 +12,8 @@ def add_question():
     default_blank_question = {}
     if request.method == "POST":
         new_question = set_question_values(default_blank_question)
+        if not new_question["image"]:
+            new_question["image"] = ''
         data_manager.add_record(new_question, "question")
         return redirect("/list")
     return render_template(
@@ -31,6 +33,8 @@ def edit_question(question_id):
     util.check_if_user_is_owner(logged_user_id, selected_question["user_id"])
     if request.method == "POST":
         updated_question = set_question_values(selected_question)
+        if not updated_question["image"]:
+            updated_question["image"] = ''
         data_manager.edit_record(updated_question, "question")
         return redirect("/question/" + str(question_id))
     return render_template(
@@ -67,6 +71,4 @@ def set_question_values(manipulated_question):
     if 'file' in request.files:
         file = request.files['file']
         manipulated_question["image"] = util.save_image(file, data_manager.UPLOAD_FOLDER, "question")
-    if not manipulated_question["image"]:
-        manipulated_question["image"] = ''
     return manipulated_question

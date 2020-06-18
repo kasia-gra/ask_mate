@@ -12,6 +12,8 @@ def add_answer(question_id):
     default_blank_answer = {"question_id": str(question_id)}
     if request.method == "POST":
         new_answer = set_answer_values(default_blank_answer)
+        if not new_answer["image"]:
+            new_answer["image"] = ''
         data_manager.add_record(new_answer, "answer")
         return redirect("/question/" + str(question_id))
     return render_template(
@@ -32,7 +34,7 @@ def edit_answer(answer_id):
     if request.method == "POST":
         old_record = set_answer_values(selected_answer)
         if not old_record["image"]:
-            manipulated_answer["image"] = ''
+            old_record["image"] = ''
         data_manager.edit_record(old_record, "answer")
         return redirect("/question/" + str(old_record["question_id"]))
     return render_template(
