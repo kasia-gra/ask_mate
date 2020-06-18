@@ -476,3 +476,13 @@ def change_answer_status(cursor: RealDictCursor, answer_id: int, status=bool):
     WHERE id = %(answer_id)s
     """
     cursor.execute(query, {'answer_id': answer_id})
+
+
+@connection.connection_handler
+def get_all_users_emails(cursor: RealDictCursor):
+    query = """
+    SELECT email
+    FROM users
+    """
+    cursor.execute(query)
+    return cursor.fetchall()
