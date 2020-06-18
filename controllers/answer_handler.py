@@ -76,5 +76,4 @@ def add_answer_status(answer_id):
         data_manager.change_answer_status(answer_id, status)
         data_manager.update_reputation(answer_owner, reputation_points_based_on_accept_status[status])
         return redirect("/question/" + str(answer_data["question_id"]))
-    else:
-        abort(401)
+    return abort(401)
