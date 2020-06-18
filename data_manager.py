@@ -428,14 +428,13 @@ def get_user_by_id(cursor: RealDictCursor, user_id: int):
 
 @connection.connection_handler
 def get_data_from_user_by_option(cursor: RealDictCursor, user_id: int, option: str):
-    if option in ['question', 'answer', 'comment']:
-        query = """
+    if option in ['question', 'answer', 'comment'] and type(user_id) == int:
+        cursor.execute(f"""
             SELECT *
             FROM {option}
-            WHERE user_id = %(user_id)s
+            WHERE user_id = {user_id}
             ORDER BY id
-            """
-        cursor.execute(query, {'user_id': user_id})
+            """)
         return cursor.fetchall()
 
 
