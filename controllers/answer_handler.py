@@ -56,7 +56,7 @@ def delete_answer(answer_id):
 def set_answer_values(manipulated_answer):
     manipulated_answer["submission_time"] = util.get_new_timestamp()
     manipulated_answer["message"] = request.form["description"]
-    manipulated_answer["user_id"] = data_manager.get_user_id(session['username'])['id']
+    manipulated_answer["user_id"] = data_manager.get_user_data(session['username'])['id']
     if 'file' in request.files:
         file = request.files['file']
         manipulated_answer["image"] = util.save_image(file, data_manager.UPLOAD_FOLDER, "answer", str(manipulated_answer["question_id"]))
