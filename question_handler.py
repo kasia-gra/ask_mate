@@ -10,7 +10,7 @@ def add_question():
     if 'username' not in session:
         abort(401)
     username = session['username']
-    user_id = session['user_id']
+    user_id = data_manager.get_user_id(username)['id']
     new_record = {}
     if request.method == "POST":
         new_record = get_question_data(new_record)
@@ -52,7 +52,7 @@ def delete_question(question_id):
     if 'username' not in session:
         abort(401)
     username = session['username']
-    user_id = data_manager.get_user_id(username)
+    user_id = data_manager.get_user_id(username)['id']
     record = data_manager.get_specific_record(question_id, "question")
     if user_id != record["user_id"]:
         abort(401)

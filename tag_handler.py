@@ -9,7 +9,7 @@ tag = Blueprint('tag', __name__, template_folder='templates')
 def display_tags():
     if 'username' in session:
         username = session['username']
-        user_id = session['user_id']
+        user_id = data_manager.get_user_id(username)['id']
     else:
         user_id = None
         username = None
@@ -30,7 +30,10 @@ def add_tag(question_id):
     if 'username' not in session:
         abort(401)
     username = session['username']
-    user_id = session['user_id']
+    record = data_manager.get_specific_record(question_id, "question")
+    user_id = data_manager.get_user_id(username)['id']
+    if user_id != record["user_id"]:
+        abort(401)
     tags_list = data_manager.get_available_tags()
     new_tag = request.args.get("new_tag")
     if new_tag:
@@ -51,6 +54,11 @@ def add_tag(question_id):
 @tag.route("/question/<question_id>/tag/<tag_id>/delete")
 def delete_tag(question_id, tag_id):
     if 'username' not in session:
+        abort(401)
+    username = session['username']
+    record = data_manager.get_specific_record(question_id, "question")
+    user_id = data_manager.get_user_id(username)['id']
+    if user_id != record["user_id"]:
         abort(401)
     data_manager.delete_tag(question_id, tag_id)
     return redirect(url_for("show_question", question_id=question_id))

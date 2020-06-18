@@ -26,7 +26,7 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 def homepage():
     if 'username' in session:
         username = session['username']
-        user_id = session['user_id']
+        user_id = data_manager.get_user_id(username)['id']
     else:
         user_id = None
         username = None
@@ -55,7 +55,7 @@ def homepage():
 def questions_list():
     if 'username' in session:
         username = session['username']
-        user_id = session['user_id']
+        user_id = data_manager.get_user_id(username)['id']
     else:
         user_id = None
         username = None
@@ -84,7 +84,7 @@ def questions_list():
 def show_question(question_id):
     if 'username' in session:
         username = session['username']
-        user_id = session['user_id']
+        user_id = data_manager.get_user_id(username)['id']
     else:
         user_id = None
         username = None
@@ -118,7 +118,7 @@ def show_question(question_id):
 def search_for_questions(search_phrase):
     if 'username' in session:
         username = session['username']
-        user_id = session['user_id']
+        user_id = data_manager.get_user_id(username)['id']
     else:
         user_id = None
         username = None
@@ -170,7 +170,7 @@ def page_not_found(error):
 def render_error_page(error_code, error_message, message):
     if 'username' in session:
         username = session['username']
-        user_id = session['user_id']
+        user_id = data_manager.get_user_id(username)['id']
     else:
         username = None
         user_id = None

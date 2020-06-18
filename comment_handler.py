@@ -10,7 +10,7 @@ def comment_question(question_id):
     if 'username' not in session:
         abort(401)
     username = session['username']
-    user_id = session['user_id']
+    user_id = data_manager.get_user_id(username)['id']
     new_record = {"question_id": question_id}
     if request.method == "POST":
         new_record["answer_id"] = None
@@ -29,7 +29,7 @@ def comment_answer(answer_id):
     if 'username' not in session:
         abort(401)
     username = session['username']
-    user_id = session['user_id']
+    user_id = data_manager.get_user_id(username)['id']
     answer = data_manager.get_specific_record(answer_id, "answer")
     question_id = answer["question_id"]
     new_record = {"answer_id": answer_id}
