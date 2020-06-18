@@ -12,6 +12,9 @@ def login():
         return redirect("/")
     if request.method == "POST":
         username = request.form.get("email")
+        if not user_already_registered(username):
+            flash('Wrong password or username!')
+            return redirect("/login")
         password = request.form.get("password")
         if username and password:
             hashed_password = data_manager.get_password(username).get("password")
@@ -19,17 +22,16 @@ def login():
                 session["username"] = username
                 session["user_id"] = data_manager.get_user_id(username).get("id")
                 return redirect("/")
-        flash('Wrong password!')
+        flash('Wrong password or username!')
         return redirect("/login")
     return render_template("login.html", logged=False)
 
+
 def user_already_registered(email):
-    user_registered = False
     for user in data_manager.get_all_users_emails():
         if user['email'] == email:
-            user_registered = True
-            break
-    return user_registered
+            return True
+    return False
 
 
 @registration.route("/registration", methods=['GET', 'POST'])
