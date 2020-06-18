@@ -15,7 +15,7 @@ def comment_question(question_id):
         add_comment_to_database(new_comment_to_question)
         return redirect(url_for("show_question", question_id=str(question_id)))
     return render_template(
-        "forms/../templates/comment_form.html",
+        "comment_form.html",
         question_id=str(question_id),
         user_id=logged_user_id,
         username=username
@@ -34,7 +34,7 @@ def comment_answer(answer_id):
         add_comment_to_database(new_comment_to_answer)
         return redirect(url_for("show_question", question_id=str(question_id)))
     return render_template(
-        "forms/../templates/comment_form.html",
+        "comment_form.html",
         answer_id=answer_id,
         question_id=question_id,
         user_id=logged_user_id,
@@ -60,7 +60,7 @@ def edit_comment(comment_id):
             "answer").get("question_id")
         return redirect(url_for("show_question", question_id=question_id))
     return render_template(
-        "forms/../templates/comment_form.html",
+        "comment_form.html",
         comment=selected_comment,
         user_id=logged_user_id,
         username=username

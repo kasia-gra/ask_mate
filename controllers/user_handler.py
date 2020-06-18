@@ -14,7 +14,7 @@ def list_users():
         username, logged_user_id = util.set_user_details_based_on_logged_status()
         users = data_manager.get_users()
     return render_template(
-        "lists/../templates/users_list.html",
+        "users_list.html",
         user_id=logged_user_id,
         username=username,
         users=users

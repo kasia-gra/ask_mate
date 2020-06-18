@@ -14,7 +14,7 @@ def display_tags():
             data_manager.get_questions_with_specific_tag(element.get("name")))
         element["amount_of_question"] = len(element["questions"])
     return render_template(
-        "lists/../templates/tags_list.html",
+        "tags_list.html",
         tags=tags_collection,
         user_id=logged_user_id,
         username=username
