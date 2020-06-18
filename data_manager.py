@@ -492,3 +492,23 @@ def get_comments_by_user_id(cursor: RealDictCursor, user_id: int):
     """
     cursor.execute(query, {'user_id': user_id})
     return cursor.fetchall()
+
+
+@connection.connection_handler
+def get_question_owner_based_on_answer(cursor: RealDictCursor, answer_id: int):
+    query = """
+    SELECT question.user_id
+    FROM question JOIN answer ON question.id = answer.question_id
+    WHERE answer.id = %(answer_id)s
+    """
+    cursor.execute(query, {'answer_id': answer_id})
+    return cursor.fetchone()
+
+@connection.connection_handler
+def change_answer_status(cursor: RealDictCursor, answer_id: int, status=bool):
+    query = f"""
+    UPDATE answer
+    SET accepted = {status}
+    WHERE id = %(answer_id)s
+    """
+    cursor.execute(query, {'answer_id': answer_id})
