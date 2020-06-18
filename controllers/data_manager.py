@@ -443,6 +443,18 @@ def get_question_owner_based_on_answer(cursor: RealDictCursor, answer_id: int):
     cursor.execute(query, {'answer_id': answer_id})
     return cursor.fetchone()
 
+
+@connection.connection_handler
+def get_question_owner(cursor: RealDictCursor, question_id: int):
+    query = """
+    SELECT user_id
+    FROM question 
+    WHERE id = %(question_id)s
+    """
+    cursor.execute(query, {'question_id': question_id})
+    return cursor.fetchone()
+
+
 @connection.connection_handler
 def change_answer_status(cursor: RealDictCursor, answer_id: int, status=bool):
     query = f"""
