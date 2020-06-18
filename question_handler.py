@@ -63,7 +63,7 @@ def set_question_values(manipulated_question):
     manipulated_question["title"] = request.form["title"]
     manipulated_question["submission_time"] = util.get_new_timestamp()
     manipulated_question["message"] = request.form["description"]
-    manipulated_question["user_id"] = data_manager.get_user_id(session['username'])['id']
+    manipulated_question["user_id"] = data_manager.get_user_data(session['username'])['id']
     if 'file' in request.files:
         file = request.files['file']
         manipulated_question["image"] = util.save_image(file, data_manager.UPLOAD_FOLDER, "question")

@@ -87,5 +87,5 @@ def add_comment_to_database(record):
     record["message"] = request.form["message"]
     record["edited_number"] = 0
     record["submission_time"] = util.get_new_timestamp()
-    record["user_id"] = data_manager.get_user_id(session['username'])['id']
+    record["user_id"] = data_manager.get_user_data(session['username'])['id']
     data_manager.add_comment(record)
