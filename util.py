@@ -9,6 +9,16 @@ from werkzeug.utils import secure_filename
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 
+def set_user_details_based_on_logged_status():
+    if 'username' in session:
+        username = session['username']
+        user_id = data_manager.get_user_id(username)['id']
+    else:
+        user_id = None
+        username = None
+    return username, user_id
+
+
 def check_if_user_is_logged():
     if 'username' not in session:
         abort(401)
