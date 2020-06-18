@@ -11,7 +11,7 @@ def list_users():
         abort(401)
     else:
         username = session['username']
-        user_id = session['user_id']
+        user_id = data_manager.get_user_id(username)['id']
         users = data_manager.get_users()
     return render_template(
         "users_list.html",
@@ -27,7 +27,7 @@ def show_user(user_id):
         abort(401)
     else:
         username = session['username']
-        logged_user_id = session['user_id']
+        logged_user_id = data_manager.get_user_id(username)['id']
         user_details = data_manager.get_user_by_id(int(user_id))
         questions = data_manager.get_questions_by_user_id(int(user_id))
         questions = util.prepare_questions_to_display(questions)
