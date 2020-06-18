@@ -119,6 +119,19 @@
                 <div class="table-content">
                     <div class="table-height table-details-and-description">
                         <div class="table-record-details">
+
+                            {% if user_id == record.get("user_id") %}
+                                {% if answer.get("accepted") == True %}
+                                    <a href="{{ url_for("answer.add_answer_status", answer_id=answer.get("id")|string) }}">
+                                        <img src="{{ url_for('static', filename="icons/Rejected.png") }}"  width="50px" height="50px" alt="accept">
+                                    </a>
+                                    {% else %}
+                                    <a href="{{ url_for("answer.add_answer_status", answer_id=answer.get("id")|string) }}">
+                                        <img src="{{ url_for('static', filename="icons/Approval.png") }}"  width="50px" height="50px" alt="accept">
+                                    </a>
+                                {% endif %}
+                            {% endif %}
+
                             <div class="vote-section">
                                 <a href="{{ url_for("vote.answer_vote", answer_id=answer.get("id")|string, voting_type="up") }}" methods="POST">
                                     <img src="{{ url_for('static', filename="icons/like_up.png") }}" width="50px" height="50px" alt="vote_up">

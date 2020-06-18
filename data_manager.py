@@ -90,15 +90,14 @@ def add_question(cursor: RealDictCursor, new_record: dict):
 def add_answer(cursor: RealDictCursor, new_record: dict):
     cursor.execute("""
                     INSERT INTO answer
-                        (question_id, message, image, submission_time, vote_number, user_id)
+                        (question_id, message, image, submission_time, vote_number)
                     VALUES
-                        (%(question_id)s, %(message)s, %(img_path)s, %(submission_time)s, 0, %(user_id)s);
+                        (%(question_id)s, %(message)s, %(img_path)s, %(submission_time)s, 0);
                     """, {
         'question_id': new_record['question_id'],
         'message': new_record["message"],
         'submission_time': new_record["submission_time"],
-        'img_path': new_record["image"],
-        'user_id': new_record["user_id"]
+        'img_path': new_record["image"]
     })
 
 
@@ -433,7 +432,7 @@ def get_user_id(cursor: RealDictCursor, email: str):
     cursor.execute(f"""
                     SELECT id
                     FROM users
-                    WHERE email = %(email)s;
+                    WHERE email = (%(email)s);
                """, {'email': email})
     return cursor.fetchone()
 
@@ -458,6 +457,63 @@ def get_user_by_id(cursor: RealDictCursor, user_id: int):
     """
     cursor.execute(query, {"user_id": user_id})
     return cursor.fetchone()
+
+
+@connection.connection_handler
+def get_questions_by_user_id(cursor: RealDictCursor, user_id: int):
+    query = """
+    SELECT id, submission_time, view_number, vote_number, title, message, image, user_id
+    FROM question
+    WHERE user_id = %(user_id)s
+    ORDER BY id
+    """
+    cursor.execute(query, {'user_id': user_id})
+    return cursor.fetchall()
+
+
+@connection.connection_handler
+def get_answers_by_user_id(cursor: RealDictCursor, user_id: int):
+    query = """
+    SELECT id, submission_time, vote_number, question_id, message, image, user_id
+    FROM answer
+    WHERE user_id = %(user_id)s
+    ORDER BY id
+    """
+    cursor.execute(query, {'user_id': user_id})
+    return cursor.fetchall()
+
+
+@connection.connection_handler
+def get_comments_by_user_id(cursor: RealDictCursor, user_id: int):
+    query = """
+    SELECT id, question_id, answer_id, message, submission_time, edited_number, user_id
+    FROM comment
+    WHERE user_id = %(user_id)s
+    ORDER BY id
+    """
+    cursor.execute(query, {'user_id': user_id})
+    return cursor.fetchall()
+
+
+@connection.connection_handler
+def get_question_owner_based_on_answer(cursor: RealDictCursor, answer_id: int):
+    query = """
+    SELECT question.user_id
+    FROM question JOIN answer ON question.id = answer.question_id
+    WHERE answer.id = %(answer_id)s
+    """
+    cursor.execute(query, {'answer_id': answer_id})
+    return cursor.fetchone()
+
+
+@connection.connection_handler
+def change_answer_status(cursor: RealDictCursor, answer_id: int, status=bool):
+    query = f"""
+    UPDATE answer
+    SET accepted = {status}
+    WHERE id = %(answer_id)s
+    """
+    cursor.execute(query, {'answer_id': answer_id})
 
 
 @connection.connection_handler

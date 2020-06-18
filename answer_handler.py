@@ -71,3 +71,15 @@ def get_answer_data(record):
     if not record["image"]:
         record["image"] = ""
     return record
+
+
+@answer.route("/answer/<answer_id>/status")
+def add_answer_status(answer_id):
+    answer_data = data_manager.get_specific_record(answer_id, "answer")
+    question_owner_id = data_manager.get_question_owner_based_on_answer(answer_id)['user_id']
+    if 'username' in session and int(question_owner_id) == int(data_manager.get_user_id(session['username'])['id']):
+        status = not answer_data["accepted"]
+        data_manager.change_answer_status(answer_id, status)
+        return redirect("/question/" + str(answer_data["question_id"]))
+    else:
+        abort(401)
