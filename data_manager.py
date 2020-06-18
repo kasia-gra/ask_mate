@@ -1,7 +1,6 @@
 import os
 from psycopg2.extras import RealDictCursor
-import connection
-import util
+import connection, util
 
 dir_path = os.path.dirname(__file__)
 QUESTION_HEADERS = ["id", "submission_time", "view_number", "vote_number", "title", "message", "image"]
@@ -90,13 +89,14 @@ def add_question(cursor: RealDictCursor, new_record: dict):
 def add_answer(cursor: RealDictCursor, new_record: dict):
     cursor.execute("""
                     INSERT INTO answer
-                        (question_id, message, image, submission_time, vote_number)
+                        (question_id, message, image, submission_time, vote_number, user_id)
                     VALUES
-                        (%(question_id)s, %(message)s, %(img_path)s, %(submission_time)s, 0);
+                        (%(question_id)s, %(message)s, %(img_path)s, %(submission_time)s, 0, %(user_id)s);
                     """, {
         'question_id': new_record['question_id'],
         'message': new_record["message"],
         'submission_time': new_record["submission_time"],
+        'user_id': new_record["user_id"],
         'img_path': new_record["image"]
     })
 
@@ -505,7 +505,6 @@ def get_question_owner_based_on_answer(cursor: RealDictCursor, answer_id: int):
     cursor.execute(query, {'answer_id': answer_id})
     return cursor.fetchone()
 
-
 @connection.connection_handler
 def change_answer_status(cursor: RealDictCursor, answer_id: int, status=bool):
     query = f"""
@@ -514,6 +513,16 @@ def change_answer_status(cursor: RealDictCursor, answer_id: int, status=bool):
     WHERE id = %(answer_id)s
     """
     cursor.execute(query, {'answer_id': answer_id})
+
+
+@connection.connection_handler
+def get_all_users_emails(cursor: RealDictCursor):
+    query = """
+    SELECT email
+    FROM users
+    """
+    cursor.execute(query)
+    return cursor.fetchall()
 
 
 @connection.connection_handler

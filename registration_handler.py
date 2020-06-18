@@ -23,13 +23,27 @@ def login():
         return redirect("/login")
     return render_template("login.html", logged=False)
 
+def user_already_registered(email):
+    user_registered = False
+    for user in data_manager.get_all_users_emails():
+        if user['email'] == email:
+            user_registered = True
+            break
+    return user_registered
+
 
 @registration.route("/registration", methods=['GET', 'POST'])
 def register():
     if 'username' in session:
         return redirect("/")
     if request.method == "POST":
-        if request.form.get("password") == request.form.get("cpassword"):
+        if user_already_registered(request.form.get("email")):
+            flash('User already registered !')
+            return redirect("/registration")
+        elif request.form.get("password") != request.form.get("cpassword"):
+            flash('Passwords not matching - try again')
+            return redirect("/registration")
+        else:
             user_dict = {}
             user_dict["email"] = request.form.get("email")
             user_dict["password"] = bcrypt.hashpw(request.form.get("password").encode("utf-8"),
@@ -37,10 +51,8 @@ def register():
             user_dict["registration_time"] = util.get_new_timestamp()
             user_dict["reputation"] = 0
             data_manager.add_user(user_dict)
-        else:
-            flash('Passwords not matching - try again')
-            return redirect("/registration")
-        return redirect("/")
+            flash('Congratulations - you have registered successfully - you can now log in')
+            return redirect("/login")
     return render_template("register.html", logged=False)
 
 
