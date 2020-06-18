@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, Blueprint, abort, session
+from flask import render_template, request, redirect, Blueprint, abort, session, flash
 from controllers import data_manager
 import util
 
@@ -9,6 +9,9 @@ answer = Blueprint('answer', __name__, template_folder='templates')
 def add_answer(question_id):
     util.check_if_user_is_logged()
     username, logged_user_id = util.get_user_details_from_session()
+    if data_manager.get_question_owner(question_id).get('user_id') == logged_user_id:
+        flash("Ooops you can't answer your own question !")
+        return redirect("/question/" + str(question_id))
     default_blank_answer = {"question_id": str(question_id)}
     if request.method == "POST":
         new_answer = set_answer_values(default_blank_answer)

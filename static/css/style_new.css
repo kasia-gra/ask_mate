@@ -665,6 +665,10 @@ similar transform is needed in nav */
   position: relative;
 }
 
+p{
+
+}
+
 .tooltip {
   /* hide and position tooltip */
   top: 3em;
