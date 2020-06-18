@@ -167,36 +167,12 @@ def edit_comment(cursor: RealDictCursor, new_record: dict):
                            new_record.get("edited_number"), new_record.get("id")))
 
 
-def delete_record(record_id, option):
-    if option == "question":
-        delete_question(record_id)
-    elif option == "answer":
-        delete_answer(record_id)
-    else:
-        delete_comment(record_id)
-
-
 @connection.connection_handler
-def delete_question(cursor: RealDictCursor, record_id: int):
-    cursor.execute("""
-                    DELETE FROM question
-                    WHERE id = %(id)s;
-                    """, {'id': record_id})
-
-
-@connection.connection_handler
-def delete_answer(cursor: RealDictCursor, record_id: int):
-    cursor.execute("""
-                    DELETE FROM answer
-                    WHERE id = %(id)s;
-                    """, {'id': record_id})
-
-
-@connection.connection_handler
-def delete_comment(cursor: RealDictCursor, record_id: int):
-    cursor.execute("""
-                    DELETE FROM comment
-                    WHERE id = %(id)s;
+def delete_record(cursor: RealDictCursor, record_id: int, option: str):
+    if option in ['question', 'answer', 'comment']:
+        cursor.execute(f"""
+                    DELETE FROM {option}
+                    WHERE id = {record_id};
                     """, {'id': record_id})
 
 
