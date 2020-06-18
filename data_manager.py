@@ -1,6 +1,6 @@
 import os
 from psycopg2.extras import RealDictCursor
-import connection
+import connection, util
 
 dir_path = os.path.dirname(__file__)
 QUESTION_HEADERS = ["id", "submission_time", "view_number", "vote_number", "title", "message", "image"]
