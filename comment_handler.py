@@ -79,7 +79,7 @@ def delete_comment(comment_id):
         answer_id = selected_comment.get("answer_id")
         answer = data_manager.get_specific_record(answer_id, "answer")
         question_id = answer.get("question_id")
-    data_manager.delete_comment(comment_id)
+    data_manager.delete_record(comment_id, 'comment')
     return redirect(url_for("show_question", question_id=question_id))
 
 
