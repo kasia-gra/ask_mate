@@ -27,26 +27,11 @@ def login():
     return render_template("login.html", logged=False)
 
 
-'''
-    <<-- ALTERNATIVE SOLUTION -->>
-
-    def user_already_registered(email):
-        for user in data_manager.get_all_users_emails():
-            if user['email'] == email:
-                return True
-        return False
-        
-    Zawsze to chociaż 2 linijki kodu :)
-'''
-
-
 def user_already_registered(email):
-    user_registered = False
     for user in data_manager.get_all_users_emails():
         if user['email'] == email:
-            user_registered = True
-            break
-    return user_registered
+            return True
+    return False
 
 
 @registration.route("/registration", methods=['GET', 'POST'])
