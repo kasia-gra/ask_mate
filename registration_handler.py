@@ -17,7 +17,7 @@ def login():
             return redirect("/login")
         password = request.form.get("password")
         if username and password:
-            hashed_password = data_manager.get_password(username).get("password")
+            hashed_password = data_manager.get_user_data(username).get("password")
             if bcrypt.checkpw(password.encode("utf-8"), hashed_password.encode("utf-8")):
                 session["username"] = username
                 session["user_id"] = data_manager.get_user_id(username).get("id")

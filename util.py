@@ -12,8 +12,7 @@ ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 def set_user_details_based_on_logged_status():
     username, user_id = None, None
     if 'username' in session:
-        username = session['username']
-        user_id = data_manager.get_user_id(username).get('id')
+        username, user_id = get_user_details_from_session()
     return username, user_id
 
 
@@ -29,7 +28,7 @@ def check_if_user_is_owner(user_id, owners_id):
 
 def get_user_details_from_session():
     username = session['username']
-    user_id = data_manager.get_user_id(username)['id']
+    user_id = data_manager.get_user_data(username)['id']
     return username, user_id
 
 

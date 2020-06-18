@@ -27,13 +27,13 @@ def show_user(user_id):
         abort(401)
     else:
         username = session['username']
-        logged_user_id = data_manager.get_user_id(username)['id']
+        logged_user_id = data_manager.get_user_data(username)['id']
         user_details = data_manager.get_user_by_id(int(user_id))
-        questions = data_manager.get_questions_by_user_id(int(user_id))
+        questions = data_manager.get_data_from_user_by_option(int(user_id), 'question')
         questions = util.prepare_questions_to_display(questions)
-        answers = data_manager.get_answers_by_user_id(int(user_id))
+        answers = data_manager.get_data_from_user_by_option(int(user_id), 'answer')
         answers = util.prepare_message_to_display(answers)
-        comments = data_manager.get_comments_by_user_id(int(user_id))
+        comments = data_manager.get_data_from_user_by_option(int(user_id), 'comment')
         comments = util.prepare_message_to_display(comments)
     return render_template(
         "user_details.html",
