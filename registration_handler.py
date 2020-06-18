@@ -21,7 +21,7 @@ def login():
         hashed_password = data_manager.get_user_data(username).get("password")
         if bcrypt.checkpw(password.encode("utf-8"), hashed_password.encode("utf-8")):
             session["username"] = username
-            session["user_id"] = data_manager.get_user_id(username).get("id")
+            session["user_id"] = data_manager.get_user_data(username).get("id")
             return redirect("/")
     flash('Wrong password or username!')
     return redirect("/login")
