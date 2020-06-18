@@ -66,22 +66,24 @@
                         <div class="head-of-actions-panel">
                             USER ICON
                         </div>
-                        <div class="vote-section">
-                            <a href="{{ url_for("vote.question_vote", question_id=question.get("question_id")|string, vote="up") }}"
-                               methods="POST">
-                                <img src="{{ url_for('static', filename="icons/like_up.png") }}"
-                                     width="50px"
-                                     height="50px"
-                                     alt="vote_up">
-                            </a>
-                            <a href="{{ url_for("vote.question_vote", question_id=question.get("question_id")|string, vote="down") }}"
-                               methods="POST">
-                                <img src="{{ url_for('static', filename="icons/like_down.png") }}"
-                                     width="50px"
-                                     height="50px"
-                                     alt="vote_down">
-                            </a>
-                        </div>
+                        {% if question.get("user_id") != user_id and username != None %}
+                            <div class="vote-section">
+                                <a href="{{ url_for("vote.question_vote", question_id=question.get("question_id")|string, vote="up") }}"
+                                   methods="POST">
+                                    <img src="{{ url_for('static', filename="icons/like_up.png") }}"
+                                         width="50px"
+                                         height="50px"
+                                         alt="vote_up">
+                                </a>
+                                <a href="{{ url_for("vote.question_vote", question_id=question.get("question_id")|string, vote="down") }}"
+                                   methods="POST">
+                                    <img src="{{ url_for('static', filename="icons/like_down.png") }}"
+                                         width="50px"
+                                         height="50px"
+                                         alt="vote_down">
+                                </a>
+                            </div>
+                        {% endif %}
                         <div class="submission-time">
                             <div class="submission-time-text">
                                 Update time:

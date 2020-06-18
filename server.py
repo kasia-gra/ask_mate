@@ -1,14 +1,14 @@
-from flask import Flask, render_template, request, session
-import data_manager
+from flask import Flask, render_template, request
+from controllers import data_manager
 import util
 
-from question_handler import question
-from answer_handler import answer
-from comment_handler import comment
-from vote_handler import vote
-from tag_handler import tag
-from registration_handler import registration
-from user_handler import user
+from controllers.question_handler import question
+from controllers.answer_handler import answer
+from controllers.comment_handler import comment
+from controllers.vote_handler import vote
+from controllers.tag_handler import tag
+from controllers.registration_handler import registration
+from controllers.user_handler import user
 
 app = Flask(__name__)
 app.register_blueprint(question)
@@ -24,12 +24,7 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 @app.route("/")
 def homepage():
-    if 'username' in session:
-        username = session['username']
-        user_id = data_manager.get_user_id(username)['id']
-    else:
-        user_id = None
-        username = None
+    username, logged_user_id = util.set_user_details_based_on_logged_status()
     five_questions = data_manager.get_five_records("question")
     if request.method == 'POST':
         sort_by = request.form.get("sort_by")
@@ -46,19 +41,14 @@ def homepage():
         sort_by=sort_by,
         search_phrase=search_phrase,
         is_homepage=True,
-        user_id=user_id,
+        user_id=logged_user_id,
         username=username
     )
 
 
 @app.route("/list", methods=['GET', 'POST'])
 def questions_list():
-    if 'username' in session:
-        username = session['username']
-        user_id = data_manager.get_user_id(username)['id']
-    else:
-        user_id = None
-        username = None
+    username, logged_user_id = util.set_user_details_based_on_logged_status()
     sort_by = request.args.get('sort_by')
     if sort_by:
         criteria_and_direction = sort_by.split("-")
@@ -75,27 +65,22 @@ def questions_list():
         sort_by=sort_by,
         search_phrase=search_phrase,
         is_homepage=False,
-        user_id=user_id,
+        user_id=logged_user_id,
         username=username
     )
 
 
 @app.route("/question/<question_id>")
 def show_question(question_id):
-    if 'username' in session:
-        username = session['username']
-        user_id = data_manager.get_user_id(username)['id']
-    else:
-        user_id = None
-        username = None
-    record = data_manager.get_specific_record(question_id, "question")
+    username, logged_user_id = util.set_user_details_based_on_logged_status()
+    selected_question = data_manager.get_specific_record(question_id, "question")
     tags = data_manager.get_tags_for_questions(question_id)
     all_answers_for_question = data_manager.get_answers_for_question(question_id)
     question_comments, answers_comments, answers_id_list, comment_id_list = [], [], [], []
     for element in all_answers_for_question:
         answers_id_list.append(element.get("id"))
     data_manager.increase_view_number(question_id)
-    record["number_of_answers"] = data_manager.count_answers_for_question(record["id"])["count"]
+    selected_question["number_of_answers"] = data_manager.count_answers_for_question(selected_question["id"])["count"]
     question_comments = data_manager.get_question_comments(question_id)
     if answers_id_list:
         answers_comments = data_manager.get_answers_comments(answers_id_list)
@@ -103,25 +88,20 @@ def show_question(question_id):
             comment_id_list.append(element.get("answer_id"))
     return render_template(
         "question_details.html",
-        record=record,
+        record=selected_question,
         answers=all_answers_for_question,
         question_comments=question_comments,
         tags=tags,
         answers_comments=answers_comments,
         comment_id_list=comment_id_list,
-        user_id=user_id,
+        user_id=logged_user_id,
         username=username
     )
 
 
 @app.route('/search_phrase')
 def search_for_questions(search_phrase):
-    if 'username' in session:
-        username = session['username']
-        user_id = data_manager.get_user_id(username)['id']
-    else:
-        user_id = None
-        username = None
+    username, logged_user_id = util.set_user_details_based_on_logged_status()
     search_results_questions = data_manager.search_for_phrase_questions(search_phrase)
     search_results_questions = util.prepare_questions_to_display(search_results_questions)
     search_results_answers = data_manager.search_for_phrase_answers(search_phrase)
@@ -130,7 +110,7 @@ def search_for_questions(search_phrase):
         all_questions=search_results_questions,
         answers=search_results_answers,
         search_phrase=search_phrase,
-        user_id=user_id,
+        user_id=logged_user_id,
         username=username
     )
 
@@ -168,18 +148,13 @@ def page_not_found(error):
 
 
 def render_error_page(error_code, error_message, message):
-    if 'username' in session:
-        username = session['username']
-        user_id = data_manager.get_user_id(username)['id']
-    else:
-        username = None
-        user_id = None
+    username, logged_user_id = util.set_user_details_based_on_logged_status()
     return render_template(
         "error_page.html",
         error_code=error_code,
         error_message=error_message,
         message=message,
-        user_id=user_id,
+        user_id=logged_user_id,
         username=username
     ), error_code
 

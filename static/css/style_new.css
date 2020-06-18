@@ -324,7 +324,7 @@ span, span > a {
 
 .vote-section {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
 }
 
@@ -682,20 +682,4 @@ similar transform is needed in nav */
 .hover:hover .tooltip {
   /* display tooltip on hover */
   opacity: 1;
-}Read the guide
-￼
-CodecoolGlobal
-/
-ask-mate-python-kasia-gra
-Private
- Watch 9
-￼ Star0 Fork0
- Code
- Issues 0
- Pull requests 2 Actions
- Projects 0
- Wiki
- Security 0
- Insights
-￼EditOpen with
-Add voting based on sql table in database instead cookies
+}

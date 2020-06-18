@@ -1,5 +1,5 @@
 from flask import redirect, Blueprint, session, abort, render_template
-import data_manager
+from controllers import data_manager
 
 vote = Blueprint('vote', __name__, template_folder='templates')
 
@@ -9,7 +9,7 @@ def question_vote(question_id, vote):
     if 'username' not in session:
         abort(401)
     username = session['username']
-    user_id = data_manager.get_user_id(username).get("id")
+    user_id = data_manager.get_user_data(username).get("id")
     user_votes = data_manager.get_user_votes(user_id)
     question = data_manager.get_specific_record(question_id, "question")
     if int(user_id) == int(question.get("user_id")):
@@ -34,7 +34,7 @@ def answer_vote(answer_id, voting_type):
     if 'username' not in session:
         abort(401)
     username = session['username']
-    user_id = data_manager.get_user_id(username).get("id")
+    user_id = data_manager.get_user_data(username).get("id")
     user_votes = data_manager.get_user_votes(user_id)
     answer = data_manager.get_specific_record(answer_id, "answer")
     if int(user_id) == int(answer.get("user_id")):
