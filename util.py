@@ -83,3 +83,11 @@ def prepare_questions_to_display(all_questions):
         if len(record["message"]) >= message_max_length:
             record["message"] = record["message"][:message_max_length] + "..."
     return all_questions
+
+
+def prepare_message_to_display(records):
+    message_max_length = 800
+    for record in records:
+        if len(record["message"]) >= message_max_length:
+            record["message"] = record["message"][:message_max_length] + "..."
+    return records
