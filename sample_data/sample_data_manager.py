@@ -47,3 +47,39 @@ def get_comments_by_user_id(cursor: RealDictCursor, user_id: int):
     """
     cursor.execute(query, {'user_id': user_id})
     return cursor.fetchall()
+
+
+---------------------------------------------------
+
+
+@connection.connection_handler
+def get_user_data(cursor: RealDictCursor, email: str):
+    cursor.execute(f"""
+                        SELECT *
+                        FROM users
+                        WHERE email = (%(email)s);
+                   """, {'email': email})
+    return cursor.fetchone()
+
+
+===>
+
+
+@connection.connection_handler
+def get_password(cursor: RealDictCursor, email: str):
+    cursor.execute(f"""
+                    SELECT password
+                    FROM users
+                    WHERE email = (%(email)s);
+               """, {'email': email})
+    return cursor.fetchone()
+
+
+@connection.connection_handler
+def get_user_id(cursor: RealDictCursor, email: str):
+    cursor.execute(f"""
+                    SELECT id
+                    FROM users
+                    WHERE email = (%(email)s);
+               """, {'email': email})
+    return cursor.fetchone()
