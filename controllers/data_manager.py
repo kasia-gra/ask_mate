@@ -5,7 +5,7 @@ import connection, util
 dir_path = os.path.dirname(__file__)
 QUESTION_HEADERS = ["id", "submission_time", "view_number", "vote_number", "title", "message", "image"]
 ANSWER_HEADERS = ["id", "submission_time", "vote_number", "question_id", "message", "image"]
-UPLOAD_FOLDER = os.path.join(dir_path, "static/img/")
+UPLOAD_FOLDER = os.path.join(dir_path, "../static/img/")
 NUMERICAL_VALUE_HEADERS = ["id", "view_number", "vote_number", "question_id"]
 DATE_HEADERS = ["submission_time"]
 

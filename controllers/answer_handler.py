@@ -31,6 +31,8 @@ def edit_answer(answer_id):
     util.check_if_user_is_owner(logged_user_id, selected_answer["user_id"])
     if request.method == "POST":
         old_record = set_answer_values(selected_answer)
+        if not old_record["image"]:
+            manipulated_answer["image"] = ''
         data_manager.edit_record(old_record, "answer")
         return redirect("/question/" + str(old_record["question_id"]))
     return render_template(
@@ -60,8 +62,6 @@ def set_answer_values(manipulated_answer):
     if 'file' in request.files:
         file = request.files['file']
         manipulated_answer["image"] = util.save_image(file, data_manager.UPLOAD_FOLDER, "answer", str(manipulated_answer["question_id"]))
-    if not manipulated_answer["image"]:
-        manipulated_answer["image"] = ''
     return manipulated_answer
 
 
