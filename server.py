@@ -1,14 +1,14 @@
-from flask import Flask, render_template, request, session
-import data_manager
+from flask import Flask, render_template, request
+from controllers import data_manager
 import util
 
-from question_handler import question
-from answer_handler import answer
-from comment_handler import comment
-from vote_handler import vote
-from tag_handler import tag
-from registration_handler import registration
-from user_handler import user
+from controllers.question_handler import question
+from controllers.answer_handler import answer
+from controllers.comment_handler import comment
+from controllers.vote_handler import vote
+from controllers.tag_handler import tag
+from controllers.registration_handler import registration
+from controllers.user_handler import user
 
 app = Flask(__name__)
 app.register_blueprint(question)
@@ -36,7 +36,7 @@ def homepage():
     if search_phrase:
         return search_for_questions(search_phrase)
     return render_template(
-        "question_list.html",
+        "lists/templates/question_list.html",
         all_questions=five_questions,
         sort_by=sort_by,
         search_phrase=search_phrase,
@@ -60,7 +60,7 @@ def questions_list():
     if search_phrase:
         return search_for_questions(search_phrase)
     return render_template(
-        "question_list.html",
+        "lists/templates/question_list.html",
         all_questions=all_questions,
         sort_by=sort_by,
         search_phrase=search_phrase,

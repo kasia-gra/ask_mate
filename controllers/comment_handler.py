@@ -1,5 +1,5 @@
-from flask import render_template, request, redirect, url_for, Blueprint, abort, session
-import data_manager
+from flask import render_template, request, redirect, url_for, Blueprint, session
+from controllers import data_manager
 import util
 
 comment = Blueprint('comment', __name__, template_folder='templates')
@@ -15,7 +15,7 @@ def comment_question(question_id):
         add_comment_to_database(new_comment_to_question)
         return redirect(url_for("show_question", question_id=str(question_id)))
     return render_template(
-        "comment_form.html",
+        "forms/../templates/comment_form.html",
         question_id=str(question_id),
         user_id=logged_user_id,
         username=username
@@ -34,7 +34,7 @@ def comment_answer(answer_id):
         add_comment_to_database(new_comment_to_answer)
         return redirect(url_for("show_question", question_id=str(question_id)))
     return render_template(
-        "comment_form.html",
+        "forms/../templates/comment_form.html",
         answer_id=answer_id,
         question_id=question_id,
         user_id=logged_user_id,
@@ -60,7 +60,7 @@ def edit_comment(comment_id):
             "answer").get("question_id")
         return redirect(url_for("show_question", question_id=question_id))
     return render_template(
-        "comment_form.html",
+        "forms/../templates/comment_form.html",
         comment=selected_comment,
         user_id=logged_user_id,
         username=username

@@ -1,7 +1,7 @@
 from flask import session, abort
 import time
 import datetime
-import data_manager
+from controllers import data_manager
 import os
 import glob
 from werkzeug.utils import secure_filename

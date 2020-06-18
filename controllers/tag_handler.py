@@ -1,5 +1,5 @@
-from flask import render_template, request, redirect, url_for, Blueprint, session, abort
-import data_manager
+from flask import render_template, request, redirect, url_for, Blueprint
+from controllers import data_manager
 import util
 
 tag = Blueprint('tag', __name__, template_folder='templates')
@@ -14,7 +14,7 @@ def display_tags():
             data_manager.get_questions_with_specific_tag(element.get("name")))
         element["amount_of_question"] = len(element["questions"])
     return render_template(
-        "tags_list.html",
+        "lists/../templates/tags_list.html",
         tags=tags_collection,
         user_id=logged_user_id,
         username=username

@@ -1,6 +1,7 @@
 from flask import render_template, Blueprint, abort, session
 
-import data_manager, util
+import util
+from controllers import data_manager
 
 user = Blueprint('user', __name__, 'templates')
 
@@ -13,7 +14,7 @@ def list_users():
         username, logged_user_id = util.set_user_details_based_on_logged_status()
         users = data_manager.get_users()
     return render_template(
-        "users_list.html",
+        "lists/../templates/users_list.html",
         user_id=logged_user_id,
         username=username,
         users=users

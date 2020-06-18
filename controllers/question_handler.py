@@ -1,5 +1,5 @@
-from flask import render_template, request, redirect, Blueprint, flash, session, abort
-import data_manager
+from flask import render_template, request, redirect, Blueprint, session
+from controllers import data_manager
 import util
 
 question = Blueprint('question', __name__, template_folder='templates')
@@ -15,7 +15,7 @@ def add_question():
         data_manager.add_record(new_question, "question")
         return redirect("/list")
     return render_template(
-        "question_form.html",
+        "forms/../templates/question_form.html",
         old_record=default_blank_question,
         is_new=True,
         user_id=logged_user_id,
@@ -34,7 +34,7 @@ def edit_question(question_id):
         data_manager.edit_record(updated_question, "question")
         return redirect("/question/" + str(question_id))
     return render_template(
-        "question_form.html",
+        "forms/../templates/question_form.html",
         old_record=selected_question,
         is_new=False,
         user_id=logged_user_id,

@@ -1,5 +1,5 @@
 from flask import redirect, Blueprint, session, abort, render_template
-import data_manager
+from controllers import data_manager
 
 vote = Blueprint('vote', __name__, template_folder='templates')
 

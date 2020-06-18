@@ -1,5 +1,5 @@
 from flask import render_template, request, redirect, Blueprint, abort, session
-import data_manager
+from controllers import data_manager
 import util
 
 answer = Blueprint('answer', __name__, template_folder='templates')
@@ -15,7 +15,7 @@ def add_answer(question_id):
         data_manager.add_record(new_answer, "answer")
         return redirect("/question/" + str(question_id))
     return render_template(
-        "answer_form.html",
+        "forms/../templates/answer_form.html",
         old_record=default_blank_answer,
         is_new=True,
         user_id=logged_user_id,
@@ -34,7 +34,7 @@ def edit_answer(answer_id):
         data_manager.edit_record(old_record, "answer")
         return redirect("/question/" + str(old_record["question_id"]))
     return render_template(
-        "answer_form.html",
+        "forms/../templates/answer_form.html",
         old_record=selected_answer,
         is_new=False,
         user_id=logged_user_id,

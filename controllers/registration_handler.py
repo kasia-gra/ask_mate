@@ -1,6 +1,6 @@
-from flask import render_template, request, redirect, url_for, Blueprint, flash, session
+from flask import render_template, request, redirect, Blueprint, flash, session
 import bcrypt
-import data_manager
+from controllers import data_manager
 import util
 
 registration = Blueprint('registration', __name__, template_folder='templates')
