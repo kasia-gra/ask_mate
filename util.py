@@ -1,3 +1,4 @@
+from flask import session, abort
 import time
 import datetime
 import data_manager
@@ -6,6 +7,22 @@ import glob
 from werkzeug.utils import secure_filename
 
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+
+
+def check_if_user_is_logged():
+    if 'username' not in session:
+        abort(401)
+
+
+def check_if_user_is_owner(user_id, owners_id):
+    if user_id != owners_id:
+        abort(401)
+
+
+def get_user_details_from_session():
+    username = session['username']
+    user_id = data_manager.get_user_id(username)['id']
+    return username, user_id
 
 
 def get_new_timestamp():
