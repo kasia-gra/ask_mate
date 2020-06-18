@@ -302,7 +302,6 @@ def search_for_phrase_answers(cursor: RealDictCursor, search_phrase: str):
     return cursor.fetchall()
 
 
-@connection.connection_handler
 def get_available_tags():
     return get_all_records('tag')
 
