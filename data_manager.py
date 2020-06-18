@@ -89,13 +89,14 @@ def add_question(cursor: RealDictCursor, new_record: dict):
 def add_answer(cursor: RealDictCursor, new_record: dict):
     cursor.execute("""
                     INSERT INTO answer
-                        (question_id, message, image, submission_time, vote_number)
+                        (question_id, message, image, submission_time, vote_number, user_id)
                     VALUES
-                        (%(question_id)s, %(message)s, %(img_path)s, %(submission_time)s, 0);
+                        (%(question_id)s, %(message)s, %(img_path)s, %(submission_time)s, 0, %(user_id)s);
                     """, {
         'question_id': new_record['question_id'],
         'message': new_record["message"],
         'submission_time': new_record["submission_time"],
+        'user_id': new_record["user_id"],
         'img_path': new_record["image"]
     })
 
