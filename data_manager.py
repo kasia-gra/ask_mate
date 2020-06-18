@@ -45,7 +45,8 @@ def get_answers_for_question(cursor: RealDictCursor, question_id: int):
     cursor.execute("""
                     SELECT *
                     FROM answer
-                    WHERE question_id = %(q_id)s;
+                    WHERE question_id = %(q_id)s
+                    ORDER BY accepted DESC, vote_number DESC, submission_time DESC;
                     """, {'q_id': question_id})
     return cursor.fetchall()
 
@@ -89,9 +90,9 @@ def add_question(cursor: RealDictCursor, new_record: dict):
 def add_answer(cursor: RealDictCursor, new_record: dict):
     cursor.execute("""
                     INSERT INTO answer
-                        (question_id, message, image, submission_time, vote_number, user_id)
+                        (question_id, message, image, submission_time, vote_number, user_id, accepted)
                     VALUES
-                        (%(question_id)s, %(message)s, %(img_path)s, %(submission_time)s, 0, %(user_id)s);
+                        (%(question_id)s, %(message)s, %(img_path)s, %(submission_time)s, 0, %(user_id)s, False);
                     """, {
         'question_id': new_record['question_id'],
         'message': new_record["message"],
