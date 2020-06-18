@@ -71,6 +71,14 @@ CREATE TABLE tag (
     name text
 );
 
+DROP TABLE IF EXISTS public.votes;
+CREATE TABLE votes (
+    id serial NOT NULL,
+    user_id integer NOT NULL,
+    question_id integer,
+    answer_id integer,
+    vote_time timestamp without time zone
+);
 
 DROP TABLE IF EXISTS public.users;
 CREATE TABLE users (
@@ -139,7 +147,8 @@ ALTER TABLE ONLY question_tag
     ADD CONSTRAINT fk_tag_id FOREIGN KEY (tag_id) REFERENCES tag(id);
 
 
-INSERT INTO users VALUES (1, 'test@test.com', 'abc123', '2017-04-28 08:29:00', 5);
+
+INSERT INTO users VALUES (1, 'user@user.com', '$2b$10$YkDZUREQVA5e1XQ2e9ECbeZOTrPlIpJ7VdsO0FIvH/elv6yva/xfm', '2017-04-28 08:29:00', 5);
 SELECT pg_catalog.setval('users_id_seq', 1, true);
 
 INSERT INTO roles VALUES (1, 1, 'user');
@@ -186,4 +195,3 @@ INSERT INTO question_tag VALUES (5, 5);
 INSERT INTO question_tag VALUES (3, 6);
 INSERT INTO question_tag VALUES (4, 6);
 INSERT INTO question_tag VALUES (5, 6);
-

@@ -16,6 +16,7 @@ def display_tags():
     tags_list = data_manager.get_available_tags()
     for tag in tags_list:
         tag["questions"] = util.prepare_questions_to_display(data_manager.get_questions_with_specific_tag(tag.get("name")))
+        tag["amount_of_question"] = len(tag["questions"])
     return render_template(
         "tags_list.html",
         tags=tags_list,

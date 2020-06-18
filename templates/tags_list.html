@@ -19,7 +19,7 @@
         {% for tag in tags %}
             <div class="table-content table-record-details">
                 <div class="tags-name tags-background">
-                    #{{ tag.name }}
+                    #{{ tag.name }} - total {{ tag.amount_of_question }} with this tag
                 </div>
             </div>
             {% for question in tag.questions %}

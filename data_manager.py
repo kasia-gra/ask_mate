@@ -459,6 +459,42 @@ def get_user_by_id(cursor: RealDictCursor, user_id: int):
 
 
 @connection.connection_handler
+def get_questions_by_user_id(cursor: RealDictCursor, user_id: int):
+    query = """
+    SELECT id, submission_time, view_number, vote_number, title, message, image, user_id
+    FROM question
+    WHERE user_id = %(user_id)s
+    ORDER BY id
+    """
+    cursor.execute(query, {'user_id': user_id})
+    return cursor.fetchall()
+
+
+@connection.connection_handler
+def get_answers_by_user_id(cursor: RealDictCursor, user_id: int):
+    query = """
+    SELECT id, submission_time, vote_number, question_id, message, image, user_id
+    FROM answer
+    WHERE user_id = %(user_id)s
+    ORDER BY id
+    """
+    cursor.execute(query, {'user_id': user_id})
+    return cursor.fetchall()
+
+
+@connection.connection_handler
+def get_comments_by_user_id(cursor: RealDictCursor, user_id: int):
+    query = """
+    SELECT id, question_id, answer_id, message, submission_time, edited_number, user_id
+    FROM comment
+    WHERE user_id = %(user_id)s
+    ORDER BY id
+    """
+    cursor.execute(query, {'user_id': user_id})
+    return cursor.fetchall()
+
+
+@connection.connection_handler
 def get_question_owner_based_on_answer(cursor: RealDictCursor, answer_id: int):
     query = """
     SELECT question.user_id
@@ -485,4 +521,34 @@ def get_all_users_emails(cursor: RealDictCursor):
     FROM users
     """
     cursor.execute(query)
+    return cursor.fetchall()
+
+
+@connection.connection_handler
+def update_answer_vote(cursor: RealDictCursor, user_id: int, answer_id: int):
+    time = util.get_new_timestamp()
+    cursor.execute("""
+        INSERT INTO votes (user_id, question_id, answer_id, vote_time)
+        VALUES (%(user_id)s, Null, %(answer_id)s, %(vote_time)s);
+        """, {"user_id": user_id, 'answer_id': answer_id, 'vote_time': time}
+        )
+
+
+@connection.connection_handler
+def update_question_vote(cursor: RealDictCursor, user_id: int, question_id: int):
+    time = util.get_new_timestamp()
+    cursor.execute("""
+        INSERT INTO votes (user_id, question_id, answer_id, vote_time)
+        VALUES (%(user_id)s, %(question_id)s, Null, %(vote_time)s);
+        """, {"user_id": user_id, 'question_id': question_id, 'vote_time': time}
+        )
+
+
+@connection.connection_handler
+def get_user_votes(cursor: RealDictCursor, user_id: int):
+    cursor.execute("""
+        SELECT user_id, question_id, answer_id FROM votes
+        WHERE user_id = %(user_id)s;
+        """, {'user_id': user_id}
+    )
     return cursor.fetchall()
