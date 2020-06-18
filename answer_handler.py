@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, Blueprint, abort, session
+from flask import render_template, request, redirect, Blueprint, abort, session, flash
 import data_manager
 import util
 
@@ -11,6 +11,9 @@ def add_answer(question_id):
         abort(401)
     username = session['username']
     user_id = data_manager.get_user_id(username)['id']
+    if data_manager.get_question_owner(question_id).get('user_id') == user_id:
+        flash("Ooops you can't answer your own question !")
+        return redirect("/question/" + str(question_id))
     new_record = {"question_id": str(question_id)}
     if request.method == "POST":
         new_record = get_answer_data(new_record)

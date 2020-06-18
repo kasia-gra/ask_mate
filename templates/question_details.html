@@ -17,8 +17,17 @@
                 <a href="{{ url_for("question.delete_question", question_id=record.get("id")) }}" class="nav_button">Delete question</a>
                 <a href="{{ url_for("tag.add_tag", question_id=record.get("id")) }}" class="nav_button">Add tag</a>
             </div>
+            <div class="button-panel">
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        {% for message in messages %}
+                            <p><strong>{{ message }}</strong></p>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </div>
         </div>
-        <div class="table-content">
+            <div class="table-content">
             <div class="table-height table-details-and-description">
                 <div class="table-record-details">
                     <div class="answers-number">

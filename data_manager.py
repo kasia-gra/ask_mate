@@ -554,3 +554,13 @@ def get_user_votes(cursor: RealDictCursor, user_id: int):
         """, {'user_id': user_id}
     )
     return cursor.fetchall()
+
+@connection.connection_handler
+def get_question_owner(cursor: RealDictCursor, question_id: int):
+    query = """
+    SELECT user_id
+    FROM question 
+    WHERE id = %(question_id)s
+    """
+    cursor.execute(query, {'question_id': question_id})
+    return cursor.fetchone()
