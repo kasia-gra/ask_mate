@@ -31,7 +31,7 @@ def edit_question(question_id):
         abort(401)
     username = session['username']
     old_record = data_manager.get_specific_record(question_id, "question")
-    user_id = data_manager.get_user_id(username)
+    user_id = data_manager.get_user_id(username)['id']
     if user_id != old_record["user_id"]:
         abort(401)
     if request.method == "POST":

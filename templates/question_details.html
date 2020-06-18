@@ -133,10 +133,10 @@
                             {% endif %}
 
                             <div class="vote-section">
-                                <a href="{{ url_for("vote.answer_vote_up", answer_id=answer.get("id")|string) }}" methods="POST">
+                                <a href="{{ url_for("vote.answer_vote", answer_id=answer.get("id")|string, voting_type="up") }}" methods="POST">
                                     <img src="{{ url_for('static', filename="icons/like_up.png") }}" width="50px" height="50px" alt="vote_up">
                                 </a>
-                                <a href="{{ url_for("vote.answer_vote_down", answer_id=answer.get("id")|string) }}" methods="POST">
+                                <a href="{{ url_for("vote.answer_vote", answer_id=answer.get("id")|string, voting_type="down") }}" methods="POST">
                                     <img src="{{ url_for('static', filename="icons/like_down.png") }}" width="50px" height="50px" alt="vote_down">
                                 </a>
                             </div>
