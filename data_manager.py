@@ -303,12 +303,8 @@ def search_for_phrase_answers(cursor: RealDictCursor, search_phrase: str):
 
 
 @connection.connection_handler
-def get_available_tags(cursor: RealDictCursor):
-    cursor.execute(f"""
-                SELECT *
-                FROM tag;
-           """)
-    return cursor.fetchall()
+def get_available_tags():
+    return get_all_records('tag')
 
 
 @connection.connection_handler
