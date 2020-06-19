@@ -1,11 +1,35 @@
+from flask import session, abort
 import time
 import datetime
-import data_manager
+from controllers import data_manager
 import os
 import glob
 from werkzeug.utils import secure_filename
 
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+
+
+def set_user_details_based_on_logged_status():
+    username, user_id = None, None
+    if 'username' in session:
+        username, user_id = get_user_details_from_session()
+    return username, user_id
+
+
+def check_if_user_is_logged():
+    if 'username' not in session:
+        return abort(401)
+
+
+def check_if_user_is_owner(user_id, owners_id):
+    if user_id != owners_id:
+        return abort(401)
+
+
+def get_user_details_from_session():
+    username = session['username']
+    user_id = data_manager.get_user_data(username)['id']
+    return username, user_id
 
 
 def get_new_timestamp():
@@ -71,3 +95,23 @@ def remove_question_image_with_answer_images(question_id, image_name):
     folder_path = data_manager.UPLOAD_FOLDER + question_id
     if os.path.isfile(folder_path):
         os.rmdir(folder_path)
+
+
+def prepare_questions_to_display(all_questions):
+    message_max_length = 800
+    title_max_length = 53
+    for record in all_questions:
+        record["number_of_answers"] = data_manager.count_answers_for_question(record["id"])["count"]
+        if len(record["title"]) >= title_max_length:
+            record["title"] = record["title"][:title_max_length] + "..."
+        if len(record["message"]) >= message_max_length:
+            record["message"] = record["message"][:message_max_length] + "..."
+    return all_questions
+
+
+def prepare_message_to_display(records):
+    message_max_length = 800
+    for record in records:
+        if len(record["message"]) >= message_max_length:
+            record["message"] = record["message"][:message_max_length] + "..."
+    return records
