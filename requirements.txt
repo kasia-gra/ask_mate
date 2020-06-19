@@ -1,6 +1,8 @@
 appdirs==1.4.3
+bcrypt==3.1.7
 CacheControl==0.12.6
 certifi==2019.11.28
+cffi==1.14.0
 chardet==3.0.4
 click==7.1.2
 colorama==0.4.3
@@ -20,6 +22,7 @@ packaging==20.3
 pep517==0.8.2
 progress==1.5
 psycopg2==2.8.5
+pycparser==2.20
 pyparsing==2.4.6
 pytoml==0.1.21
 requests==2.22.0
@@ -28,5 +31,3 @@ six==1.14.0
 urllib3==1.25.8
 webencodings==0.5.1
 Werkzeug==1.0.1
-
-bcrypt~=3.1.7
