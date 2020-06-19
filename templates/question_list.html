@@ -33,7 +33,7 @@
                 </div>
             </div>
             <div class="button-panel">
-                {% if is_homepage %}
+                {% if is_homepage or username == None %}
                     <a href="{{ url_for("questions_list") }}" class="nav_button">All Questions</a>
                 {% else %}
                     <a href="{{ url_for("question.add_question") }}" class="nav_button">Ask new question</a>
@@ -83,7 +83,7 @@
                         <div class="head-of-actions-panel">
                             USER ICON
                         </div>
-                        {% if question.get("user_id") != user_id %}
+                        {% if question.get("user_id") != user_id and username != None %}
                             <div class="vote-section">
                                 <a href="{{ url_for("vote.question_vote", question_id=question.get("id")|string, vote="up") }}"
                                    methods="POST">

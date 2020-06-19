@@ -11,18 +11,20 @@
     <div class="container">
         <div class="table">
             <div class="question-button-panel button-panel">
-                {% if record.get("user_id") != user_id %}
-                    <a href="{{ url_for("answer.add_answer", question_id=record.get("id")) }}" class="nav_button">Add
-                        new answer</a>
-                {% endif %}
-                <a href="{{ url_for("comment.comment_question", question_id=record.get("id")) }}" class="nav_button">Add
-                    new comment</a>
-                {% if record.get("user_id") == user_id %}
-                    <a href="{{ url_for("question.edit_question", question_id=record.get("id")) }}" class="nav_button">Edit
-                        question</a>
-                    <a href="{{ url_for("question.delete_question", question_id=record.get("id")) }}"
-                       class="nav_button">Delete question</a>
-                    <a href="{{ url_for("tag.add_tag", question_id=record.get("id")) }}" class="nav_button">Add tag</a>
+                {% if username != None %}
+                    {% if record.get("user_id") != user_id %}
+                        <a href="{{ url_for("answer.add_answer", question_id=record.get("id")) }}" class="nav_button">Add
+                            new answer</a>
+                    {% endif %}
+                    <a href="{{ url_for("comment.comment_question", question_id=record.get("id")) }}" class="nav_button">Add
+                        new comment</a>
+                    {% if record.get("user_id") == user_id %}
+                        <a href="{{ url_for("question.edit_question", question_id=record.get("id")) }}" class="nav_button">Edit
+                            question</a>
+                        <a href="{{ url_for("question.delete_question", question_id=record.get("id")) }}"
+                           class="nav_button">Delete question</a>
+                        <a href="{{ url_for("tag.add_tag", question_id=record.get("id")) }}" class="nav_button">Add tag</a>
+                    {% endif %}
                 {% endif %}
             </div>
             <div class="button-panel">
@@ -96,7 +98,7 @@
                 <div class="head-of-actions-panel">
                     USER ICON
                 </div>
-                {% if record.get("user_id") != user_id %}
+                {% if record.get("user_id") != user_id and username != None %}
                     <div class="vote-section">
                         <a href="{{ url_for("vote.question_vote", question_id=record.get("id")|string, vote="up") }}"
                            methods="POST">
@@ -128,7 +130,7 @@
                     {{ question_comment.get("message") }}
                 </div>
                 <div class="table-height table-record-actions-panel">
-                    {% if question_comment.get("user_id") == user_id %}
+                    {% if question_comment.get("user_id") == user_id and username != None %}
                         <div class="comment-center comment-action-panel">
                             <a href="{{ url_for("comment.edit_comment", comment_id=question_comment.get("id")) }}">
                                 <img src="{{ url_for('static', filename="icons/edit.png") }}" alt="edit_comment">
@@ -160,7 +162,7 @@
                 <div class="table-content">
                     <div class="table-height table-details-and-description">
                         <div class="table-record-details">
-                            {% if answer.get("user_id") != user_id %}
+                            {% if answer.get("user_id") != user_id and username != None %}
                                 <div class="vote-section">
                                     <a href="{{ url_for("vote.answer_vote", answer_id=answer.get("id")|string, voting_type="up") }}"
                                        methods="POST">
@@ -212,7 +214,7 @@
                         </div>
                     </div>
                     <div class="table-height table-record-actions-panel">
-                        {% if answer.get("user_id") == user_id %}
+                        {% if answer.get("user_id") == user_id and username != None %}
                             <div class="comment-center comment-action-panel">
                                 <a href="{{ url_for("answer.edit_answer", answer_id=answer.get("id")) }}">
                                     <img src="{{ url_for('static', filename="icons/edit.png") }}" alt="edit_answer">
@@ -222,11 +224,13 @@
                                 </a>
                             </div>
                         {% endif %}
-                        <div class="comment-center">
-                            <a href="{{ url_for("comment.comment_answer", answer_id=answer.get("id")|string) }}">
-                                <img src="{{ url_for('static', filename="icons/comment.png") }}" alt="comment_answer">
-                            </a>
-                        </div>
+                        {% if username != None %}
+                            <div class="comment-center">
+                                <a href="{{ url_for("comment.comment_answer", answer_id=answer.get("id")|string) }}">
+                                    <img src="{{ url_for('static', filename="icons/comment.png") }}" alt="comment_answer">
+                                </a>
+                            </div>
+                        {% endif %}
                         <div class="comment-center submission-time">
                             <div class="submission-time-text">
                                 Update time:
@@ -245,7 +249,7 @@
                                     {{ answer_comment.get("message") }}
                                 </div>
                                 <div class="table-height table-record-actions-panel">
-                                    {% if answer_comment.get("user_id") == user_id %}
+                                    {% if answer_comment.get("user_id") == user_id and username != None %}
                                         <div class="comment-center comment-action-panel">
                                             <a href="{{ url_for("comment.edit_comment", comment_id=answer_comment.get("id")) }}">
                                                 <img src="{{ url_for('static', filename="icons/edit.png") }}"
