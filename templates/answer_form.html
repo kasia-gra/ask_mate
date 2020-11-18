@@ -13,16 +13,20 @@
                     <h1>{{ "Add new answer" if is_new else "Edit your answer" }}</h1>
                 </div>
             </div>
-            <form class="form" id=answer_form
-                  action={{ "/question/" + old_record.question_id|string + "/new-answer" if is_new else "/answer/" + old_record.id|string + "/edit" }} method="POST"
-                  enctype="multipart/form-data">
-                <label for="description">Answer message:</label><br/>
-                <textarea id="description" name="description" rows="10"
-                          cols="100">{{ old_record.message|string }}</textarea><br/>
-                <label>Select image</label>
-                <input type="file" name="file" id="file">
-                <button type="submit">{{ "Add new answer" if is_new else "Edit your answer" }}</button>
-            </form>
+            <div class="table-content">
+                <div class="add_edit_form">
+                    <form class="flex-column-center-horizontally" id=answer_form
+                          action={{ "/question/" + old_record.question_id|string + "/new-answer" if is_new else "/answer/" + old_record.id|string + "/edit" }} method="POST"
+                          enctype="multipart/form-data">
+                        <label for="description">Answer message:</label><br/>
+                        <textarea class="text_input" id="description" name="description" rows="10"
+                                  cols="100">{{ old_record.message|string }}</textarea><br/>
+                        <label>Select image</label>
+                        <input class="select_img" type="file" name="file" id="file">
+                        <button class="drop_down_btn" type="submit">{{ "Add new answer" if is_new else "Edit your answer" }}</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}

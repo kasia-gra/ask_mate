@@ -9,7 +9,8 @@
     <div class="search">
         <div class="table-search-form">
             <form action="/" methor="GET">
-                {% if logged %}
+                {% if username %}
+                    <a href="/user/{{ user_id }}" class="text">{{ username }}</a>
                     <a href="/logout" class="text">Logout</a>
                 {% else %}
                     <a href="/login" class="text">Login</a>
@@ -26,8 +27,7 @@
             <li><a href="{{ url_for("homepage") }}">Home</a></li>
             <li><a href="{{ url_for("questions_list") }}">All questions</a></li>
             <li><a href="/tags">Tags</a></li>
-            {% if logged %}
-                <li><a href="/user/{{ user_id }}">User page</a></li>
+            {% if username %}
                 <li><a href="/users">All users</a></li>
             {% endif %}
         </ul>

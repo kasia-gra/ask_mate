@@ -1,11 +1,11 @@
 import os
 from psycopg2.extras import RealDictCursor
-import connection
+import connection, util
 
 dir_path = os.path.dirname(__file__)
 QUESTION_HEADERS = ["id", "submission_time", "view_number", "vote_number", "title", "message", "image"]
 ANSWER_HEADERS = ["id", "submission_time", "vote_number", "question_id", "message", "image"]
-UPLOAD_FOLDER = os.path.join(dir_path, "static/img/")
+UPLOAD_FOLDER = os.path.join(dir_path, "../static/img/")
 NUMERICAL_VALUE_HEADERS = ["id", "view_number", "vote_number", "question_id"]
 DATE_HEADERS = ["submission_time"]
 
@@ -45,7 +45,8 @@ def get_answers_for_question(cursor: RealDictCursor, question_id: int):
     cursor.execute("""
                     SELECT *
                     FROM answer
-                    WHERE question_id = %(q_id)s;
+                    WHERE question_id = %(q_id)s
+                    ORDER BY accepted DESC, vote_number DESC, submission_time DESC;
                     """, {'q_id': question_id})
     return cursor.fetchall()
 
@@ -73,14 +74,15 @@ def add_record(new_record, option):
 def add_question(cursor: RealDictCursor, new_record: dict):
     cursor.execute("""
                     INSERT INTO question
-                        (title, message, image, submission_time, vote_number, view_number)
+                        (title, message, image, submission_time, user_id, vote_number, view_number)
                     VALUES
-                        (%(title)s, %(message)s, %(img_path)s, %(submission_time)s, 0, 0);
+                        (%(title)s, %(message)s, %(img_path)s, %(submission_time)s, %(user_id)s, 0, 0);
                     """, {
         'title': new_record["title"],
         'message': new_record["message"],
         'submission_time': new_record["submission_time"],
-        'img_path': new_record["image"]
+        'img_path': new_record["image"],
+        'user_id': new_record["user_id"]
     })
 
 
@@ -88,13 +90,14 @@ def add_question(cursor: RealDictCursor, new_record: dict):
 def add_answer(cursor: RealDictCursor, new_record: dict):
     cursor.execute("""
                     INSERT INTO answer
-                        (question_id, message, image, submission_time, vote_number)
+                        (question_id, message, image, submission_time, vote_number, user_id, accepted)
                     VALUES
-                        (%(question_id)s, %(message)s, %(img_path)s, %(submission_time)s, 0);
+                        (%(question_id)s, %(message)s, %(img_path)s, %(submission_time)s, 0, %(user_id)s, False);
                     """, {
         'question_id': new_record['question_id'],
         'message': new_record["message"],
         'submission_time': new_record["submission_time"],
+        'user_id': new_record["user_id"],
         'img_path': new_record["image"]
     })
 
@@ -103,11 +106,11 @@ def add_answer(cursor: RealDictCursor, new_record: dict):
 def add_comment(cursor: RealDictCursor, new_record: dict):
     query = """
     INSERT INTO comment
-    (question_id, answer_id, message, submission_time, edited_number)
-    VALUES (%s, %s, %s, %s, %s);
+    (question_id, answer_id, message, submission_time, edited_number, user_id)
+    VALUES (%s, %s, %s, %s, %s, %s);
     """
     cursor.execute(query, (new_record["question_id"], new_record["answer_id"],
-                           new_record["message"], new_record["submission_time"], new_record["edited_number"]))
+                           new_record["message"], new_record["submission_time"], new_record["edited_number"], new_record["user_id"]))
 
 
 def edit_record(new_record, option):
@@ -164,36 +167,12 @@ def edit_comment(cursor: RealDictCursor, new_record: dict):
                            new_record.get("edited_number"), new_record.get("id")))
 
 
-def delete_record(record_id, option):
-    if option == "question":
-        delete_question(record_id)
-    elif option == "answer":
-        delete_answer(record_id)
-    else:
-        delete_comment(record_id)
-
-
 @connection.connection_handler
-def delete_question(cursor: RealDictCursor, record_id: int):
-    cursor.execute("""
-                    DELETE FROM question
-                    WHERE id = %(id)s;
-                    """, {'id': record_id})
-
-
-@connection.connection_handler
-def delete_answer(cursor: RealDictCursor, record_id: int):
-    cursor.execute("""
-                    DELETE FROM answer
-                    WHERE id = %(id)s;
-                    """, {'id': record_id})
-
-
-@connection.connection_handler
-def delete_comment(cursor: RealDictCursor, record_id: int):
-    cursor.execute("""
-                    DELETE FROM comment
-                    WHERE id = %(id)s;
+def delete_record(cursor: RealDictCursor, record_id: int, option: str):
+    if option in ['question', 'answer', 'comment']:
+        cursor.execute(f"""
+                    DELETE FROM {option}
+                    WHERE id = {record_id};
                     """, {'id': record_id})
 
 
@@ -224,7 +203,7 @@ def delete_connected_tags(cursor: RealDictCursor, question_id: int):
 @connection.connection_handler
 def get_question_comments(cursor: RealDictCursor, question_id: int):
     query = """
-    SELECT id, submission_time, message, edited_number from comment
+    SELECT id, submission_time, message, edited_number, user_id FROM comment
     WHERE question_id = %s
     """
     cursor.execute(query, (question_id,))
@@ -235,7 +214,7 @@ def get_question_comments(cursor: RealDictCursor, question_id: int):
 def get_answers_comments(cursor: RealDictCursor, answers_id_list: list):
     answers_id = ", ".join(str(id) for id in answers_id_list)
     query = f"""
-    SELECT id, answer_id, submission_time, message, edited_number from comment
+    SELECT id, answer_id, submission_time, message, edited_number, user_id FROM comment
     WHERE answer_id IN ({answers_id})
     """
     cursor.execute(query)
@@ -323,12 +302,21 @@ def search_for_phrase_answers(cursor: RealDictCursor, search_phrase: str):
     return cursor.fetchall()
 
 
+def get_available_tags():
+    return get_all_records('tag')
+
+
 @connection.connection_handler
-def get_available_tags(cursor: RealDictCursor):
-    cursor.execute(f"""
+def get_questions_with_specific_tag(cursor: RealDictCursor, tag: str):
+    cursor.execute("""
                 SELECT *
-                FROM tag
-           """)
+                FROM question
+                LEFT JOIN question_tag
+                    ON question.id = question_tag.question_id
+                LEFT JOIN tag
+                    ON question_tag.tag_id = tag.id
+                WHERE tag.name = %(tag)s;
+           """, {'tag': tag})
     return cursor.fetchall()
 
 
@@ -391,21 +379,127 @@ def add_user(cursor: RealDictCursor, user_dict: dict):
         'reputation': user_dict["reputation"]
     })
 
+
 @connection.connection_handler
-def get_password_from_user(cursor: RealDictCursor, email: str):
+def get_user_data(cursor: RealDictCursor, email: str):
     cursor.execute(f"""
-                    SELECT password
-                    FROM users
-                    WHERE email = (%(email)s);
-               """, {'email': email})
+                        SELECT *
+                        FROM users
+                        WHERE email = (%(email)s);
+                   """, {'email': email})
     return cursor.fetchone()
 
 
 @connection.connection_handler
-def get_user_id(cursor: RealDictCursor, email: str):
-    cursor.execute(f"""
-                    SELECT id
-                    FROM users
-                    WHERE email = (%(email)s);
-               """, {'email': email})
+def update_reputation(cursor: RealDictCursor, user_id: int, amount: int):
+    cursor.execute("""
+                UPDATE users
+                SET reputation = reputation + %(amount)s
+                WHERE id = %(id)s;
+           """, {'id': user_id, 'amount': amount})
+
+
+@connection.connection_handler
+def get_users(cursor: RealDictCursor):
+    query = """
+    SELECT u.id, u.email, u.registration_time, u.reputation, COUNT(DISTINCT q.*) AS questions_number, COUNT(DISTINCT a.*) AS answers_number, COUNT(DISTINCT c.*) AS comments_number
+    FROM users u LEFT JOIN question q ON u.id = q.user_id LEFT JOIN answer a ON q.user_id = a.user_id LEFT JOIN comment c ON u.id = c.user_id
+    GROUP BY u.id ORDER BY u.id;
+    """
+    cursor.execute(query)
+    return cursor.fetchall()
+
+
+@connection.connection_handler
+def get_user_by_id(cursor: RealDictCursor, user_id: int):
+    query = """
+    SELECT u.id, u.email, u.registration_time, u.reputation, COUNT(DISTINCT q.*) AS questions_number, COUNT(DISTINCT a.*) AS answers_number, COUNT(DISTINCT c.*) AS comments_number
+    FROM users u LEFT JOIN question q ON u.id = q.user_id LEFT JOIN answer a ON q.user_id = a.user_id LEFT JOIN comment c ON u.id = c.user_id
+    WHERE u.id = %(user_id)s GROUP BY u.id ORDER BY u.id;
+    """
+    cursor.execute(query, {"user_id": user_id})
     return cursor.fetchone()
+
+
+@connection.connection_handler
+def get_data_from_user_by_option(cursor: RealDictCursor, user_id: int, option: str):
+    if option in ['question', 'answer', 'comment'] and type(user_id) == int:
+        cursor.execute(f"""
+            SELECT *
+            FROM {option}
+            WHERE user_id = {user_id}
+            ORDER BY id
+            """)
+        return cursor.fetchall()
+
+
+@connection.connection_handler
+def get_question_owner_based_on_answer(cursor: RealDictCursor, answer_id: int):
+    query = """
+    SELECT question.user_id
+    FROM question JOIN answer ON question.id = answer.question_id
+    WHERE answer.id = %(answer_id)s
+    """
+    cursor.execute(query, {'answer_id': answer_id})
+    return cursor.fetchone()
+
+
+@connection.connection_handler
+def get_question_owner(cursor: RealDictCursor, question_id: int):
+    query = """
+    SELECT user_id
+    FROM question 
+    WHERE id = %(question_id)s
+    """
+    cursor.execute(query, {'question_id': question_id})
+    return cursor.fetchone()
+
+
+@connection.connection_handler
+def change_answer_status(cursor: RealDictCursor, answer_id: int, status=bool):
+    query = f"""
+    UPDATE answer
+    SET accepted = {status}
+    WHERE id = %(answer_id)s
+    """
+    cursor.execute(query, {'answer_id': answer_id})
+
+
+@connection.connection_handler
+def get_all_users_emails(cursor: RealDictCursor):
+    query = """
+    SELECT email
+    FROM users
+    """
+    cursor.execute(query)
+    return cursor.fetchall()
+
+
+@connection.connection_handler
+def update_answer_vote(cursor: RealDictCursor, user_id: int, answer_id: int):
+    time = util.get_new_timestamp()
+    cursor.execute("""
+        INSERT INTO votes (user_id, question_id, answer_id, vote_time)
+        VALUES (%(user_id)s, Null, %(answer_id)s, %(vote_time)s);
+        """, {"user_id": user_id, 'answer_id': answer_id, 'vote_time': time}
+        )
+
+
+@connection.connection_handler
+def update_question_vote(cursor: RealDictCursor, user_id: int, question_id: int):
+    time = util.get_new_timestamp()
+    cursor.execute("""
+        INSERT INTO votes (user_id, question_id, answer_id, vote_time)
+        VALUES (%(user_id)s, %(question_id)s, Null, %(vote_time)s);
+        """, {"user_id": user_id, 'question_id': question_id, 'vote_time': time}
+        )
+
+
+@connection.connection_handler
+def get_user_votes(cursor: RealDictCursor, user_id: int):
+    cursor.execute("""
+        SELECT user_id, question_id, answer_id FROM votes
+        WHERE user_id = %(user_id)s;
+        """, {'user_id': user_id}
+    )
+    return cursor.fetchall()

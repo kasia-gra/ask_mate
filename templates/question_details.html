@@ -11,11 +11,30 @@
     <div class="container">
         <div class="table">
             <div class="question-button-panel button-panel">
-                <a href="{{ url_for("answer.add_answer", question_id=record.get("id")) }}" class="nav_button">Add new answer</a>
-                <a href="{{ url_for("comment.comment_question", question_id=record.get("id")) }}" class="nav_button">Add new comment</a>
-                <a href="{{ url_for("question.edit_question", question_id=record.get("id")) }}" class="nav_button">Edit question</a>
-                <a href="{{ url_for("question.delete_question", question_id=record.get("id")) }}" class="nav_button">Delete question</a>
-                <a href="{{ url_for("tag.add_tag", question_id=record.get("id")) }}" class="nav_button">Add tag</a>
+                {% if username != None %}
+                    {% if record.get("user_id") != user_id %}
+                        <a href="{{ url_for("answer.add_answer", question_id=record.get("id")) }}" class="nav_button">Add
+                            new answer</a>
+                    {% endif %}
+                    <a href="{{ url_for("comment.comment_question", question_id=record.get("id")) }}" class="nav_button">Add
+                        new comment</a>
+                    {% if record.get("user_id") == user_id %}
+                        <a href="{{ url_for("question.edit_question", question_id=record.get("id")) }}" class="nav_button">Edit
+                            question</a>
+                        <a href="{{ url_for("question.delete_question", question_id=record.get("id")) }}"
+                           class="nav_button">Delete question</a>
+                        <a href="{{ url_for("tag.add_tag", question_id=record.get("id")) }}" class="nav_button">Add tag</a>
+                    {% endif %}
+                {% endif %}
+            </div>
+            <div class="button-panel">
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        {% for message in messages %}
+                            <p><strong>{{ message }}</strong></p>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
             </div>
         </div>
         <div class="table-content">
@@ -54,7 +73,8 @@
                     </div>
                     {% if record.get("image") %}
                         <div class="image-container">
-                            <img src="{{ url_for('static', filename="img/" + record.get("image")|string) }}" alt="No available image!">
+                            <img src="{{ url_for('static', filename="img/" + record.get("image")|string) }}"
+                                 alt="No available image!">
                         </div>
                     {% endif %}
                     <div class="question-message">
@@ -63,7 +83,12 @@
                     <div class="tag-container">
                         {% for tag in tags %}
                             <div class="tag-button">
-                                {{ tag.get("name") }} <a href="{{ url_for("tag.delete_tag", question_id=tag.question_id, tag_id=tag.tag_id) }}" onclick="return confirm('Are you sure to delete tag?')"><img src="{{ url_for('static', filename="icons/bin.png") }}" alt="delete_answer"></a>
+                                {{ tag.get("name") }}
+                                {% if record.get("user_id") == user_id %}
+                                    <a href="{{ url_for("tag.delete_tag", question_id=tag.question_id, tag_id=tag.tag_id) }}"
+                                       onclick="return confirm('Are you sure to delete tag?')"><img
+                                            src="{{ url_for('static', filename="icons/bin.png") }}" alt="delete_answer"></a>
+                                {% endif %}
                             </div>
                         {% endfor %}
                     </div>
@@ -73,6 +98,22 @@
                 <div class="head-of-actions-panel">
                     USER ICON
                 </div>
+                {% if record.get("user_id") != user_id and username != None %}
+                    <div class="vote-section">
+                        <a href="{{ url_for("vote.question_vote", question_id=record.get("id")|string, vote="up") }}"
+                           methods="POST">
+                            <img src="{{ url_for('static', filename="icons/like_up.png") }}" width="50px"
+                                 height="50px"
+                                 alt="vote_up">
+                        </a>
+                        <a href="{{ url_for("vote.question_vote", question_id=record.get("id")|string, vote="down") }}"
+                           methods="POST">
+                            <img src="{{ url_for('static', filename="icons/like_down.png") }}" width="50px"
+                                 height="50px"
+                                 alt="vote_down">
+                        </a>
+                    </div>
+                {% endif %}
                 <div class="submission-time">
                     <div class="submission-time-text">
                         Update time:
@@ -89,14 +130,16 @@
                     {{ question_comment.get("message") }}
                 </div>
                 <div class="table-height table-record-actions-panel">
-                    <div class="comment-center comment-action-panel">
-                        <a href="{{ url_for("comment.edit_comment", comment_id=question_comment.get("id")) }}">
-                            <img src="{{ url_for('static', filename="icons/edit.png") }}" alt="edit_comment">
-                        </a>
-                        <a href="{{ url_for("comment.delete_comment", comment_id=question_comment.get("id")) }}">
-                            <img src="{{ url_for('static', filename="icons/bin.png") }}" alt="delete_comment">
-                        </a>
-                    </div>
+                    {% if question_comment.get("user_id") == user_id and username != None %}
+                        <div class="comment-center comment-action-panel">
+                            <a href="{{ url_for("comment.edit_comment", comment_id=question_comment.get("id")) }}">
+                                <img src="{{ url_for('static', filename="icons/edit.png") }}" alt="edit_comment">
+                            </a>
+                            <a href="{{ url_for("comment.delete_comment", comment_id=question_comment.get("id")) }}">
+                                <img src="{{ url_for('static', filename="icons/bin.png") }}" alt="delete_comment">
+                            </a>
+                        </div>
+                    {% endif %}
                     <div class="comment-center">
                         {{ "Edited " + question_comment.get("edited_number")|string + " times" }}
                     </div>
@@ -119,22 +162,50 @@
                 <div class="table-content">
                     <div class="table-height table-details-and-description">
                         <div class="table-record-details">
-                            <div class="vote-section">
-                                <a href="{{ url_for("vote.answer_vote_up", answer_id=answer.get("id")|string) }}" methods="POST">
-                                    <img src="{{ url_for('static', filename="icons/like_up.png") }}" width="50px" height="50px" alt="vote_up">
-                                </a>
-                                <a href="{{ url_for("vote.answer_vote_down", answer_id=answer.get("id")|string) }}" methods="POST">
-                                    <img src="{{ url_for('static', filename="icons/like_down.png") }}" width="50px" height="50px" alt="vote_down">
-                                </a>
-                            </div>
+                            {% if answer.get("user_id") != user_id and username != None %}
+                                <div class="vote-section">
+                                    <a href="{{ url_for("vote.answer_vote", answer_id=answer.get("id")|string, voting_type="up") }}"
+                                       methods="POST">
+                                        <img src="{{ url_for('static', filename="icons/like_up.png") }}" width="50px"
+                                             height="50px" alt="vote_up">
+                                    </a>
+                                    <a href="{{ url_for("vote.answer_vote", answer_id=answer.get("id")|string, voting_type="down") }}"
+                                       methods="POST">
+                                        <img src="{{ url_for('static', filename="icons/like_down.png") }}" width="50px"
+                                             height="50px" alt="vote_down">
+                                    </a>
+                                </div>
+                            {% endif %}
                             <div class="answer-vote">
                                 {{ answer.get("vote_number") }} Votes
                             </div>
+
+                            {% if answer.get("accepted") == True %}
+                                <div class="hover"><img
+                                        src="{{ url_for('static', filename="icons/approved_answer.png") }}" width="50px"
+                                        height="50px" alt="Approved by question Owner">
+                                    <div class="tooltip">Accepted answer</div>
+                                </div>
+                            {% endif %}
+
+                            {% if user_id == record.get("user_id") %}
+                                {% if answer.get("accepted") == True %}
+                                    <a href="{{ url_for("answer.add_answer_status", answer_id=answer.get("id")|string) }}">
+                                        Deny this answer
+                                    </a>
+                                {% else %}
+                                    <a href="{{ url_for("answer.add_answer_status", answer_id=answer.get("id")|string) }}">
+                                        Accept this answer
+                                    </a>
+                                {% endif %}
+                            {% endif %}
+
                         </div>
                         <div class="table-record-description">
                             {% if answer.get("image") %}
                                 <div class="image-container">
-                                    <img src="{{ url_for('static', filename="img/" + answer.get("question_id")|string + "/" + answer.get("image")|string) }}" alt="No available image!">
+                                    <img src="{{ url_for('static', filename="img/" + answer.get("question_id")|string + "/" + answer.get("image")|string) }}"
+                                         alt="No available image!">
                                 </div>
                             {% endif %}
                             <div class="question-message">
@@ -143,19 +214,23 @@
                         </div>
                     </div>
                     <div class="table-height table-record-actions-panel">
-                        <div class="comment-center comment-action-panel">
-                            <a href="{{ url_for("answer.edit_answer", answer_id=answer.get("id")) }}">
-                                <img src="{{ url_for('static', filename="icons/edit.png") }}" alt="edit_answer">
-                            </a>
-                            <a href="{{ url_for("answer.delete_answer", answer_id=answer.get("id")) }}">
-                                <img src="{{ url_for('static', filename="icons/bin.png") }}" alt="delete_answer">
-                            </a>
-                        </div>
-                        <div class="comment-center">
-                            <a href="{{ url_for("comment.comment_answer", answer_id=answer.get("id")|string) }}">
-                                <img src="{{ url_for('static', filename="icons/comment.png") }}" alt="comment_answer">
-                            </a>
-                        </div>
+                        {% if answer.get("user_id") == user_id and username != None %}
+                            <div class="comment-center comment-action-panel">
+                                <a href="{{ url_for("answer.edit_answer", answer_id=answer.get("id")) }}">
+                                    <img src="{{ url_for('static', filename="icons/edit.png") }}" alt="edit_answer">
+                                </a>
+                                <a href="{{ url_for("answer.delete_answer", answer_id=answer.get("id")) }}">
+                                    <img src="{{ url_for('static', filename="icons/bin.png") }}" alt="delete_answer">
+                                </a>
+                            </div>
+                        {% endif %}
+                        {% if username != None %}
+                            <div class="comment-center">
+                                <a href="{{ url_for("comment.comment_answer", answer_id=answer.get("id")|string) }}">
+                                    <img src="{{ url_for('static', filename="icons/comment.png") }}" alt="comment_answer">
+                                </a>
+                            </div>
+                        {% endif %}
                         <div class="comment-center submission-time">
                             <div class="submission-time-text">
                                 Update time:
@@ -174,14 +249,18 @@
                                     {{ answer_comment.get("message") }}
                                 </div>
                                 <div class="table-height table-record-actions-panel">
-                                    <div class="comment-center comment-action-panel">
-                                        <a href="{{ url_for("comment.edit_comment", comment_id=answer_comment.get("id")) }}">
-                                            <img src="{{ url_for('static', filename="icons/edit.png") }}" alt="edit_comment">
-                                        </a>
-                                        <a href="{{ url_for("comment.delete_comment", comment_id=answer_comment.get("id")) }}">
-                                            <img src="{{ url_for('static', filename="icons/bin.png") }}" alt="delete_comment">
-                                        </a>
-                                    </div>
+                                    {% if answer_comment.get("user_id") == user_id and username != None %}
+                                        <div class="comment-center comment-action-panel">
+                                            <a href="{{ url_for("comment.edit_comment", comment_id=answer_comment.get("id")) }}">
+                                                <img src="{{ url_for('static', filename="icons/edit.png") }}"
+                                                     alt="edit_comment">
+                                            </a>
+                                            <a href="{{ url_for("comment.delete_comment", comment_id=answer_comment.get("id")) }}">
+                                                <img src="{{ url_for('static', filename="icons/bin.png") }}"
+                                                     alt="delete_comment">
+                                            </a>
+                                        </div>
+                                    {% endif %}
                                     <div class="comment-center">
                                         {{ "Edited " + answer_comment.get("edited_number")|string + " times" }}
                                     </div>
@@ -201,5 +280,5 @@
             {% endfor %}
         {% endif %}
     </div>
-{%  endblock %}
+{% endblock %}
 {% block footer %}{{ super() }}{% endblock %}

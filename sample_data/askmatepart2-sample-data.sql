@@ -71,6 +71,14 @@ CREATE TABLE tag (
     name text
 );
 
+DROP TABLE IF EXISTS public.votes;
+CREATE TABLE votes (
+    id serial NOT NULL,
+    user_id integer NOT NULL,
+    question_id integer,
+    answer_id integer,
+    vote_time timestamp without time zone
+);
 
 DROP TABLE IF EXISTS public.users;
 CREATE TABLE users (
@@ -139,10 +147,15 @@ ALTER TABLE ONLY question_tag
     ADD CONSTRAINT fk_tag_id FOREIGN KEY (tag_id) REFERENCES tag(id);
 
 
-INSERT INTO users VALUES (1, 'test@test.com', 'abc123', '2017-04-28 08:29:00', 5);
-SELECT pg_catalog.setval('users_id_seq', 1, true);
+
+INSERT INTO users VALUES (1, 'user@user.com', '$2b$10$YkDZUREQVA5e1XQ2e9ECbeZOTrPlIpJ7VdsO0FIvH/elv6yva/xfm', '2017-04-28 08:29:00', 5);
+INSERT INTO users VALUES (2, 'kasia@test.pl', '$2b$10$/vagib.PTmF/DgjEpMEJo.39EtqucBBJPghKMEIoUTUVWq1D6Qo42', '2017-04-28 08:29:00', 5);
+INSERT INTO users VALUES (3, 'user@user.com', '$2b$10$YkDZUREQVA5e1XQ2e9ECbeZOTrPlIpJ7VdsO0FIvH/elv6yva/xfm', '2017-04-28 08:29:00', 5);
+SELECT pg_catalog.setval('users_id_seq', 6, true);
 
 INSERT INTO roles VALUES (1, 1, 'user');
+INSERT INTO roles VALUES (2, 2, 'user');
+INSERT INTO roles VALUES (3, 3, 'user');
 SELECT pg_catalog.setval('roles_id_seq', 1, true);
 
 INSERT INTO question VALUES (0, '2017-04-28 08:29:00', 29, 7, 'How to make lists in Python?', 'I am totally new to this, any hints?', '', 1);
@@ -151,7 +164,9 @@ INSERT INTO question VALUES (2, '2017-12-02 10:41:00', 712, 57, 'Drawing canvas 
 INSERT INTO question VALUES (3, '2018-03-31 08:29:00', 41, 19, 'How to prepare some onions for my trip?', 'Because I need fly carpet', '', 1);
 INSERT INTO question VALUES (4, '2018-01-27 09:19:00', 88, 16, 'I got a problem guys', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque accumsan nisi at dolor condimentum mattis. Suspendisse potenti. Proin feugiat magna quis magna sodales, a eleifend tellus pellentesque. Mauris nec nibh porttitor, laoreet mi eu, lobortis turpis. Morbi eleifend, metus sed facilisis congue, odio nibh viverra leo, nec eleifend purus quam ut ipsum. Aenean vel volutpat nisl. Duis luctus purus urna, vitae commodo turpis ullamcorper sed. Integer ac posuere est. Nulla sit amet hendrerit ipsum, quis suscipit est. Duis in metus aliquam, tempus lectus eget, luctus dolor. Pellentesque a tortor et erat consequat ultrices. In hac habitasse platea dictumst. ', '', 1);
 INSERT INTO question VALUES (5, '2018-12-11 10:41:00', 136, 57, 'Vatican lies', 'Pickled oguras in sloikex', '', 1);
-SELECT pg_catalog.setval('question_id_seq', 6, true);
+INSERT INTO question VALUES (6, '2018-01-27 09:19:00', 88, 16, 'Kasia@test.pl test kueszczyn platea dictumst 1.', 'Eeeee, yyyyy, uuuuuuu!', '', 2);
+INSERT INTO question VALUES (7, '2018-12-11 10:41:00', 136, 57, 'Kasia@test.pl test kueszczyn platea dictumst 2.', 'Pickled oguras in sloikex', '', 2);
+SELECT pg_catalog.setval('question_id_seq', 8, true);
 
 INSERT INTO answer VALUES (1, '2017-04-28 16:49:00', 4, 1, 'You need to use baskets.', 15, 1, False);
 INSERT INTO answer VALUES (2, '2017-04-25 14:42:00', 35, 1, 'Prepare Spartans, gone to the ride!', 11, 1, False);
@@ -186,4 +201,3 @@ INSERT INTO question_tag VALUES (5, 5);
 INSERT INTO question_tag VALUES (3, 6);
 INSERT INTO question_tag VALUES (4, 6);
 INSERT INTO question_tag VALUES (5, 6);
-

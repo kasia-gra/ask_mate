@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% block title %}Homepage{% endblock %}
+{% block title %} Tags {% endblock %}
 {% block header %}
 {% endblock %}
 {% block nav %}
@@ -12,34 +12,17 @@
         <div class="table">
             <div class="table-header-and-title">
                 <div class="table-title">
-                    <h1>{{ "Homepage" if is_homepage else "All questions" }}</h1>
-                </div>
-                <div class="table-header">
-                    <div class="table-sorting-form">
-                        <form action="{{ url_for('questions_list', sort_by=sort_by) }}">
-                            <select class="drop_down_btn" name="sort_by" id="sort_by">
-                                {% set sort_criteria = ["submission_time", "view_number", "vote_number", "title", "message"] %}
-                                {% for sort_by_option in sort_criteria %}
-                                    {% set sort_order = ['ASC', 'DESC'] %}
-                                    {% for order in sort_order %}
-                                        <option value="{{ sort_by_option }}-{{ order }}">sort by: {{ sort_by_option }}
-                                            {% if order=='ASC' %} &#8595 {% else %} &#8593{% endif %}</option>
-                                    {% endfor %}
-                                {% endfor %}
-                            </select>
-                            <button class="drop_down_btn" type="submit">Sort</button>
-                        </form>
-                    </div>
+                    <h1>Tags</h1>
                 </div>
             </div>
-            <div class="button-panel">
-                {% if is_homepage or username == None %}
-                    <a href="{{ url_for("questions_list") }}" class="nav_button">All Questions</a>
-                {% else %}
-                    <a href="{{ url_for("question.add_question") }}" class="nav_button">Ask new question</a>
-                {% endif %}
+        </div>
+        {% for tag in tags %}
+            <div class="table-content table-record-details">
+                <div class="tags-name tags-background">
+                    #{{ tag.name }} - total {{ tag.amount_of_question }} with this tag
+                </div>
             </div>
-            {% for question in all_questions %}
+            {% for question in tag.questions %}
                 <div class="table-content">
                     <div class="table-details-and-description">
                         <div class="table-record-details">
@@ -72,7 +55,7 @@
                         </div>
                         <div class="table-record-description">
                             <div class="question-title">
-                                <a href="{{ url_for("show_question", question_id=question.get("id")|string) }}">{{ question.get("title") }}</a>
+                                <a href="{{ url_for("show_question", question_id=question.get("question_id")|string) }}">{{ question.get("title") }}</a>
                             </div>
                             <div class="question-message">
                                 {{ question.get("message") }}
@@ -85,15 +68,17 @@
                         </div>
                         {% if question.get("user_id") != user_id and username != None %}
                             <div class="vote-section">
-                                <a href="{{ url_for("vote.question_vote", question_id=question.get("id")|string, vote="up") }}"
+                                <a href="{{ url_for("vote.question_vote", question_id=question.get("question_id")|string, vote="up") }}"
                                    methods="POST">
-                                    <img src="{{ url_for('static', filename="icons/like_up.png") }}" width="50px"
+                                    <img src="{{ url_for('static', filename="icons/like_up.png") }}"
+                                         width="50px"
                                          height="50px"
                                          alt="vote_up">
                                 </a>
-                                <a href="{{ url_for("vote.question_vote", question_id=question.get("id")|string, vote="down") }}"
+                                <a href="{{ url_for("vote.question_vote", question_id=question.get("question_id")|string, vote="down") }}"
                                    methods="POST">
-                                    <img src="{{ url_for('static', filename="icons/like_down.png") }}" width="50px"
+                                    <img src="{{ url_for('static', filename="icons/like_down.png") }}"
+                                         width="50px"
                                          height="50px"
                                          alt="vote_down">
                                 </a>
@@ -110,7 +95,6 @@
                     </div>
                 </div>
             {% endfor %}
-        </div>
+        {% endfor %}
     </div>
 {% endblock %}
-{% block footer %}{{ super() }}{% endblock %}
